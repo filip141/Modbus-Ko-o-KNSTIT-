@@ -30,8 +30,6 @@
 
 void main(void)
 {
-	char tmp[2];
-	uint8_t byte;
 	uint8_t i;
 	GPIO_DeInit(GPIOD);
 	GPIO_Init(GPIOD, GPIO_PIN_0, GPIO_MODE_OUT_PP_LOW_FAST);

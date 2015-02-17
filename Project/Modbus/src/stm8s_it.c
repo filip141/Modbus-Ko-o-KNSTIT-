@@ -390,7 +390,7 @@ uint8_t Address;
 	temp[0] = buffer[1];
 	temp[1] = buffer[2];
 	HexToByte(temp, &Addr);
-		//Check address in message frame
+		//Check address in message frame. 0 is broadcast address
 		if(Addr == Address || Addr == 0)
 		{
 			//Address correct rewrite to word
