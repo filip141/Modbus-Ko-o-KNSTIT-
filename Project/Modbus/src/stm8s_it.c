@@ -28,12 +28,20 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
 void Delay(uint32_t time);
 void HexToByte(char *hexstring, uint8_t *byte);
+void UART_SendStr(const char *s);
+
+/* Private variables ---------------------------------------------------------*/
+uint8_t buffer[20];
+uint8_t word[20];
+uint8_t counter;
+uint8_t STATUS_BIT = 0;
+uint8_t Address;
 
 /* Public functions ----------------------------------------------------------*/
 #ifdef _COSMIC_
@@ -262,11 +270,18 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
   * @param  None
   * @retval None
   */
+	
+//Message HANDLER
  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
 {
-  /* In order to detect unexpected events during development,
-     it is recommended to set a breakpoint on the following instruction.
-  */
+	uint8_t i;
+	//Buffer not empty
+	if(word[0] != '\0')
+	{
+		UART_SendStr(word);
+		for(i = 0; i<20; i++){word[i] = '\0';}
+	}
+  TIM2_ClearITPendingBit(TIM2_IT_UPDATE);
 }
 
 /**
@@ -369,12 +384,7 @@ INTERRUPT_HANDLER(I2C_IRQHandler, 19)
   * @param  None
   * @retval None
   */
-//Interrupt variable initialization
-uint8_t buffer[20];
-uint8_t word[20];
-uint8_t counter;
-uint8_t STATUS_BIT = 0;
-uint8_t Address;
+
  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
 {
 	//Fill buffer

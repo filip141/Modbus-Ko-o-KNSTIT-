@@ -22,14 +22,18 @@ void Modbus_Init(void)
 //Clock divider equals 1.Clock 16MHz
 	CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
 //Clear bits 
+	TIM2_DeInit();
 	GPIO_DeInit(GPIOA);
 	UART2_DeInit();
 //Peripetial Initialization
+	TIM2_TimeBaseInit(TIM2_PRESCALER_2048, 78);
 	GPIO_Init(GPIOA, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST);
 	UART2_Init(BAUDRATE, UART2_WORDLENGTH_8D, UART2_STOPBITS_2,UART2_PARITY_NO,UART2_SYNCMODE_CLOCK_DISABLE,UART2_MODE_TXRX_ENABLE );  
 //Enable Periphs
+	TIM2_Cmd(ENABLE);
 	UART2_Cmd(ENABLE);
 //Interrupt configuration
+	TIM2_ITConfig(TIM2_IT_UPDATE, ENABLE);
 	UART2_ITConfig(UART2_IT_RXNE_OR, ENABLE);
 #ifndef __DELAY_EN
 	#define __MODBUS_EN

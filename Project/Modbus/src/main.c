@@ -30,7 +30,6 @@
 
 void main(void)
 {
-	uint8_t i;
 	GPIO_DeInit(GPIOD);
 	GPIO_Init(GPIOD, GPIO_PIN_0, GPIO_MODE_OUT_PP_LOW_FAST);
 	Delay_Init();
@@ -40,11 +39,6 @@ void main(void)
   while (1)
   {
 		Delay(1000);
-		if(word[0] != '\0')
-		{
-			UART_SendStr(word);
-			for(i = 0; i<20; i++){word[i] = '\0';}
-		}
 		GPIO_WriteReverse(GPIOD, GPIO_PIN_0);
 	}
 }

@@ -37,272 +37,290 @@
  108                     ; 17 }
  111  0027 85            	popw	x
  112  0028 81            	ret	
- 143                     ; 20 void Modbus_Init(void)
- 143                     ; 21 {
- 144                     	switch	.text
- 145  0029               _Modbus_Init:
- 149                     ; 23 	CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
- 151  0029 4f            	clr	a
- 152  002a cd0000        	call	_CLK_HSIPrescalerConfig
- 154                     ; 25 	GPIO_DeInit(GPIOA);
- 156  002d ae5000        	ldw	x,#20480
- 157  0030 cd0000        	call	_GPIO_DeInit
- 159                     ; 26 	UART2_DeInit();
- 161  0033 cd0000        	call	_UART2_DeInit
- 163                     ; 28 	GPIO_Init(GPIOA, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST);
- 165  0036 4be0          	push	#224
- 166  0038 4b08          	push	#8
- 167  003a ae5000        	ldw	x,#20480
- 168  003d cd0000        	call	_GPIO_Init
- 170  0040 85            	popw	x
- 171                     ; 29 	UART2_Init(BAUDRATE, UART2_WORDLENGTH_8D, UART2_STOPBITS_2,UART2_PARITY_NO,UART2_SYNCMODE_CLOCK_DISABLE,UART2_MODE_TXRX_ENABLE );  
- 173  0041 4b0c          	push	#12
- 174  0043 4b80          	push	#128
- 175  0045 4b00          	push	#0
- 176  0047 4b20          	push	#32
- 177  0049 4b00          	push	#0
- 178  004b ae4b00        	ldw	x,#19200
- 179  004e 89            	pushw	x
- 180  004f 5f            	clrw	x
- 181  0050 89            	pushw	x
- 182  0051 cd0000        	call	_UART2_Init
- 184  0054 5b09          	addw	sp,#9
- 185                     ; 31 	UART2_Cmd(ENABLE);
- 187  0056 a601          	ld	a,#1
- 188  0058 cd0000        	call	_UART2_Cmd
- 190                     ; 33 	UART2_ITConfig(UART2_IT_RXNE_OR, ENABLE);
- 192  005b 4b01          	push	#1
- 193  005d ae0205        	ldw	x,#517
- 194  0060 cd0000        	call	_UART2_ITConfig
- 196  0063 9a            	rim	
- 197  0064 84            	pop	a
- 198                     ; 36 	enableInterrupts();
- 202                     ; 38 }
- 206  0065 81            	ret	
- 233                     ; 41 void Delay_Init(void)
- 233                     ; 42 {
- 234                     	switch	.text
- 235  0066               _Delay_Init:
- 239                     ; 44 	TIM3_DeInit();
- 241  0066 cd0000        	call	_TIM3_DeInit
- 243                     ; 46 	TIM3_TimeBaseInit(TIM3_PRESCALER_16, 999);
- 245  0069 ae03e7        	ldw	x,#999
- 246  006c 89            	pushw	x
- 247  006d a604          	ld	a,#4
- 248  006f cd0000        	call	_TIM3_TimeBaseInit
- 250  0072 a601          	ld	a,#1
- 251  0074 85            	popw	x
- 252                     ; 48 	TIM3_Cmd(ENABLE);
- 254  0075 cd0000        	call	_TIM3_Cmd
- 256                     ; 50 	TIM3_ITConfig(TIM3_IT_UPDATE, ENABLE);
- 258  0078 ae0101        	ldw	x,#257
- 260                     ; 55 }
- 263  007b cc0000        	jp	_TIM3_ITConfig
- 298                     ; 58 void Delay(uint32_t time)
- 298                     ; 59 {
- 299                     	switch	.text
- 300  007e               _Delay:
- 302       00000000      OFST:	set	0
- 305                     ; 60 	TimmingDelay = time;
- 307  007e 1e05          	ldw	x,(OFST+5,sp)
- 308  0080 bf02          	ldw	_TimmingDelay+2,x
- 309  0082 1e03          	ldw	x,(OFST+3,sp)
- 310  0084 bf00          	ldw	_TimmingDelay,x
- 312  0086 ae0000        	ldw	x,#_TimmingDelay
- 313  0089               L501:
- 314                     ; 61 	while(TimmingDelay != 0 );
- 316  0089 cd0000        	call	c_lzmp
- 318  008c 26fb          	jrne	L501
- 319                     ; 62 }
- 322  008e 81            	ret	
- 402                     ; 65 void ByteToHex(char *hexstring, uint8_t byte)
- 402                     ; 66 {
- 403                     	switch	.text
- 404  008f               _ByteToHex:
- 406  008f 89            	pushw	x
- 407  0090 5203          	subw	sp,#3
- 408       00000003      OFST:	set	3
- 411                     ; 69 	uint8_t fchar = (byte & 0b11110000) >> 4 ;
- 413  0092 7b08          	ld	a,(OFST+5,sp)
- 414  0094 4e            	swap	a
- 415  0095 a40f          	and	a,#15
- 416  0097 6b03          	ld	(OFST+0,sp),a
- 417                     ; 70 	uint8_t lchar = (byte & 0b00001111) ; 
- 419  0099 7b08          	ld	a,(OFST+5,sp)
- 420  009b a40f          	and	a,#15
- 421  009d 6b02          	ld	(OFST-1,sp),a
- 422                     ; 72 	if( fchar >= 0 && fchar <= 9 )
- 424  009f 7b03          	ld	a,(OFST+0,sp)
- 425  00a1 a10a          	cp	a,#10
- 426  00a3 2404          	jruge	L351
- 427                     ; 74 		fhex = (char)(fchar+48);
- 429  00a5 ab30          	add	a,#48
- 431  00a7 2002          	jra	L551
- 432  00a9               L351:
- 433                     ; 78 		fhex = (char)(fchar+55);
- 435  00a9 ab37          	add	a,#55
- 436  00ab               L551:
- 437  00ab 6b01          	ld	(OFST-2,sp),a
- 438                     ; 80 		if( lchar >= 0 && lchar <= 9 )
- 440  00ad 7b02          	ld	a,(OFST-1,sp)
- 441  00af a10a          	cp	a,#10
- 442  00b1 2404          	jruge	L751
- 443                     ; 82 		lhex = (char)(lchar+48);
- 445  00b3 ab30          	add	a,#48
- 447  00b5 2002          	jra	L161
- 448  00b7               L751:
- 449                     ; 86 		lhex = (char)(lchar+55);
- 451  00b7 ab37          	add	a,#55
- 452  00b9               L161:
- 453  00b9 6b03          	ld	(OFST+0,sp),a
- 454                     ; 88 	hexstring[0] = fhex;
- 456  00bb 1e04          	ldw	x,(OFST+1,sp)
- 457  00bd 7b01          	ld	a,(OFST-2,sp)
- 458  00bf f7            	ld	(x),a
- 459                     ; 89 	hexstring[1] = lhex;
- 461  00c0 7b03          	ld	a,(OFST+0,sp)
- 462  00c2 e701          	ld	(1,x),a
- 463                     ; 90 }
- 466  00c4 5b05          	addw	sp,#5
- 467  00c6 81            	ret	
- 557                     ; 92 void HexToByte(char *hexstring, uint8_t *byte)
- 557                     ; 93 {
- 558                     	switch	.text
- 559  00c7               _HexToByte:
- 561  00c7 89            	pushw	x
- 562  00c8 5205          	subw	sp,#5
- 563       00000005      OFST:	set	5
- 566                     ; 99 	fhex	= hexstring[0];
- 568  00ca f6            	ld	a,(x)
- 569  00cb 6b05          	ld	(OFST+0,sp),a
- 570                     ; 100 	lhex = hexstring[1];
- 572  00cd e601          	ld	a,(1,x)
- 573  00cf 6b04          	ld	(OFST-1,sp),a
- 574                     ; 101 	if( ((int)fhex) >= 48 && ((int)fhex) <= 57 )
- 576  00d1 5f            	clrw	x
- 577  00d2 7b05          	ld	a,(OFST+0,sp)
- 578  00d4 97            	ld	xl,a
- 579  00d5 a30030        	cpw	x,#48
- 580  00d8 2f0b          	jrslt	L132
- 582  00da 5f            	clrw	x
- 583  00db 97            	ld	xl,a
- 584  00dc a3003a        	cpw	x,#58
- 585  00df 2e04          	jrsge	L132
- 586                     ; 103 		fchar = ((int)fhex) - 48; 
- 588  00e1 a030          	sub	a,#48
- 590  00e3 2002          	jra	L332
- 591  00e5               L132:
- 592                     ; 107 		fchar = ((int)fhex) - 55;
- 594  00e5 a037          	sub	a,#55
- 595  00e7               L332:
- 596  00e7 6b03          	ld	(OFST-2,sp),a
- 597                     ; 109 		if( ((int)lhex) >= 48 && ((int)lhex) <= 57 )
- 599  00e9 5f            	clrw	x
- 600  00ea 7b04          	ld	a,(OFST-1,sp)
- 601  00ec 97            	ld	xl,a
- 602  00ed a30030        	cpw	x,#48
- 603  00f0 2f0b          	jrslt	L532
- 605  00f2 5f            	clrw	x
- 606  00f3 97            	ld	xl,a
- 607  00f4 a3003a        	cpw	x,#58
- 608  00f7 2e04          	jrsge	L532
- 609                     ; 111 		lchar = ((int)lhex) - 48; 
- 611  00f9 a030          	sub	a,#48
- 613  00fb 2002          	jra	L732
- 614  00fd               L532:
- 615                     ; 115 		lchar = ((int)lhex) - 55;
- 617  00fd a037          	sub	a,#55
- 618  00ff               L732:
- 619  00ff 6b05          	ld	(OFST+0,sp),a
- 620                     ; 117 	tmpb = ((fchar<<4) | lchar);
- 622  0101 7b03          	ld	a,(OFST-2,sp)
- 623  0103 97            	ld	xl,a
- 624  0104 a610          	ld	a,#16
- 625  0106 42            	mul	x,a
- 626  0107 01            	rrwa	x,a
- 627  0108 1a05          	or	a,(OFST+0,sp)
- 628  010a 02            	rlwa	x,a
- 629  010b 1f01          	ldw	(OFST-4,sp),x
- 630                     ; 118 	*byte =  (uint8_t)tmpb; 
- 632  010d 1e0a          	ldw	x,(OFST+5,sp)
- 633  010f 7b02          	ld	a,(OFST-3,sp)
- 634  0111 f7            	ld	(x),a
- 635                     ; 120 }
- 638  0112 5b07          	addw	sp,#7
- 639  0114 81            	ret	
- 673                     ; 123 uint8_t __checkAddr(uint8_t address)
- 673                     ; 124 {
- 674                     	switch	.text
- 675  0115               ___checkAddr:
- 679                     ; 127 		return 1;
- 681  0115 a601          	ld	a,#1
- 684  0117 81            	ret	
- 718                     ; 135 uint8_t __checkFunc(uint8_t Function_Number)
- 718                     ; 136 {
- 719                     	switch	.text
- 720  0118               ___checkFunc:
- 724                     ; 137 	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
- 726  0118 a101          	cp	a,#1
- 727  011a 2714          	jreq	L772
- 729  011c a102          	cp	a,#2
- 730  011e 2710          	jreq	L772
- 732  0120 a103          	cp	a,#3
- 733  0122 270c          	jreq	L772
- 735  0124 a105          	cp	a,#5
- 736  0126 2708          	jreq	L772
- 738  0128 a106          	cp	a,#6
- 739  012a 2704          	jreq	L772
- 741  012c a110          	cp	a,#16
- 742  012e 2603          	jrne	L572
- 743  0130               L772:
- 744                     ; 139 		return 1;
- 746  0130 a601          	ld	a,#1
- 749  0132 81            	ret	
- 750  0133               L572:
- 751                     ; 143 		return 0;
- 753  0133 4f            	clr	a
- 756  0134 81            	ret	
- 792                     ; 147 void SetDevAddr(uint8_t Addr)
- 792                     ; 148 {
- 793                     	switch	.text
- 794  0135               _SetDevAddr:
- 796  0135 88            	push	a
- 797       00000000      OFST:	set	0
- 800                     ; 149 	if(__checkAddr(Addr))
- 802  0136 addd          	call	___checkAddr
- 804  0138 4d            	tnz	a
- 805  0139 2704          	jreq	L133
- 806                     ; 151 	Address = Addr;
- 808  013b 7b01          	ld	a,(OFST+1,sp)
- 809  013d b700          	ld	_Address,a
- 810  013f               L133:
- 811                     ; 153 }
- 814  013f 84            	pop	a
- 815  0140 81            	ret	
- 828                     	xref.b	_Address
- 829                     	xref.b	_TimmingDelay
- 830                     	xdef	___checkFunc
- 831                     	xdef	___checkAddr
- 832                     	xdef	_SetDevAddr
- 833                     	xdef	_HexToByte
- 834                     	xdef	_ByteToHex
- 835                     	xdef	_UART_SendStr
- 836                     	xdef	_Modbus_Init
- 837                     	xdef	_Delay
- 838                     	xdef	_Delay_Init
- 839                     	xref	_UART2_SendData8
- 840                     	xref	_UART2_ITConfig
- 841                     	xref	_UART2_Cmd
- 842                     	xref	_UART2_Init
- 843                     	xref	_UART2_DeInit
- 844                     	xref	_TIM3_ITConfig
- 845                     	xref	_TIM3_Cmd
- 846                     	xref	_TIM3_TimeBaseInit
- 847                     	xref	_TIM3_DeInit
- 848                     	xref	_GPIO_WriteLow
- 849                     	xref	_GPIO_WriteHigh
- 850                     	xref	_GPIO_Init
- 851                     	xref	_GPIO_DeInit
- 852                     	xref	_CLK_HSIPrescalerConfig
- 871                     	xref	c_lzmp
- 872                     	end
+ 147                     ; 20 void Modbus_Init(void)
+ 147                     ; 21 {
+ 148                     	switch	.text
+ 149  0029               _Modbus_Init:
+ 153                     ; 23 	CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
+ 155  0029 4f            	clr	a
+ 156  002a cd0000        	call	_CLK_HSIPrescalerConfig
+ 158                     ; 25 	TIM2_DeInit();
+ 160  002d cd0000        	call	_TIM2_DeInit
+ 162                     ; 26 	GPIO_DeInit(GPIOA);
+ 164  0030 ae5000        	ldw	x,#20480
+ 165  0033 cd0000        	call	_GPIO_DeInit
+ 167                     ; 27 	UART2_DeInit();
+ 169  0036 cd0000        	call	_UART2_DeInit
+ 171                     ; 29 	TIM2_TimeBaseInit(TIM2_PRESCALER_2048, 78);
+ 173  0039 ae004e        	ldw	x,#78
+ 174  003c 89            	pushw	x
+ 175  003d a60b          	ld	a,#11
+ 176  003f cd0000        	call	_TIM2_TimeBaseInit
+ 178  0042 85            	popw	x
+ 179                     ; 30 	GPIO_Init(GPIOA, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST);
+ 181  0043 4be0          	push	#224
+ 182  0045 4b08          	push	#8
+ 183  0047 ae5000        	ldw	x,#20480
+ 184  004a cd0000        	call	_GPIO_Init
+ 186  004d 85            	popw	x
+ 187                     ; 31 	UART2_Init(BAUDRATE, UART2_WORDLENGTH_8D, UART2_STOPBITS_2,UART2_PARITY_NO,UART2_SYNCMODE_CLOCK_DISABLE,UART2_MODE_TXRX_ENABLE );  
+ 189  004e 4b0c          	push	#12
+ 190  0050 4b80          	push	#128
+ 191  0052 4b00          	push	#0
+ 192  0054 4b20          	push	#32
+ 193  0056 4b00          	push	#0
+ 194  0058 ae4b00        	ldw	x,#19200
+ 195  005b 89            	pushw	x
+ 196  005c 5f            	clrw	x
+ 197  005d 89            	pushw	x
+ 198  005e cd0000        	call	_UART2_Init
+ 200  0061 5b09          	addw	sp,#9
+ 201                     ; 33 	TIM2_Cmd(ENABLE);
+ 203  0063 a601          	ld	a,#1
+ 204  0065 cd0000        	call	_TIM2_Cmd
+ 206                     ; 34 	UART2_Cmd(ENABLE);
+ 208  0068 a601          	ld	a,#1
+ 209  006a cd0000        	call	_UART2_Cmd
+ 211                     ; 36 	TIM2_ITConfig(TIM2_IT_UPDATE, ENABLE);
+ 213  006d ae0101        	ldw	x,#257
+ 214  0070 cd0000        	call	_TIM2_ITConfig
+ 216                     ; 37 	UART2_ITConfig(UART2_IT_RXNE_OR, ENABLE);
+ 218  0073 4b01          	push	#1
+ 219  0075 ae0205        	ldw	x,#517
+ 220  0078 cd0000        	call	_UART2_ITConfig
+ 222  007b 9a            	rim	
+ 223  007c 84            	pop	a
+ 224                     ; 40 	enableInterrupts();
+ 228                     ; 42 }
+ 232  007d 81            	ret	
+ 259                     ; 45 void Delay_Init(void)
+ 259                     ; 46 {
+ 260                     	switch	.text
+ 261  007e               _Delay_Init:
+ 265                     ; 48 	TIM3_DeInit();
+ 267  007e cd0000        	call	_TIM3_DeInit
+ 269                     ; 50 	TIM3_TimeBaseInit(TIM3_PRESCALER_16, 999);
+ 271  0081 ae03e7        	ldw	x,#999
+ 272  0084 89            	pushw	x
+ 273  0085 a604          	ld	a,#4
+ 274  0087 cd0000        	call	_TIM3_TimeBaseInit
+ 276  008a a601          	ld	a,#1
+ 277  008c 85            	popw	x
+ 278                     ; 52 	TIM3_Cmd(ENABLE);
+ 280  008d cd0000        	call	_TIM3_Cmd
+ 282                     ; 54 	TIM3_ITConfig(TIM3_IT_UPDATE, ENABLE);
+ 284  0090 ae0101        	ldw	x,#257
+ 286                     ; 59 }
+ 289  0093 cc0000        	jp	_TIM3_ITConfig
+ 324                     ; 62 void Delay(uint32_t time)
+ 324                     ; 63 {
+ 325                     	switch	.text
+ 326  0096               _Delay:
+ 328       00000000      OFST:	set	0
+ 331                     ; 64 	TimmingDelay = time;
+ 333  0096 1e05          	ldw	x,(OFST+5,sp)
+ 334  0098 bf02          	ldw	_TimmingDelay+2,x
+ 335  009a 1e03          	ldw	x,(OFST+3,sp)
+ 336  009c bf00          	ldw	_TimmingDelay,x
+ 338  009e ae0000        	ldw	x,#_TimmingDelay
+ 339  00a1               L501:
+ 340                     ; 65 	while(TimmingDelay != 0 );
+ 342  00a1 cd0000        	call	c_lzmp
+ 344  00a4 26fb          	jrne	L501
+ 345                     ; 66 }
+ 348  00a6 81            	ret	
+ 428                     ; 69 void ByteToHex(char *hexstring, uint8_t byte)
+ 428                     ; 70 {
+ 429                     	switch	.text
+ 430  00a7               _ByteToHex:
+ 432  00a7 89            	pushw	x
+ 433  00a8 5203          	subw	sp,#3
+ 434       00000003      OFST:	set	3
+ 437                     ; 73 	uint8_t fchar = (byte & 0b11110000) >> 4 ;
+ 439  00aa 7b08          	ld	a,(OFST+5,sp)
+ 440  00ac 4e            	swap	a
+ 441  00ad a40f          	and	a,#15
+ 442  00af 6b03          	ld	(OFST+0,sp),a
+ 443                     ; 74 	uint8_t lchar = (byte & 0b00001111) ; 
+ 445  00b1 7b08          	ld	a,(OFST+5,sp)
+ 446  00b3 a40f          	and	a,#15
+ 447  00b5 6b02          	ld	(OFST-1,sp),a
+ 448                     ; 76 	if( fchar >= 0 && fchar <= 9 )
+ 450  00b7 7b03          	ld	a,(OFST+0,sp)
+ 451  00b9 a10a          	cp	a,#10
+ 452  00bb 2404          	jruge	L351
+ 453                     ; 78 		fhex = (char)(fchar+48);
+ 455  00bd ab30          	add	a,#48
+ 457  00bf 2002          	jra	L551
+ 458  00c1               L351:
+ 459                     ; 82 		fhex = (char)(fchar+55);
+ 461  00c1 ab37          	add	a,#55
+ 462  00c3               L551:
+ 463  00c3 6b01          	ld	(OFST-2,sp),a
+ 464                     ; 84 		if( lchar >= 0 && lchar <= 9 )
+ 466  00c5 7b02          	ld	a,(OFST-1,sp)
+ 467  00c7 a10a          	cp	a,#10
+ 468  00c9 2404          	jruge	L751
+ 469                     ; 86 		lhex = (char)(lchar+48);
+ 471  00cb ab30          	add	a,#48
+ 473  00cd 2002          	jra	L161
+ 474  00cf               L751:
+ 475                     ; 90 		lhex = (char)(lchar+55);
+ 477  00cf ab37          	add	a,#55
+ 478  00d1               L161:
+ 479  00d1 6b03          	ld	(OFST+0,sp),a
+ 480                     ; 92 	hexstring[0] = fhex;
+ 482  00d3 1e04          	ldw	x,(OFST+1,sp)
+ 483  00d5 7b01          	ld	a,(OFST-2,sp)
+ 484  00d7 f7            	ld	(x),a
+ 485                     ; 93 	hexstring[1] = lhex;
+ 487  00d8 7b03          	ld	a,(OFST+0,sp)
+ 488  00da e701          	ld	(1,x),a
+ 489                     ; 94 }
+ 492  00dc 5b05          	addw	sp,#5
+ 493  00de 81            	ret	
+ 583                     ; 96 void HexToByte(char *hexstring, uint8_t *byte)
+ 583                     ; 97 {
+ 584                     	switch	.text
+ 585  00df               _HexToByte:
+ 587  00df 89            	pushw	x
+ 588  00e0 5205          	subw	sp,#5
+ 589       00000005      OFST:	set	5
+ 592                     ; 103 	fhex	= hexstring[0];
+ 594  00e2 f6            	ld	a,(x)
+ 595  00e3 6b05          	ld	(OFST+0,sp),a
+ 596                     ; 104 	lhex = hexstring[1];
+ 598  00e5 e601          	ld	a,(1,x)
+ 599  00e7 6b04          	ld	(OFST-1,sp),a
+ 600                     ; 105 	if( ((int)fhex) >= 48 && ((int)fhex) <= 57 )
+ 602  00e9 5f            	clrw	x
+ 603  00ea 7b05          	ld	a,(OFST+0,sp)
+ 604  00ec 97            	ld	xl,a
+ 605  00ed a30030        	cpw	x,#48
+ 606  00f0 2f0b          	jrslt	L132
+ 608  00f2 5f            	clrw	x
+ 609  00f3 97            	ld	xl,a
+ 610  00f4 a3003a        	cpw	x,#58
+ 611  00f7 2e04          	jrsge	L132
+ 612                     ; 107 		fchar = ((int)fhex) - 48; 
+ 614  00f9 a030          	sub	a,#48
+ 616  00fb 2002          	jra	L332
+ 617  00fd               L132:
+ 618                     ; 111 		fchar = ((int)fhex) - 55;
+ 620  00fd a037          	sub	a,#55
+ 621  00ff               L332:
+ 622  00ff 6b03          	ld	(OFST-2,sp),a
+ 623                     ; 113 		if( ((int)lhex) >= 48 && ((int)lhex) <= 57 )
+ 625  0101 5f            	clrw	x
+ 626  0102 7b04          	ld	a,(OFST-1,sp)
+ 627  0104 97            	ld	xl,a
+ 628  0105 a30030        	cpw	x,#48
+ 629  0108 2f0b          	jrslt	L532
+ 631  010a 5f            	clrw	x
+ 632  010b 97            	ld	xl,a
+ 633  010c a3003a        	cpw	x,#58
+ 634  010f 2e04          	jrsge	L532
+ 635                     ; 115 		lchar = ((int)lhex) - 48; 
+ 637  0111 a030          	sub	a,#48
+ 639  0113 2002          	jra	L732
+ 640  0115               L532:
+ 641                     ; 119 		lchar = ((int)lhex) - 55;
+ 643  0115 a037          	sub	a,#55
+ 644  0117               L732:
+ 645  0117 6b05          	ld	(OFST+0,sp),a
+ 646                     ; 121 	tmpb = ((fchar<<4) | lchar);
+ 648  0119 7b03          	ld	a,(OFST-2,sp)
+ 649  011b 97            	ld	xl,a
+ 650  011c a610          	ld	a,#16
+ 651  011e 42            	mul	x,a
+ 652  011f 01            	rrwa	x,a
+ 653  0120 1a05          	or	a,(OFST+0,sp)
+ 654  0122 02            	rlwa	x,a
+ 655  0123 1f01          	ldw	(OFST-4,sp),x
+ 656                     ; 122 	*byte =  (uint8_t)tmpb; 
+ 658  0125 1e0a          	ldw	x,(OFST+5,sp)
+ 659  0127 7b02          	ld	a,(OFST-3,sp)
+ 660  0129 f7            	ld	(x),a
+ 661                     ; 124 }
+ 664  012a 5b07          	addw	sp,#7
+ 665  012c 81            	ret	
+ 699                     ; 127 uint8_t __checkAddr(uint8_t address)
+ 699                     ; 128 {
+ 700                     	switch	.text
+ 701  012d               ___checkAddr:
+ 705                     ; 131 		return 1;
+ 707  012d a601          	ld	a,#1
+ 710  012f 81            	ret	
+ 744                     ; 139 uint8_t __checkFunc(uint8_t Function_Number)
+ 744                     ; 140 {
+ 745                     	switch	.text
+ 746  0130               ___checkFunc:
+ 750                     ; 141 	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
+ 752  0130 a101          	cp	a,#1
+ 753  0132 2714          	jreq	L772
+ 755  0134 a102          	cp	a,#2
+ 756  0136 2710          	jreq	L772
+ 758  0138 a103          	cp	a,#3
+ 759  013a 270c          	jreq	L772
+ 761  013c a105          	cp	a,#5
+ 762  013e 2708          	jreq	L772
+ 764  0140 a106          	cp	a,#6
+ 765  0142 2704          	jreq	L772
+ 767  0144 a110          	cp	a,#16
+ 768  0146 2603          	jrne	L572
+ 769  0148               L772:
+ 770                     ; 143 		return 1;
+ 772  0148 a601          	ld	a,#1
+ 775  014a 81            	ret	
+ 776  014b               L572:
+ 777                     ; 147 		return 0;
+ 779  014b 4f            	clr	a
+ 782  014c 81            	ret	
+ 818                     ; 151 void SetDevAddr(uint8_t Addr)
+ 818                     ; 152 {
+ 819                     	switch	.text
+ 820  014d               _SetDevAddr:
+ 822  014d 88            	push	a
+ 823       00000000      OFST:	set	0
+ 826                     ; 153 	if(__checkAddr(Addr))
+ 828  014e addd          	call	___checkAddr
+ 830  0150 4d            	tnz	a
+ 831  0151 2704          	jreq	L133
+ 832                     ; 155 	Address = Addr;
+ 834  0153 7b01          	ld	a,(OFST+1,sp)
+ 835  0155 b700          	ld	_Address,a
+ 836  0157               L133:
+ 837                     ; 157 }
+ 840  0157 84            	pop	a
+ 841  0158 81            	ret	
+ 854                     	xref.b	_Address
+ 855                     	xref.b	_TimmingDelay
+ 856                     	xdef	___checkFunc
+ 857                     	xdef	___checkAddr
+ 858                     	xdef	_SetDevAddr
+ 859                     	xdef	_HexToByte
+ 860                     	xdef	_ByteToHex
+ 861                     	xdef	_UART_SendStr
+ 862                     	xdef	_Modbus_Init
+ 863                     	xdef	_Delay
+ 864                     	xdef	_Delay_Init
+ 865                     	xref	_UART2_SendData8
+ 866                     	xref	_UART2_ITConfig
+ 867                     	xref	_UART2_Cmd
+ 868                     	xref	_UART2_Init
+ 869                     	xref	_UART2_DeInit
+ 870                     	xref	_TIM3_ITConfig
+ 871                     	xref	_TIM3_Cmd
+ 872                     	xref	_TIM3_TimeBaseInit
+ 873                     	xref	_TIM3_DeInit
+ 874                     	xref	_TIM2_ITConfig
+ 875                     	xref	_TIM2_Cmd
+ 876                     	xref	_TIM2_TimeBaseInit
+ 877                     	xref	_TIM2_DeInit
+ 878                     	xref	_GPIO_WriteLow
+ 879                     	xref	_GPIO_WriteHigh
+ 880                     	xref	_GPIO_Init
+ 881                     	xref	_GPIO_DeInit
+ 882                     	xref	_CLK_HSIPrescalerConfig
+ 901                     	xref	c_lzmp
+ 902                     	end
