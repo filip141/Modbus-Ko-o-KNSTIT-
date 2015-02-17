@@ -3,9 +3,10 @@
 ..\..\..\..\libraries\stm8s_stdperiph_driver\src\stm8s_tim3.c
 ..\..\..\..\libraries\stm8s_stdperiph_driver\src\stm8s_uart2.c
 ..\..\src\main.c
+..\..\src\modbus.c
 ..\..\src\stm8_interrupt_vector.c
 ..\..\src\stm8s_it.c
-modbus.c
+..\..\inc\modbus.h
 ..\..\inc\stm8s_it.h
 ..\..\..\..\..\..\..\..\..\program files (x86)\cosmic\cxstm8_eval\hstm8\mods0.h
 ..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h
@@ -27,5 +28,4 @@ modbus.c
 ..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_tim4.h
 ..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_uart2.h
 ..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_wwdg.h
-..\..\..\discover\inc\stm8s_conf.h
-modbus.h
+..\..\inc\stm8s_conf.h
