@@ -386,11 +386,14 @@ uint8_t Address;
 	uint8_t i;
 	uint8_t Addr; 
 	char temp[2];
+	//Address from ASCII to HEX
 	temp[0] = buffer[1];
 	temp[1] = buffer[2];
 	HexToByte(temp, &Addr);
+		//Check address in message frame
 		if(Addr == Address || Addr == 0)
 		{
+			//Address correct rewrite to word
 			for(i = 0; i<20; i++)
 			{
 			word[i] = buffer[i];
@@ -400,6 +403,7 @@ uint8_t Address;
 		}
 		else
 		{
+			//Address incorrect clear buffer
 			for(i = 0; i<20; i++)
 			{
 			buffer[i] = '\0';	
