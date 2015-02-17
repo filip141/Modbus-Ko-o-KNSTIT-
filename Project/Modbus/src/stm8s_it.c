@@ -33,6 +33,7 @@
 /* Private functions ---------------------------------------------------------*/
 
 void Delay(uint32_t time);
+void HexToByte(char *hexstring, uint8_t *byte);
 
 /* Public functions ----------------------------------------------------------*/
 #ifdef _COSMIC_
@@ -383,12 +384,29 @@ uint8_t Address;
 	if (buffer[counter] == 0x0A && STATUS_BIT == 1)
 	{
 	uint8_t i;
-	for(i = 0; i<20; i++)
-	{
-	word[i] = buffer[i];
-	buffer[i] = '\0';	
-	}
-	counter = 0;
+	uint8_t Addr; 
+	char temp[2];
+	temp[0] = buffer[1];
+	temp[1] = buffer[2];
+	HexToByte(temp, &Addr);
+		if(Addr == Address || Addr == 0)
+		{
+			for(i = 0; i<20; i++)
+			{
+			word[i] = buffer[i];
+			buffer[i] = '\0';	
+			}
+			counter = 0;
+		}
+		else
+		{
+			for(i = 0; i<20; i++)
+			{
+			buffer[i] = '\0';	
+			}
+			counter = 0;
+		}
+		
 	}
 	else
 	{
