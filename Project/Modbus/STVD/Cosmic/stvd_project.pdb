@@ -3,7 +3,7 @@ DumpRWOnFly1=0
 DumpRWOnFly2=0
 DumpRWOnFly3=0
 DumpRWOnFly4=0
-WatchVariables1=buffer!0;counter!0;tmp!0;byte!0;hexstring!0;fhex!0;lhex!0;fchar!0;lchar!0;tmpb!0;
+WatchVariables1=buffer!0;word!0;
 FormatWatch1=0
 FormatViewType1=1
 FormatViewAddress1=1
@@ -34,6 +34,6 @@ ShowRegisterAddress=1
 [DebugState_v1-Debug.AddOn.St7McuIcdConf]
 McuName=STM8S105C6
 [DebugState_v1-Debug.AddOn.IcdBreak]
-ICDBreak0=CR:0x00000000,BK1:0x00000000,BK2:0x00000000
+ICDBreak0=CR:0x00000000,BK1:0x00ffffff,BK2:0x00ffffff
 [DebugState_v1-Debug.AddOn.SteppingMode]
 Mode=hardware

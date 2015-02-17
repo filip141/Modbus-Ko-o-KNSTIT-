@@ -108,7 +108,7 @@
  538  001e be00          	ldw	x,c_y
  539  0020 89            	pushw	x
  542                     ; 294 	if(TimmingDelay !=0)
- 544  0021 ae0029        	ldw	x,#_TimmingDelay
+ 544  0021 ae002a        	ldw	x,#_TimmingDelay
  545  0024 cd0000        	call	c_lzmp
  547  0027 2705          	jreq	L112
  548                     ; 296 		TimmingDelay--;
@@ -147,8 +147,8 @@
  665                     	bsct
  666  0000               _STATUS_BIT:
  667  0000 00            	dc.b	0
- 706                     ; 376  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
- 706                     ; 377 {
+ 706                     ; 377  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
+ 706                     ; 378 {
  707                     	switch	.text
  708  0043               f_UART2_RX_IRQHandler:
  710  0043 8a            	push	cc
@@ -164,62 +164,62 @@
  720  0052 be00          	ldw	x,c_y
  721  0054 89            	pushw	x
  722  0055 88            	push	a
- 725                     ; 379 	buffer[counter] = UART2_ReceiveData8();
- 727  0056 b600          	ld	a,_counter
+ 725                     ; 380 	buffer[counter] = UART2_ReceiveData8();
+ 727  0056 b601          	ld	a,_counter
  728  0058 5f            	clrw	x
  729  0059 97            	ld	xl,a
  730  005a 89            	pushw	x
  731  005b cd0000        	call	_UART2_ReceiveData8
  733  005e 85            	popw	x
- 734  005f e715          	ld	(_buffer,x),a
- 735                     ; 381 	if (buffer[counter] == 0x0D){ STATUS_BIT = 1; }  
+ 734  005f e716          	ld	(_buffer,x),a
+ 735                     ; 382 	if (buffer[counter] == 0x0D){ STATUS_BIT = 1; }  
  737  0061 5f            	clrw	x
- 738  0062 b600          	ld	a,_counter
+ 738  0062 b601          	ld	a,_counter
  739  0064 97            	ld	xl,a
- 740  0065 e615          	ld	a,(_buffer,x)
+ 740  0065 e616          	ld	a,(_buffer,x)
  741  0067 a10d          	cp	a,#13
  742  0069 2604          	jrne	L162
  745  006b 35010000      	mov	_STATUS_BIT,#1
  746  006f               L162:
- 747                     ; 382 	if (buffer[counter] == 0x0A && STATUS_BIT == 1)
- 749  006f b600          	ld	a,_counter
+ 747                     ; 383 	if (buffer[counter] == 0x0A && STATUS_BIT == 1)
+ 749  006f b601          	ld	a,_counter
  750  0071 5f            	clrw	x
  751  0072 97            	ld	xl,a
- 752  0073 e615          	ld	a,(_buffer,x)
+ 752  0073 e616          	ld	a,(_buffer,x)
  753  0075 a10a          	cp	a,#10
  754  0077 261f          	jrne	L362
  756  0079 b600          	ld	a,_STATUS_BIT
  757  007b 4a            	dec	a
  758  007c 261a          	jrne	L362
- 759                     ; 385 	for(i = 0; i<20; i++)
+ 759                     ; 386 	for(i = 0; i<20; i++)
  761  007e 6b01          	ld	(OFST+0,sp),a
  762  0080               L562:
- 763                     ; 387 	word[i] = buffer[i];
+ 763                     ; 388 	word[i] = buffer[i];
  765  0080 5f            	clrw	x
  766  0081 97            	ld	xl,a
- 767  0082 e615          	ld	a,(_buffer,x)
- 768  0084 e701          	ld	(_word,x),a
- 769                     ; 388 	buffer[i] = '\0';	
+ 767  0082 e616          	ld	a,(_buffer,x)
+ 768  0084 e702          	ld	(_word,x),a
+ 769                     ; 389 	buffer[i] = '\0';	
  771  0086 5f            	clrw	x
  772  0087 7b01          	ld	a,(OFST+0,sp)
  773  0089 97            	ld	xl,a
- 774  008a 6f15          	clr	(_buffer,x)
- 775                     ; 385 	for(i = 0; i<20; i++)
+ 774  008a 6f16          	clr	(_buffer,x)
+ 775                     ; 386 	for(i = 0; i<20; i++)
  777  008c 0c01          	inc	(OFST+0,sp)
  780  008e 7b01          	ld	a,(OFST+0,sp)
  781  0090 a114          	cp	a,#20
  782  0092 25ec          	jrult	L562
- 783                     ; 390 	counter = 0;
- 785  0094 3f00          	clr	_counter
+ 783                     ; 391 	counter = 0;
+ 785  0094 3f01          	clr	_counter
  787  0096 2002          	jra	L372
  788  0098               L362:
- 789                     ; 394 	counter++;
- 791  0098 3c00          	inc	_counter
+ 789                     ; 395 	counter++;
+ 791  0098 3c01          	inc	_counter
  792  009a               L372:
- 793                     ; 397 	UART2_ClearITPendingBit(UART2_IT_RXNE);
+ 793                     ; 398 	UART2_ClearITPendingBit(UART2_IT_RXNE);
  795  009a ae0255        	ldw	x,#597
  796  009d cd0000        	call	_UART2_ClearITPendingBit
- 798                     ; 398 }
+ 798                     ; 399 }
  801  00a0 84            	pop	a
  802  00a1 85            	popw	x
  803  00a2 bf00          	ldw	c_y,x
@@ -228,66 +228,69 @@
  806  00a8 bf00          	ldw	c_x,x
  807  00aa 320002        	pop	c_x+2
  808  00ad 80            	iret	
- 830                     ; 446  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
- 830                     ; 447 {
+ 830                     ; 447  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
+ 830                     ; 448 {
  831                     	switch	.text
  832  00ae               f_ADC1_IRQHandler:
- 836                     ; 452 }
+ 836                     ; 453 }
  839  00ae 80            	iret	
- 862                     ; 473  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
- 862                     ; 474 {
+ 862                     ; 474  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
+ 862                     ; 475 {
  863                     	switch	.text
  864  00af               f_TIM4_UPD_OVF_IRQHandler:
- 868                     ; 478 }
+ 868                     ; 479 }
  871  00af 80            	iret	
- 894                     ; 486 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
- 894                     ; 487 {
+ 894                     ; 487 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+ 894                     ; 488 {
  895                     	switch	.text
  896  00b0               f_EEPROM_EEC_IRQHandler:
- 900                     ; 491 }
+ 900                     ; 492 }
  903  00b0 80            	iret	
- 964                     	xdef	_STATUS_BIT
- 965                     	switch	.ubsct
- 966  0000               _counter:
- 967  0000 00            	ds.b	1
- 968                     	xdef	_counter
- 969  0001               _word:
- 970  0001 000000000000  	ds.b	20
- 971                     	xdef	_word
- 972  0015               _buffer:
- 973  0015 000000000000  	ds.b	20
- 974                     	xdef	_buffer
- 975  0029               _TimmingDelay:
- 976  0029 00000000      	ds.b	4
- 977                     	xdef	_TimmingDelay
- 978                     	xdef	f_EEPROM_EEC_IRQHandler
- 979                     	xdef	f_TIM4_UPD_OVF_IRQHandler
- 980                     	xdef	f_ADC1_IRQHandler
- 981                     	xdef	f_UART2_TX_IRQHandler
- 982                     	xdef	f_UART2_RX_IRQHandler
- 983                     	xdef	f_I2C_IRQHandler
- 984                     	xdef	f_TIM3_CAP_COM_IRQHandler
- 985                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
- 986                     	xdef	f_TIM2_CAP_COM_IRQHandler
- 987                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
- 988                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
- 989                     	xdef	f_TIM1_CAP_COM_IRQHandler
- 990                     	xdef	f_SPI_IRQHandler
- 991                     	xdef	f_EXTI_PORTE_IRQHandler
- 992                     	xdef	f_EXTI_PORTD_IRQHandler
- 993                     	xdef	f_EXTI_PORTC_IRQHandler
- 994                     	xdef	f_EXTI_PORTB_IRQHandler
- 995                     	xdef	f_EXTI_PORTA_IRQHandler
- 996                     	xdef	f_CLK_IRQHandler
- 997                     	xdef	f_AWU_IRQHandler
- 998                     	xdef	f_TLI_IRQHandler
- 999                     	xdef	f_TRAP_IRQHandler
-1000                     	xdef	f_NonHandledInterrupt
-1001                     	xref	_UART2_ClearITPendingBit
-1002                     	xref	_UART2_ReceiveData8
-1003                     	xref	_TIM3_ClearITPendingBit
-1004                     	xref.b	c_x
-1005                     	xref.b	c_y
-1025                     	xref	c_lgsbc
-1026                     	xref	c_lzmp
-1027                     	end
+ 973                     	switch	.ubsct
+ 974  0000               _Address:
+ 975  0000 00            	ds.b	1
+ 976                     	xdef	_Address
+ 977                     	xdef	_STATUS_BIT
+ 978  0001               _counter:
+ 979  0001 00            	ds.b	1
+ 980                     	xdef	_counter
+ 981  0002               _word:
+ 982  0002 000000000000  	ds.b	20
+ 983                     	xdef	_word
+ 984  0016               _buffer:
+ 985  0016 000000000000  	ds.b	20
+ 986                     	xdef	_buffer
+ 987  002a               _TimmingDelay:
+ 988  002a 00000000      	ds.b	4
+ 989                     	xdef	_TimmingDelay
+ 990                     	xdef	f_EEPROM_EEC_IRQHandler
+ 991                     	xdef	f_TIM4_UPD_OVF_IRQHandler
+ 992                     	xdef	f_ADC1_IRQHandler
+ 993                     	xdef	f_UART2_TX_IRQHandler
+ 994                     	xdef	f_UART2_RX_IRQHandler
+ 995                     	xdef	f_I2C_IRQHandler
+ 996                     	xdef	f_TIM3_CAP_COM_IRQHandler
+ 997                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
+ 998                     	xdef	f_TIM2_CAP_COM_IRQHandler
+ 999                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
+1000                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
+1001                     	xdef	f_TIM1_CAP_COM_IRQHandler
+1002                     	xdef	f_SPI_IRQHandler
+1003                     	xdef	f_EXTI_PORTE_IRQHandler
+1004                     	xdef	f_EXTI_PORTD_IRQHandler
+1005                     	xdef	f_EXTI_PORTC_IRQHandler
+1006                     	xdef	f_EXTI_PORTB_IRQHandler
+1007                     	xdef	f_EXTI_PORTA_IRQHandler
+1008                     	xdef	f_CLK_IRQHandler
+1009                     	xdef	f_AWU_IRQHandler
+1010                     	xdef	f_TLI_IRQHandler
+1011                     	xdef	f_TRAP_IRQHandler
+1012                     	xdef	f_NonHandledInterrupt
+1013                     	xref	_UART2_ClearITPendingBit
+1014                     	xref	_UART2_ReceiveData8
+1015                     	xref	_TIM3_ClearITPendingBit
+1016                     	xref.b	c_x
+1017                     	xref.b	c_y
+1037                     	xref	c_lgsbc
+1038                     	xref	c_lzmp
+1039                     	end

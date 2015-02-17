@@ -37,6 +37,7 @@ void Modbus_Init(void)
 #endif
 }
 
+//Delay function Initialization
 void Delay_Init(void)
 {
 //Clear bits 
@@ -116,4 +117,37 @@ void HexToByte(char *hexstring, uint8_t *byte)
 	tmpb = ((fchar<<4) | lchar);
 	*byte =  (uint8_t)tmpb; 
 	
+}
+
+//Function to make sure that your address is correct
+uint8_t __checkAddr(uint8_t address)
+{
+	if(address >= 0 && address <= 255)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+//Function to make sure that your Function code is correct
+uint8_t __checkFunc(uint8_t Function_Number)
+{
+	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
+	{
+		return 1;
+	}
+	else 
+	{
+		return 0;
+	}
+}
+//Set Device Address
+void SetDevAddr(uint8_t Addr)
+{
+	if(__checkAddr(Addr))
+	{
+	Address = Addr;
+	}
 }

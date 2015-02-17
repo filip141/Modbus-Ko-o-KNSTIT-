@@ -373,6 +373,7 @@ uint8_t buffer[20];
 uint8_t word[20];
 uint8_t counter;
 uint8_t STATUS_BIT = 0;
+uint8_t Address;
  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
 {
 	//Fill buffer

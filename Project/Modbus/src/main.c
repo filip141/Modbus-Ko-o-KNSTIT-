@@ -37,8 +37,7 @@ void main(void)
 	GPIO_Init(GPIOD, GPIO_PIN_0, GPIO_MODE_OUT_PP_LOW_FAST);
 	Delay_Init();
 	Modbus_Init();
-	ByteToHex(tmp,0b10110111);
-	HexToByte(tmp, &byte);
+	SetDevAddr(13);
 //Endless loop
   while (1)
   {
