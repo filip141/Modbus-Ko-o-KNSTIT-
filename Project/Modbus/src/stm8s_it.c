@@ -35,6 +35,7 @@
 void Delay(uint32_t time);
 void HexToByte(char *hexstring, uint8_t *byte);
 void UART_SendStr(const char *s);
+uint8_t __checkFunc(uint8_t Function_Number); 
 
 /* Private variables ---------------------------------------------------------*/
 uint8_t buffer[20];
@@ -274,11 +275,51 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 //Message HANDLER
  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
 {
+	char tmp[2];
 	uint8_t i;
+	uint8_t FunC; 
 	//Buffer not empty
 	if(word[0] != '\0')
 	{
-		UART_SendStr(word);
+		//IF CRC == Correct
+		//Function Code to Byte
+		tmp[0] = word[3];
+		tmp[1] = word[4];
+		HexToByte(tmp, &FunC);
+		//Check function code
+		if(__checkFunc(FunC))
+		{
+			//Function handler
+			switch (FunC) 
+			{
+			case 1:
+				//Function 1
+				UART_SendStr("Function 1 Handled");
+				break;
+			case 2:
+				//Function 2
+				UART_SendStr("Function 2 Handled");
+				break;
+			case 3: 
+				//Function 3
+				UART_SendStr("Function 3 Handled");
+				break;
+			case 5: 
+				//Function 5
+				UART_SendStr("Function 5 Handled");
+				break;
+			case 6: 
+				//Function 6
+				UART_SendStr("Function 6 Handled");
+				break;
+			case 16:
+				//Function 16
+				UART_SendStr("Function 16 Handled");
+				break;
+			default: 
+				break;
+			}
+		}
 		for(i = 0; i<20; i++){word[i] = '\0';}
 	}
   TIM2_ClearITPendingBit(TIM2_IT_UPDATE);

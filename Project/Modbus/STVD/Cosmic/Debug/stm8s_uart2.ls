@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.10.2 - 02 Nov 2011
-   3                     ; Generator (Limited) V4.3.7 - 29 Nov 2011
-   4                     ; Optimizer V4.3.6 - 29 Nov 2011
+   2                     ; Parser V4.10.23 - 17 Sep 2014
+   3                     ; Generator (Limited) V4.3.13 - 22 Oct 2014
+   4                     ; Optimizer V4.3.11 - 22 Oct 2014
   47                     ; 47 void UART2_DeInit(void)
   47                     ; 48 {
   49                     	switch	.text
@@ -789,8 +789,8 @@
 2094  044f 58            	sllw	x
 2095  0450 1f01          	ldw	(OFST-1,sp),x
 2096                     ; 497   return (uint16_t)((((uint16_t)UART2->DR) | temp) & ((uint16_t)0x01FF));
-2098  0452 5f            	clrw	x
-2099  0453 c65241        	ld	a,21057
+2098  0452 c65241        	ld	a,21057
+2099  0455 5f            	clrw	x
 2100  0456 97            	ld	xl,a
 2101  0457 01            	rrwa	x,a
 2102  0458 1a02          	or	a,(OFST+0,sp)

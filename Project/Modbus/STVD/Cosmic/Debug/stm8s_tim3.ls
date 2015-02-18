@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.10.2 - 02 Nov 2011
-   3                     ; Generator (Limited) V4.3.7 - 29 Nov 2011
-   4                     ; Optimizer V4.3.6 - 29 Nov 2011
+   2                     ; Parser V4.10.23 - 17 Sep 2014
+   3                     ; Generator (Limited) V4.3.13 - 22 Oct 2014
+   4                     ; Optimizer V4.3.11 - 22 Oct 2014
   47                     ; 45 void TIM3_DeInit(void)
   47                     ; 46 {
   49                     	switch	.text
@@ -47,10 +47,10 @@
  276                     ; 80 {
  277                     	switch	.text
  278  0045               _TIM3_TimeBaseInit:
- 280       00000000      OFST:	set	0
- 283                     ; 82     TIM3->PSCR = (uint8_t)(TIM3_Prescaler);
- 285  0045 c7532a        	ld	21290,a
- 286  0048 88            	push	a
+ 280  0045 88            	push	a
+ 281       00000000      OFST:	set	0
+ 284                     ; 82     TIM3->PSCR = (uint8_t)(TIM3_Prescaler);
+ 286  0046 c7532a        	ld	21290,a
  287                     ; 84     TIM3->ARRH = (uint8_t)(TIM3_Period >> 8);
  289  0049 7b04          	ld	a,(OFST+4,sp)
  290  004b c7532b        	ld	21291,a
@@ -1269,8 +1269,8 @@
 3411  064e 02            	rlwa	x,a
 3412  064f 1f01          	ldw	(OFST-1,sp),x
 3413                     ; 850     return (uint16_t)( tmpcntr| (uint16_t)(TIM3->CNTRL));
-3415  0651 5f            	clrw	x
-3416  0652 c65329        	ld	a,21289
+3415  0651 c65329        	ld	a,21289
+3416  0654 5f            	clrw	x
 3417  0655 97            	ld	xl,a
 3418  0656 01            	rrwa	x,a
 3419  0657 1a02          	or	a,(OFST+0,sp)
@@ -1449,10 +1449,10 @@
 3980                     	switch	.text
 3981  0727               L3_TI1_Config:
 3983  0727 89            	pushw	x
-3984       00000001      OFST:	set	1
-3987                     ; 996     TIM3->CCER1 &= (uint8_t)(~TIM3_CCER1_CC1E);
-3989  0728 72115327      	bres	21287,#0
-3990  072c 88            	push	a
+3984  0728 88            	push	a
+3985       00000001      OFST:	set	1
+3988                     ; 996     TIM3->CCER1 &= (uint8_t)(~TIM3_CCER1_CC1E);
+3990  0729 72115327      	bres	21287,#0
 3991                     ; 999     TIM3->CCMR1 = (uint8_t)((uint8_t)(TIM3->CCMR1 & (uint8_t)(~( TIM3_CCMR_CCxS | TIM3_CCMR_ICxF))) | (uint8_t)(( (TIM3_ICSelection)) | ((uint8_t)( TIM3_ICFilter << 4))));
 3993  072d 7b06          	ld	a,(OFST+5,sp)
 3994  072f 97            	ld	xl,a
@@ -1487,10 +1487,10 @@
 4078                     	switch	.text
 4079  0757               L5_TI2_Config:
 4081  0757 89            	pushw	x
-4082       00000001      OFST:	set	1
-4085                     ; 1036     TIM3->CCER1 &=  (uint8_t)(~TIM3_CCER1_CC2E);
-4087  0758 72195327      	bres	21287,#4
-4088  075c 88            	push	a
+4082  0758 88            	push	a
+4083       00000001      OFST:	set	1
+4086                     ; 1036     TIM3->CCER1 &=  (uint8_t)(~TIM3_CCER1_CC2E);
+4088  0759 72195327      	bres	21287,#4
 4089                     ; 1039     TIM3->CCMR2 = (uint8_t)((uint8_t)(TIM3->CCMR2 & (uint8_t)(~( TIM3_CCMR_CCxS |
 4089                     ; 1040                   TIM3_CCMR_ICxF    ))) | (uint8_t)(( (TIM3_ICSelection)) | 
 4089                     ; 1041                   ((uint8_t)( TIM3_ICFilter << 4))));

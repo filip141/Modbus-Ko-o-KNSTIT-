@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.10.2 - 02 Nov 2011
-   3                     ; Generator (Limited) V4.3.7 - 29 Nov 2011
-   4                     ; Optimizer V4.3.6 - 29 Nov 2011
+   2                     ; Parser V4.10.23 - 17 Sep 2014
+   3                     ; Generator (Limited) V4.3.13 - 22 Oct 2014
+   4                     ; Optimizer V4.3.11 - 22 Oct 2014
  113                     ; 47 void GPIO_DeInit(GPIO_TypeDef* GPIOx)
  113                     ; 48 {
  115                     	switch	.text
@@ -140,8 +140,8 @@
  566  00a7 89            	pushw	x
  567       00000000      OFST:	set	0
  570                     ; 137     GPIOx->ODR = PortVal;
- 572  00a8 1e01          	ldw	x,(OFST+1,sp)
- 573  00aa 7b05          	ld	a,(OFST+5,sp)
+ 572  00a8 7b05          	ld	a,(OFST+5,sp)
+ 573  00aa 1e01          	ldw	x,(OFST+1,sp)
  574  00ac f7            	ld	(x),a
  575                     ; 138 }
  578  00ad 85            	popw	x

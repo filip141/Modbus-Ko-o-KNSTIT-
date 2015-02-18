@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.10.2 - 02 Nov 2011
-   3                     ; Generator (Limited) V4.3.7 - 29 Nov 2011
-   4                     ; Optimizer V4.3.6 - 29 Nov 2011
+   2                     ; Parser V4.10.23 - 17 Sep 2014
+   3                     ; Generator (Limited) V4.3.13 - 22 Oct 2014
+   4                     ; Optimizer V4.3.11 - 22 Oct 2014
   47                     ; 46 void TIM2_DeInit(void)
   47                     ; 47 {
   49                     	switch	.text
@@ -57,10 +57,10 @@
  291                     ; 87 {
  292                     	switch	.text
  293  0059               _TIM2_TimeBaseInit:
- 295       00000000      OFST:	set	0
- 298                     ; 89     TIM2->PSCR = (uint8_t)(TIM2_Prescaler);
- 300  0059 c7530c        	ld	21260,a
- 301  005c 88            	push	a
+ 295  0059 88            	push	a
+ 296       00000000      OFST:	set	0
+ 299                     ; 89     TIM2->PSCR = (uint8_t)(TIM2_Prescaler);
+ 301  005a c7530c        	ld	21260,a
  302                     ; 91     TIM2->ARRH = (uint8_t)(TIM2_Period >> 8);
  304  005d 7b04          	ld	a,(OFST+4,sp)
  305  005f c7530d        	ld	21261,a
@@ -1592,8 +1592,8 @@
 4116  07e6 02            	rlwa	x,a
 4117  07e7 1f01          	ldw	(OFST-1,sp),x
 4118                     ; 1067     return (uint16_t)( tmpcntr| (uint16_t)(TIM2->CNTRL));
-4120  07e9 5f            	clrw	x
-4121  07ea c6530b        	ld	a,21259
+4120  07e9 c6530b        	ld	a,21259
+4121  07ec 5f            	clrw	x
 4122  07ed 97            	ld	xl,a
 4123  07ee 01            	rrwa	x,a
 4124  07ef 1a02          	or	a,(OFST+0,sp)
@@ -1776,10 +1776,10 @@
 4703                     	switch	.text
 4704  08cb               L3_TI1_Config:
 4706  08cb 89            	pushw	x
-4707       00000001      OFST:	set	1
-4710                     ; 1219     TIM2->CCER1 &= (uint8_t)(~TIM2_CCER1_CC1E);
-4712  08cc 72115308      	bres	21256,#0
-4713  08d0 88            	push	a
+4707  08cc 88            	push	a
+4708       00000001      OFST:	set	1
+4711                     ; 1219     TIM2->CCER1 &= (uint8_t)(~TIM2_CCER1_CC1E);
+4713  08cd 72115308      	bres	21256,#0
 4714                     ; 1222     TIM2->CCMR1  = (uint8_t)((uint8_t)(TIM2->CCMR1 & (uint8_t)(~(uint8_t)( TIM2_CCMR_CCxS | TIM2_CCMR_ICxF )))
 4714                     ; 1223                              | (uint8_t)(((TIM2_ICSelection)) | ((uint8_t)( TIM2_ICFilter << 4))));
 4716  08d1 7b06          	ld	a,(OFST+5,sp)
@@ -1815,10 +1815,10 @@
 4801                     	switch	.text
 4802  08fb               L5_TI2_Config:
 4804  08fb 89            	pushw	x
-4805       00000001      OFST:	set	1
-4808                     ; 1260     TIM2->CCER1 &= (uint8_t)(~TIM2_CCER1_CC2E);
-4810  08fc 72195308      	bres	21256,#4
-4811  0900 88            	push	a
+4805  08fc 88            	push	a
+4806       00000001      OFST:	set	1
+4809                     ; 1260     TIM2->CCER1 &= (uint8_t)(~TIM2_CCER1_CC2E);
+4811  08fd 72195308      	bres	21256,#4
 4812                     ; 1263     TIM2->CCMR2 = (uint8_t)((uint8_t)(TIM2->CCMR2 & (uint8_t)(~(uint8_t)( TIM2_CCMR_CCxS | TIM2_CCMR_ICxF ))) 
 4812                     ; 1264                             | (uint8_t)(( (TIM2_ICSelection)) | ((uint8_t)( TIM2_ICFilter << 4))));
 4814  0901 7b06          	ld	a,(OFST+5,sp)
@@ -1853,10 +1853,10 @@
 4899                     	switch	.text
 4900  092b               L7_TI3_Config:
 4902  092b 89            	pushw	x
-4903       00000001      OFST:	set	1
-4906                     ; 1300     TIM2->CCER2 &=  (uint8_t)(~TIM2_CCER2_CC3E);
-4908  092c 72115309      	bres	21257,#0
-4909  0930 88            	push	a
+4903  092c 88            	push	a
+4904       00000001      OFST:	set	1
+4907                     ; 1300     TIM2->CCER2 &=  (uint8_t)(~TIM2_CCER2_CC3E);
+4909  092d 72115309      	bres	21257,#0
 4910                     ; 1303     TIM2->CCMR3 = (uint8_t)((uint8_t)(TIM2->CCMR3 & (uint8_t)(~( TIM2_CCMR_CCxS | TIM2_CCMR_ICxF))) 
 4910                     ; 1304                             | (uint8_t)(( (TIM2_ICSelection)) | ((uint8_t)( TIM2_ICFilter << 4))));
 4912  0931 7b06          	ld	a,(OFST+5,sp)

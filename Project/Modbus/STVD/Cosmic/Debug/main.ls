@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.10.2 - 02 Nov 2011
-   3                     ; Generator (Limited) V4.3.7 - 29 Nov 2011
-   4                     ; Optimizer V4.3.6 - 29 Nov 2011
+   2                     ; Parser V4.10.23 - 17 Sep 2014
+   3                     ; Generator (Limited) V4.3.13 - 22 Oct 2014
+   4                     ; Optimizer V4.3.11 - 22 Oct 2014
   54                     ; 31 void main(void)
   54                     ; 32 {
   56                     	switch	.text

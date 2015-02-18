@@ -1,7 +1,7 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
-   2                     ; Parser V4.10.2 - 02 Nov 2011
-   3                     ; Generator (Limited) V4.3.7 - 29 Nov 2011
-   4                     ; Optimizer V4.3.6 - 29 Nov 2011
+   2                     ; Parser V4.10.23 - 17 Sep 2014
+   3                     ; Generator (Limited) V4.3.13 - 22 Oct 2014
+   4                     ; Optimizer V4.3.11 - 22 Oct 2014
   19                     .const:	section	.text
   20  0000               _HSIDivFactor:
   21  0000 01            	dc.b	1
@@ -623,9 +623,9 @@
 1716  0324 1a01          	or	a,(OFST+1,sp)
 1717  0326 c750c9        	ld	20681,a
 1718                     ; 452     CLK->CCOR |= CLK_CCOR_CCOEN;
-1720                     ; 454 }
-1723  0329 84            	pop	a
-1724  032a 721050c9      	bset	20681,#0
+1720  0329 721050c9      	bset	20681,#0
+1721                     ; 454 }
+1724  032d 84            	pop	a
 1725  032e 81            	ret	
 1791                     ; 464 void CLK_ITConfig(CLK_IT_TypeDef CLK_IT, FunctionalState NewState)
 1791                     ; 465 {
