@@ -37,6 +37,17 @@ void HexToByte(char *hexstring, uint8_t *byte);
 void UART_SendStr(const char *s);
 uint8_t __checkFunc(uint8_t Function_Number); 
 
+/* Modbus handler function prototypes ------------------------------------------*/
+void ReadCoilStatus(void);
+void ReadInputStatus(void);
+void ReadHoldingRegisters(void);
+void ReadInputRegisters(void);
+void ForceSingleCoil(void);
+void PresetSingleRegister(void);
+
+
+
+
 /* Private variables ---------------------------------------------------------*/
 uint8_t buffer[20];
 uint8_t word[20];
@@ -294,24 +305,36 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 			{
 			case 1:
 				//Function 1
-				UART_SendStr("Function 1 Handled");
+				ReadCoilStatus();
 				break;
 			case 2:
 				//Function 2
-				UART_SendStr("Function 2 Handled");
+				ReadInputStatus();
 				break;
 			case 3: 
 				//Function 3
 				UART_SendStr("Function 3 Handled");
+				ReadHoldingRegisters();
+				break;
+				
+			case 4: 
+				//Function 4
+				UART_SendStr("Function 4 Handled");
+				ReadInputRegisters();
+
 				break;
 			case 5: 
 				//Function 5
 				UART_SendStr("Function 5 Handled");
+				ForceSingleCoil();
 				break;
-			case 6: 
+			
+			case 6:
 				//Function 6
 				UART_SendStr("Function 6 Handled");
+				PresetSingleRegister();
 				break;
+				
 			case 16:
 				//Function 16
 				UART_SendStr("Function 16 Handled");

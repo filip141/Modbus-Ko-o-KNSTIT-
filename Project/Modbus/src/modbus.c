@@ -155,3 +155,44 @@ void SetDevAddr(uint8_t Addr)
 	Address = Addr;
 	}
 }
+
+
+
+void ReadCoilStatus(void)
+{
+uint8_t begin;
+char newbuffor[12];
+uint8_t counter = 0;
+uint8_t data[60];
+
+
+
+
+for(counter; counter<5; ++counter)
+	{
+	newbuffor[counter] = word[counter];	
+	}
+
+
+
+//begin =  ((uint8_t)(word[0]) << 8) + (uint8_t)(word[1]);
+
+UART_SendStr(newbuffor); 
+
+UART_SendStr("\n\nfun1 handled."); 
+}
+
+
+ 
+void ReadInputStatus(void)
+{
+UART_SendStr("Function 2 Handled");
+}
+void ReadHoldingRegisters(void)
+{}
+void ReadInputRegisters(void)
+{}
+void ForceSingleCoil(void)
+{}
+void PresetSingleRegister(void)
+{}
