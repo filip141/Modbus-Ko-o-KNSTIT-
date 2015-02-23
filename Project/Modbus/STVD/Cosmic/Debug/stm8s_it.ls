@@ -5,467 +5,491 @@
   19                     	bsct
   20  0000               _STATUS_BIT:
   21  0000 00            	dc.b	0
-  51                     ; 54 INTERRUPT_HANDLER(NonHandledInterrupt, 25)
-  51                     ; 55 {
+  51                     ; 65 INTERRUPT_HANDLER(NonHandledInterrupt, 25)
+  51                     ; 66 {
   52                     	switch	.text
   53  0000               f_NonHandledInterrupt:
-  57                     ; 59 }
+  57                     ; 70 }
   60  0000 80            	iret	
-  82                     ; 67 INTERRUPT_HANDLER_TRAP(TRAP_IRQHandler)
-  82                     ; 68 {
+  82                     ; 78 INTERRUPT_HANDLER_TRAP(TRAP_IRQHandler)
+  82                     ; 79 {
   83                     	switch	.text
   84  0001               f_TRAP_IRQHandler:
-  88                     ; 72 }
+  88                     ; 83 }
   91  0001 80            	iret	
- 113                     ; 78 INTERRUPT_HANDLER(TLI_IRQHandler, 0)
- 113                     ; 79 {
+ 113                     ; 89 INTERRUPT_HANDLER(TLI_IRQHandler, 0)
+ 113                     ; 90 {
  114                     	switch	.text
  115  0002               f_TLI_IRQHandler:
- 119                     ; 83 }
+ 119                     ; 94 }
  122  0002 80            	iret	
- 144                     ; 90 INTERRUPT_HANDLER(AWU_IRQHandler, 1)
- 144                     ; 91 {
+ 144                     ; 101 INTERRUPT_HANDLER(AWU_IRQHandler, 1)
+ 144                     ; 102 {
  145                     	switch	.text
  146  0003               f_AWU_IRQHandler:
- 150                     ; 95 }
+ 150                     ; 106 }
  153  0003 80            	iret	
- 175                     ; 102 INTERRUPT_HANDLER(CLK_IRQHandler, 2)
- 175                     ; 103 {
+ 175                     ; 113 INTERRUPT_HANDLER(CLK_IRQHandler, 2)
+ 175                     ; 114 {
  176                     	switch	.text
  177  0004               f_CLK_IRQHandler:
- 181                     ; 107 }
+ 181                     ; 118 }
  184  0004 80            	iret	
- 207                     ; 114 INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
- 207                     ; 115 {
+ 207                     ; 125 INTERRUPT_HANDLER(EXTI_PORTA_IRQHandler, 3)
+ 207                     ; 126 {
  208                     	switch	.text
  209  0005               f_EXTI_PORTA_IRQHandler:
- 213                     ; 119 }
+ 213                     ; 130 }
  216  0005 80            	iret	
- 239                     ; 126 INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
- 239                     ; 127 {
+ 239                     ; 137 INTERRUPT_HANDLER(EXTI_PORTB_IRQHandler, 4)
+ 239                     ; 138 {
  240                     	switch	.text
  241  0006               f_EXTI_PORTB_IRQHandler:
- 245                     ; 131 }
+ 245                     ; 142 }
  248  0006 80            	iret	
- 271                     ; 138 INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
- 271                     ; 139 {
+ 271                     ; 149 INTERRUPT_HANDLER(EXTI_PORTC_IRQHandler, 5)
+ 271                     ; 150 {
  272                     	switch	.text
  273  0007               f_EXTI_PORTC_IRQHandler:
- 277                     ; 143 }
+ 277                     ; 154 }
  280  0007 80            	iret	
- 303                     ; 150 INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
- 303                     ; 151 {
+ 303                     ; 161 INTERRUPT_HANDLER(EXTI_PORTD_IRQHandler, 6)
+ 303                     ; 162 {
  304                     	switch	.text
  305  0008               f_EXTI_PORTD_IRQHandler:
- 309                     ; 155 }
+ 309                     ; 166 }
  312  0008 80            	iret	
- 335                     ; 162 INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
- 335                     ; 163 {
+ 335                     ; 173 INTERRUPT_HANDLER(EXTI_PORTE_IRQHandler, 7)
+ 335                     ; 174 {
  336                     	switch	.text
  337  0009               f_EXTI_PORTE_IRQHandler:
- 341                     ; 167 }
+ 341                     ; 178 }
  344  0009 80            	iret	
- 366                     ; 213 INTERRUPT_HANDLER(SPI_IRQHandler, 10)
- 366                     ; 214 {
+ 366                     ; 224 INTERRUPT_HANDLER(SPI_IRQHandler, 10)
+ 366                     ; 225 {
  367                     	switch	.text
  368  000a               f_SPI_IRQHandler:
- 372                     ; 218 }
+ 372                     ; 229 }
  375  000a 80            	iret	
- 398                     ; 225 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
- 398                     ; 226 {
+ 398                     ; 236 INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
+ 398                     ; 237 {
  399                     	switch	.text
  400  000b               f_TIM1_UPD_OVF_TRG_BRK_IRQHandler:
- 404                     ; 230 }
+ 404                     ; 241 }
  407  000b 80            	iret	
- 430                     ; 237 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
- 430                     ; 238 {
+ 430                     ; 248 INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
+ 430                     ; 249 {
  431                     	switch	.text
  432  000c               f_TIM1_CAP_COM_IRQHandler:
- 436                     ; 242 }
+ 436                     ; 253 }
  439  000c 80            	iret	
- 497                     ; 276  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
- 497                     ; 277 {
- 498                     	switch	.text
- 499  000d               f_TIM2_UPD_OVF_BRK_IRQHandler:
- 501  000d 8a            	push	cc
- 502  000e 84            	pop	a
- 503  000f a4bf          	and	a,#191
- 504  0011 88            	push	a
- 505  0012 86            	pop	cc
- 506       00000004      OFST:	set	4
- 507  0013 3b0002        	push	c_x+2
- 508  0016 be00          	ldw	x,c_x
- 509  0018 89            	pushw	x
- 510  0019 3b0002        	push	c_y+2
- 511  001c be00          	ldw	x,c_y
- 512  001e 89            	pushw	x
- 513  001f 5204          	subw	sp,#4
- 516                     ; 282 	if(word[0] != '\0')
- 518  0021 b606          	ld	a,_word
- 519  0023 2762          	jreq	L522
- 520                     ; 286 		tmp[0] = word[3];
- 522  0025 b609          	ld	a,_word+3
- 523  0027 6b01          	ld	(OFST-3,sp),a
- 524                     ; 287 		tmp[1] = word[4];
- 526  0029 b60a          	ld	a,_word+4
- 527  002b 6b02          	ld	(OFST-2,sp),a
- 528                     ; 288 		HexToByte(tmp, &FunC);
- 530  002d 96            	ldw	x,sp
- 531  002e 1c0003        	addw	x,#OFST-1
- 532  0031 89            	pushw	x
- 533  0032 1d0002        	subw	x,#2
- 534  0035 cd0000        	call	_HexToByte
- 536  0038 85            	popw	x
- 537                     ; 290 		if(__checkFunc(FunC))
- 539  0039 7b03          	ld	a,(OFST-1,sp)
- 540  003b cd0000        	call	___checkFunc
- 542  003e 4d            	tnz	a
- 543  003f 2737          	jreq	L722
- 544                     ; 293 			switch (FunC) 
- 546  0041 7b03          	ld	a,(OFST-1,sp)
- 548                     ; 319 			default: 
- 548                     ; 320 				break;
- 549  0043 4a            	dec	a
- 550  0044 2713          	jreq	L161
- 551  0046 4a            	dec	a
- 552  0047 2715          	jreq	L361
- 553  0049 4a            	dec	a
- 554  004a 2717          	jreq	L561
- 555  004c a002          	sub	a,#2
- 556  004e 2718          	jreq	L761
- 557  0050 4a            	dec	a
- 558  0051 271a          	jreq	L171
- 559  0053 a00a          	sub	a,#10
- 560  0055 271b          	jreq	L371
- 561  0057 201f          	jra	L722
- 562  0059               L161:
- 563                     ; 295 			case 1:
- 563                     ; 296 				//Function 1
- 563                     ; 297 				UART_SendStr("Function 1 Handled");
- 565  0059 ae0060        	ldw	x,#L532
- 567                     ; 298 				break;
- 569  005c 2017          	jpf	LC001
- 570  005e               L361:
- 571                     ; 299 			case 2:
- 571                     ; 300 				//Function 2
- 571                     ; 301 				UART_SendStr("Function 2 Handled");
- 573  005e ae004d        	ldw	x,#L732
- 575                     ; 302 				break;
- 577  0061 2012          	jpf	LC001
- 578  0063               L561:
- 579                     ; 303 			case 3: 
- 579                     ; 304 				//Function 3
- 579                     ; 305 				UART_SendStr("Function 3 Handled");
- 581  0063 ae003a        	ldw	x,#L142
- 583                     ; 306 				break;
- 585  0066 200d          	jpf	LC001
- 586  0068               L761:
- 587                     ; 307 			case 5: 
- 587                     ; 308 				//Function 5
- 587                     ; 309 				UART_SendStr("Function 5 Handled");
- 589  0068 ae0027        	ldw	x,#L342
- 591                     ; 310 				break;
- 593  006b 2008          	jpf	LC001
- 594  006d               L171:
- 595                     ; 311 			case 6: 
- 595                     ; 312 				//Function 6
- 595                     ; 313 				UART_SendStr("Function 6 Handled");
- 597  006d ae0014        	ldw	x,#L542
- 599                     ; 314 				break;
- 601  0070 2003          	jpf	LC001
- 602  0072               L371:
- 603                     ; 315 			case 16:
- 603                     ; 316 				//Function 16
- 603                     ; 317 				UART_SendStr("Function 16 Handled");
- 605  0072 ae0000        	ldw	x,#L742
- 606  0075               LC001:
- 607  0075 cd0000        	call	_UART_SendStr
- 609                     ; 318 				break;
- 611                     ; 319 			default: 
- 611                     ; 320 				break;
- 613  0078               L722:
- 614                     ; 323 		for(i = 0; i<20; i++){word[i] = '\0';}
- 616  0078 4f            	clr	a
- 617  0079 6b04          	ld	(OFST+0,sp),a
- 618  007b               L152:
- 621  007b 5f            	clrw	x
- 622  007c 97            	ld	xl,a
- 623  007d 6f06          	clr	(_word,x)
- 626  007f 0c04          	inc	(OFST+0,sp)
- 629  0081 7b04          	ld	a,(OFST+0,sp)
- 630  0083 a114          	cp	a,#20
- 631  0085 25f4          	jrult	L152
- 632  0087               L522:
- 633                     ; 325   TIM2_ClearITPendingBit(TIM2_IT_UPDATE);
- 635  0087 a601          	ld	a,#1
- 636  0089 cd0000        	call	_TIM2_ClearITPendingBit
- 638                     ; 326 }
- 641  008c 5b04          	addw	sp,#4
- 642  008e 85            	popw	x
- 643  008f bf00          	ldw	c_y,x
- 644  0091 320002        	pop	c_y+2
- 645  0094 85            	popw	x
- 646  0095 bf00          	ldw	c_x,x
- 647  0097 320002        	pop	c_x+2
- 648  009a 80            	iret	
- 671                     ; 333  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
- 671                     ; 334 {
- 672                     	switch	.text
- 673  009b               f_TIM2_CAP_COM_IRQHandler:
- 677                     ; 338 }
- 680  009b 80            	iret	
- 705                     ; 348  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
- 705                     ; 349 {
- 706                     	switch	.text
- 707  009c               f_TIM3_UPD_OVF_BRK_IRQHandler:
- 709  009c 8a            	push	cc
- 710  009d 84            	pop	a
- 711  009e a4bf          	and	a,#191
- 712  00a0 88            	push	a
- 713  00a1 86            	pop	cc
- 714  00a2 3b0002        	push	c_x+2
- 715  00a5 be00          	ldw	x,c_x
- 716  00a7 89            	pushw	x
- 717  00a8 3b0002        	push	c_y+2
- 718  00ab be00          	ldw	x,c_y
- 719  00ad 89            	pushw	x
- 722                     ; 351 	if(TimmingDelay !=0)
- 724  00ae ae0000        	ldw	x,#_TimmingDelay
- 725  00b1 cd0000        	call	c_lzmp
- 727  00b4 2705          	jreq	L772
- 728                     ; 353 		TimmingDelay--;
- 730  00b6 a601          	ld	a,#1
- 731  00b8 cd0000        	call	c_lgsbc
- 733  00bb               L772:
- 734                     ; 355 	TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
- 736  00bb a601          	ld	a,#1
- 737  00bd cd0000        	call	_TIM3_ClearITPendingBit
- 739                     ; 356 }
- 742  00c0 85            	popw	x
- 743  00c1 bf00          	ldw	c_y,x
- 744  00c3 320002        	pop	c_y+2
- 745  00c6 85            	popw	x
- 746  00c7 bf00          	ldw	c_x,x
- 747  00c9 320002        	pop	c_x+2
- 748  00cc 80            	iret	
- 771                     ; 363  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
- 771                     ; 364 {
- 772                     	switch	.text
- 773  00cd               f_TIM3_CAP_COM_IRQHandler:
- 777                     ; 368 }
- 780  00cd 80            	iret	
- 802                     ; 403 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
- 802                     ; 404 {
- 803                     	switch	.text
- 804  00ce               f_I2C_IRQHandler:
- 808                     ; 408 }
- 811  00ce 80            	iret	
- 834                     ; 416  INTERRUPT_HANDLER(UART2_TX_IRQHandler, 20)
- 834                     ; 417 {
- 835                     	switch	.text
- 836  00cf               f_UART2_TX_IRQHandler:
- 840                     ; 421   }
- 843  00cf 80            	iret	
- 904                     ; 429  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
- 904                     ; 430 {
- 905                     	switch	.text
- 906  00d0               f_UART2_RX_IRQHandler:
- 908  00d0 8a            	push	cc
- 909  00d1 84            	pop	a
- 910  00d2 a4bf          	and	a,#191
- 911  00d4 88            	push	a
- 912  00d5 86            	pop	cc
- 913       00000004      OFST:	set	4
- 914  00d6 3b0002        	push	c_x+2
- 915  00d9 be00          	ldw	x,c_x
- 916  00db 89            	pushw	x
- 917  00dc 3b0002        	push	c_y+2
- 918  00df be00          	ldw	x,c_y
- 919  00e1 89            	pushw	x
- 920  00e2 5204          	subw	sp,#4
- 923                     ; 432 	buffer[counter] = UART2_ReceiveData8();
- 925  00e4 b605          	ld	a,_counter
- 926  00e6 5f            	clrw	x
- 927  00e7 97            	ld	xl,a
- 928  00e8 89            	pushw	x
- 929  00e9 cd0000        	call	_UART2_ReceiveData8
- 931  00ec 85            	popw	x
- 932  00ed e71a          	ld	(_buffer,x),a
- 933                     ; 434 	if (buffer[counter] == 0x0D){ STATUS_BIT = 1; }  
- 935  00ef 5f            	clrw	x
- 936  00f0 b605          	ld	a,_counter
- 937  00f2 97            	ld	xl,a
- 938  00f3 e61a          	ld	a,(_buffer,x)
- 939  00f5 a10d          	cp	a,#13
- 940  00f7 2604          	jrne	L753
- 943  00f9 35010000      	mov	_STATUS_BIT,#1
- 944  00fd               L753:
- 945                     ; 435 	if (buffer[counter] == 0x0A && STATUS_BIT == 1)
- 947  00fd b605          	ld	a,_counter
- 948  00ff 5f            	clrw	x
- 949  0100 97            	ld	xl,a
- 950  0101 e61a          	ld	a,(_buffer,x)
- 951  0103 a10a          	cp	a,#10
- 952  0105 264b          	jrne	L163
- 954  0107 b600          	ld	a,_STATUS_BIT
- 955  0109 4a            	dec	a
- 956  010a 2646          	jrne	L163
- 957                     ; 441 	temp[0] = buffer[1];
- 959  010c b61b          	ld	a,_buffer+1
- 960  010e 6b02          	ld	(OFST-2,sp),a
- 961                     ; 442 	temp[1] = buffer[2];
- 963  0110 b61c          	ld	a,_buffer+2
- 964  0112 6b03          	ld	(OFST-1,sp),a
- 965                     ; 443 	HexToByte(temp, &Addr);
- 967  0114 96            	ldw	x,sp
- 968  0115 5c            	incw	x
- 969  0116 89            	pushw	x
- 970  0117 5c            	incw	x
- 971  0118 cd0000        	call	_HexToByte
- 973  011b 85            	popw	x
- 974                     ; 445 		if(Addr == Address || Addr == 0)
- 976  011c 7b01          	ld	a,(OFST-3,sp)
- 977  011e b104          	cp	a,_Address
- 978  0120 2704          	jreq	L563
- 980  0122 7b01          	ld	a,(OFST-3,sp)
- 981  0124 2619          	jrne	L363
- 982  0126               L563:
- 983                     ; 448 			for(i = 0; i<20; i++)
- 985  0126 4f            	clr	a
- 986  0127 6b04          	ld	(OFST+0,sp),a
- 987  0129               L763:
- 988                     ; 450 			word[i] = buffer[i];
- 990  0129 5f            	clrw	x
- 991  012a 97            	ld	xl,a
- 992  012b e61a          	ld	a,(_buffer,x)
- 993  012d e706          	ld	(_word,x),a
- 994                     ; 451 			buffer[i] = '\0';	
- 996  012f 5f            	clrw	x
- 997  0130 7b04          	ld	a,(OFST+0,sp)
- 998  0132 97            	ld	xl,a
- 999  0133 6f1a          	clr	(_buffer,x)
-1000                     ; 448 			for(i = 0; i<20; i++)
-1002  0135 0c04          	inc	(OFST+0,sp)
-1005  0137 7b04          	ld	a,(OFST+0,sp)
-1006  0139 a114          	cp	a,#20
-1007  013b 25ec          	jrult	L763
-1008                     ; 453 			counter = 0;
-1010  013d 200f          	jpf	LC002
-1011  013f               L363:
-1012                     ; 458 			for(i = 0; i<20; i++)
-1014  013f 4f            	clr	a
-1015  0140 6b04          	ld	(OFST+0,sp),a
-1016  0142               L773:
-1017                     ; 460 			buffer[i] = '\0';	
-1019  0142 5f            	clrw	x
-1020  0143 97            	ld	xl,a
-1021  0144 6f1a          	clr	(_buffer,x)
-1022                     ; 458 			for(i = 0; i<20; i++)
-1024  0146 0c04          	inc	(OFST+0,sp)
-1027  0148 7b04          	ld	a,(OFST+0,sp)
-1028  014a a114          	cp	a,#20
-1029  014c 25f4          	jrult	L773
-1030                     ; 462 			counter = 0;
-1032  014e               LC002:
-1034  014e 3f05          	clr	_counter
-1035  0150 2002          	jra	L504
-1036  0152               L163:
-1037                     ; 468 	counter++;
-1039  0152 3c05          	inc	_counter
-1040  0154               L504:
-1041                     ; 471 	UART2_ClearITPendingBit(UART2_IT_RXNE);
-1043  0154 ae0255        	ldw	x,#597
-1044  0157 cd0000        	call	_UART2_ClearITPendingBit
-1046                     ; 472 }
-1049  015a 5b04          	addw	sp,#4
-1050  015c 85            	popw	x
-1051  015d bf00          	ldw	c_y,x
-1052  015f 320002        	pop	c_y+2
-1053  0162 85            	popw	x
-1054  0163 bf00          	ldw	c_x,x
-1055  0165 320002        	pop	c_x+2
-1056  0168 80            	iret	
-1078                     ; 520  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
-1078                     ; 521 {
-1079                     	switch	.text
-1080  0169               f_ADC1_IRQHandler:
-1084                     ; 526 }
-1087  0169 80            	iret	
-1110                     ; 547  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
-1110                     ; 548 {
-1111                     	switch	.text
-1112  016a               f_TIM4_UPD_OVF_IRQHandler:
-1116                     ; 552 }
-1119  016a 80            	iret	
-1142                     ; 560 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
-1142                     ; 561 {
-1143                     	switch	.text
-1144  016b               f_EEPROM_EEC_IRQHandler:
-1148                     ; 565 }
-1151  016b 80            	iret	
-1221                     	switch	.ubsct
-1222  0000               _TimmingDelay:
-1223  0000 00000000      	ds.b	4
-1224                     	xdef	_TimmingDelay
-1225  0004               _Address:
-1226  0004 00            	ds.b	1
-1227                     	xdef	_Address
-1228                     	xdef	_STATUS_BIT
-1229  0005               _counter:
-1230  0005 00            	ds.b	1
-1231                     	xdef	_counter
-1232  0006               _word:
-1233  0006 000000000000  	ds.b	20
-1234                     	xdef	_word
-1235  001a               _buffer:
-1236  001a 000000000000  	ds.b	20
-1237                     	xdef	_buffer
-1238                     	xref	___checkFunc
-1239                     	xref	_UART_SendStr
-1240                     	xref	_HexToByte
-1241                     	xdef	f_EEPROM_EEC_IRQHandler
-1242                     	xdef	f_TIM4_UPD_OVF_IRQHandler
-1243                     	xdef	f_ADC1_IRQHandler
-1244                     	xdef	f_UART2_TX_IRQHandler
-1245                     	xdef	f_UART2_RX_IRQHandler
-1246                     	xdef	f_I2C_IRQHandler
-1247                     	xdef	f_TIM3_CAP_COM_IRQHandler
-1248                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
-1249                     	xdef	f_TIM2_CAP_COM_IRQHandler
-1250                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
-1251                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
-1252                     	xdef	f_TIM1_CAP_COM_IRQHandler
-1253                     	xdef	f_SPI_IRQHandler
-1254                     	xdef	f_EXTI_PORTE_IRQHandler
-1255                     	xdef	f_EXTI_PORTD_IRQHandler
-1256                     	xdef	f_EXTI_PORTC_IRQHandler
-1257                     	xdef	f_EXTI_PORTB_IRQHandler
-1258                     	xdef	f_EXTI_PORTA_IRQHandler
-1259                     	xdef	f_CLK_IRQHandler
-1260                     	xdef	f_AWU_IRQHandler
-1261                     	xdef	f_TLI_IRQHandler
-1262                     	xdef	f_TRAP_IRQHandler
-1263                     	xdef	f_NonHandledInterrupt
-1264                     	xref	_UART2_ClearITPendingBit
-1265                     	xref	_UART2_ReceiveData8
-1266                     	xref	_TIM3_ClearITPendingBit
-1267                     	xref	_TIM2_ClearITPendingBit
-1268                     .const:	section	.text
-1269  0000               L742:
-1270  0000 46756e637469  	dc.b	"Function 16 Handle"
-1271  0012 6400          	dc.b	"d",0
-1272  0014               L542:
-1273  0014 46756e637469  	dc.b	"Function 6 Handled",0
-1274  0027               L342:
-1275  0027 46756e637469  	dc.b	"Function 5 Handled",0
-1276  003a               L142:
-1277  003a 46756e637469  	dc.b	"Function 3 Handled",0
-1278  004d               L732:
-1279  004d 46756e637469  	dc.b	"Function 2 Handled",0
-1280  0060               L532:
-1281  0060 46756e637469  	dc.b	"Function 1 Handled",0
-1282                     	xref.b	c_x
-1283                     	xref.b	c_y
-1303                     	xref	c_lgsbc
-1304                     	xref	c_lzmp
-1305                     	end
+ 503                     ; 287  INTERRUPT_HANDLER(TIM2_UPD_OVF_BRK_IRQHandler, 13)
+ 503                     ; 288 {
+ 504                     	switch	.text
+ 505  000d               f_TIM2_UPD_OVF_BRK_IRQHandler:
+ 507  000d 8a            	push	cc
+ 508  000e 84            	pop	a
+ 509  000f a4bf          	and	a,#191
+ 510  0011 88            	push	a
+ 511  0012 86            	pop	cc
+ 512       00000004      OFST:	set	4
+ 513  0013 3b0002        	push	c_x+2
+ 514  0016 be00          	ldw	x,c_x
+ 515  0018 89            	pushw	x
+ 516  0019 3b0002        	push	c_y+2
+ 517  001c be00          	ldw	x,c_y
+ 518  001e 89            	pushw	x
+ 519  001f 5204          	subw	sp,#4
+ 522                     ; 293 	if(word[0] != '\0')
+ 524  0021 b606          	ld	a,_word
+ 525  0023 2604acaa00aa  	jreq	L722
+ 526                     ; 297 		tmp[0] = word[3];
+ 528  0029 b609          	ld	a,_word+3
+ 529  002b 6b01          	ld	(OFST-3,sp),a
+ 530                     ; 298 		tmp[1] = word[4];
+ 532  002d b60a          	ld	a,_word+4
+ 533  002f 6b02          	ld	(OFST-2,sp),a
+ 534                     ; 299 		HexToByte(tmp, &FunC);
+ 536  0031 96            	ldw	x,sp
+ 537  0032 1c0003        	addw	x,#OFST-1
+ 538  0035 89            	pushw	x
+ 539  0036 1d0002        	subw	x,#2
+ 540  0039 cd0000        	call	_HexToByte
+ 542  003c 85            	popw	x
+ 543                     ; 301 		if(__checkFunc(FunC))
+ 545  003d 7b03          	ld	a,(OFST-1,sp)
+ 546  003f cd0000        	call	___checkFunc
+ 548  0042 4d            	tnz	a
+ 549  0043 2756          	jreq	L132
+ 550                     ; 304 			switch (FunC) 
+ 552  0045 7b03          	ld	a,(OFST-1,sp)
+ 554                     ; 342 			default: 
+ 554                     ; 343 				break;
+ 555  0047 4a            	dec	a
+ 556  0048 2715          	jreq	L161
+ 557  004a 4a            	dec	a
+ 558  004b 2717          	jreq	L361
+ 559  004d 4a            	dec	a
+ 560  004e 2719          	jreq	L561
+ 561  0050 4a            	dec	a
+ 562  0051 2721          	jreq	L761
+ 563  0053 4a            	dec	a
+ 564  0054 2729          	jreq	L171
+ 565  0056 4a            	dec	a
+ 566  0057 2731          	jreq	L371
+ 567  0059 a00a          	sub	a,#10
+ 568  005b 2738          	jreq	L571
+ 569  005d 203c          	jra	L132
+ 570  005f               L161:
+ 571                     ; 306 			case 1:
+ 571                     ; 307 				//Function 1
+ 571                     ; 308 				ReadCoilStatus();
+ 573  005f cd0000        	call	_ReadCoilStatus
+ 575                     ; 309 				break;
+ 577  0062 2037          	jra	L132
+ 578  0064               L361:
+ 579                     ; 310 			case 2:
+ 579                     ; 311 				//Function 2
+ 579                     ; 312 				ReadInputStatus();
+ 581  0064 cd0000        	call	_ReadInputStatus
+ 583                     ; 313 				break;
+ 585  0067 2032          	jra	L132
+ 586  0069               L561:
+ 587                     ; 314 			case 3: 
+ 587                     ; 315 				//Function 3
+ 587                     ; 316 				UART_SendStr("Function 3 Handled");
+ 589  0069 ae004d        	ldw	x,#L732
+ 590  006c cd0000        	call	_UART_SendStr
+ 592                     ; 317 				ReadHoldingRegisters();
+ 594  006f cd0000        	call	_ReadHoldingRegisters
+ 596                     ; 318 				break;
+ 598  0072 2027          	jra	L132
+ 599  0074               L761:
+ 600                     ; 320 			case 4: 
+ 600                     ; 321 				//Function 4
+ 600                     ; 322 				UART_SendStr("Function 4 Handled");
+ 602  0074 ae003a        	ldw	x,#L142
+ 603  0077 cd0000        	call	_UART_SendStr
+ 605                     ; 323 				ReadInputRegisters();
+ 607  007a cd0000        	call	_ReadInputRegisters
+ 609                     ; 325 				break;
+ 611  007d 201c          	jra	L132
+ 612  007f               L171:
+ 613                     ; 326 			case 5: 
+ 613                     ; 327 				//Function 5
+ 613                     ; 328 				UART_SendStr("Function 5 Handled");
+ 615  007f ae0027        	ldw	x,#L342
+ 616  0082 cd0000        	call	_UART_SendStr
+ 618                     ; 329 				ForceSingleCoil();
+ 620  0085 cd0000        	call	_ForceSingleCoil
+ 622                     ; 330 				break;
+ 624  0088 2011          	jra	L132
+ 625  008a               L371:
+ 626                     ; 332 			case 6:
+ 626                     ; 333 				//Function 6
+ 626                     ; 334 				UART_SendStr("Function 6 Handled");
+ 628  008a ae0014        	ldw	x,#L542
+ 629  008d cd0000        	call	_UART_SendStr
+ 631                     ; 335 				PresetSingleRegister();
+ 633  0090 cd0000        	call	_PresetSingleRegister
+ 635                     ; 336 				break;
+ 637  0093 2006          	jra	L132
+ 638  0095               L571:
+ 639                     ; 338 			case 16:
+ 639                     ; 339 				//Function 16
+ 639                     ; 340 				UART_SendStr("Function 16 Handled");
+ 641  0095 ae0000        	ldw	x,#L742
+ 642  0098 cd0000        	call	_UART_SendStr
+ 644                     ; 341 				break;
+ 646                     ; 342 			default: 
+ 646                     ; 343 				break;
+ 648  009b               L132:
+ 649                     ; 346 		for(i = 0; i<20; i++){word[i] = '\0';}
+ 651  009b 4f            	clr	a
+ 652  009c 6b04          	ld	(OFST+0,sp),a
+ 653  009e               L152:
+ 656  009e 5f            	clrw	x
+ 657  009f 97            	ld	xl,a
+ 658  00a0 6f06          	clr	(_word,x)
+ 661  00a2 0c04          	inc	(OFST+0,sp)
+ 664  00a4 7b04          	ld	a,(OFST+0,sp)
+ 665  00a6 a114          	cp	a,#20
+ 666  00a8 25f4          	jrult	L152
+ 667  00aa               L722:
+ 668                     ; 348   TIM2_ClearITPendingBit(TIM2_IT_UPDATE);
+ 670  00aa a601          	ld	a,#1
+ 671  00ac cd0000        	call	_TIM2_ClearITPendingBit
+ 673                     ; 349 }
+ 676  00af 5b04          	addw	sp,#4
+ 677  00b1 85            	popw	x
+ 678  00b2 bf00          	ldw	c_y,x
+ 679  00b4 320002        	pop	c_y+2
+ 680  00b7 85            	popw	x
+ 681  00b8 bf00          	ldw	c_x,x
+ 682  00ba 320002        	pop	c_x+2
+ 683  00bd 80            	iret	
+ 706                     ; 356  INTERRUPT_HANDLER(TIM2_CAP_COM_IRQHandler, 14)
+ 706                     ; 357 {
+ 707                     	switch	.text
+ 708  00be               f_TIM2_CAP_COM_IRQHandler:
+ 712                     ; 361 }
+ 715  00be 80            	iret	
+ 740                     ; 371  INTERRUPT_HANDLER(TIM3_UPD_OVF_BRK_IRQHandler, 15)
+ 740                     ; 372 {
+ 741                     	switch	.text
+ 742  00bf               f_TIM3_UPD_OVF_BRK_IRQHandler:
+ 744  00bf 8a            	push	cc
+ 745  00c0 84            	pop	a
+ 746  00c1 a4bf          	and	a,#191
+ 747  00c3 88            	push	a
+ 748  00c4 86            	pop	cc
+ 749  00c5 3b0002        	push	c_x+2
+ 750  00c8 be00          	ldw	x,c_x
+ 751  00ca 89            	pushw	x
+ 752  00cb 3b0002        	push	c_y+2
+ 753  00ce be00          	ldw	x,c_y
+ 754  00d0 89            	pushw	x
+ 757                     ; 374 	if(TimmingDelay !=0)
+ 759  00d1 ae0000        	ldw	x,#_TimmingDelay
+ 760  00d4 cd0000        	call	c_lzmp
+ 762  00d7 2705          	jreq	L772
+ 763                     ; 376 		TimmingDelay--;
+ 765  00d9 a601          	ld	a,#1
+ 766  00db cd0000        	call	c_lgsbc
+ 768  00de               L772:
+ 769                     ; 378 	TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
+ 771  00de a601          	ld	a,#1
+ 772  00e0 cd0000        	call	_TIM3_ClearITPendingBit
+ 774                     ; 379 }
+ 777  00e3 85            	popw	x
+ 778  00e4 bf00          	ldw	c_y,x
+ 779  00e6 320002        	pop	c_y+2
+ 780  00e9 85            	popw	x
+ 781  00ea bf00          	ldw	c_x,x
+ 782  00ec 320002        	pop	c_x+2
+ 783  00ef 80            	iret	
+ 806                     ; 386  INTERRUPT_HANDLER(TIM3_CAP_COM_IRQHandler, 16)
+ 806                     ; 387 {
+ 807                     	switch	.text
+ 808  00f0               f_TIM3_CAP_COM_IRQHandler:
+ 812                     ; 391 }
+ 815  00f0 80            	iret	
+ 837                     ; 426 INTERRUPT_HANDLER(I2C_IRQHandler, 19)
+ 837                     ; 427 {
+ 838                     	switch	.text
+ 839  00f1               f_I2C_IRQHandler:
+ 843                     ; 431 }
+ 846  00f1 80            	iret	
+ 869                     ; 439  INTERRUPT_HANDLER(UART2_TX_IRQHandler, 20)
+ 869                     ; 440 {
+ 870                     	switch	.text
+ 871  00f2               f_UART2_TX_IRQHandler:
+ 875                     ; 444   }
+ 878  00f2 80            	iret	
+ 939                     ; 452  INTERRUPT_HANDLER(UART2_RX_IRQHandler, 21)
+ 939                     ; 453 {
+ 940                     	switch	.text
+ 941  00f3               f_UART2_RX_IRQHandler:
+ 943  00f3 8a            	push	cc
+ 944  00f4 84            	pop	a
+ 945  00f5 a4bf          	and	a,#191
+ 946  00f7 88            	push	a
+ 947  00f8 86            	pop	cc
+ 948       00000004      OFST:	set	4
+ 949  00f9 3b0002        	push	c_x+2
+ 950  00fc be00          	ldw	x,c_x
+ 951  00fe 89            	pushw	x
+ 952  00ff 3b0002        	push	c_y+2
+ 953  0102 be00          	ldw	x,c_y
+ 954  0104 89            	pushw	x
+ 955  0105 5204          	subw	sp,#4
+ 958                     ; 455 	buffer[counter] = UART2_ReceiveData8();
+ 960  0107 b605          	ld	a,_counter
+ 961  0109 5f            	clrw	x
+ 962  010a 97            	ld	xl,a
+ 963  010b 89            	pushw	x
+ 964  010c cd0000        	call	_UART2_ReceiveData8
+ 966  010f 85            	popw	x
+ 967  0110 e71a          	ld	(_buffer,x),a
+ 968                     ; 457 	if (buffer[counter] == 0x0D){ STATUS_BIT = 1; }  
+ 970  0112 5f            	clrw	x
+ 971  0113 b605          	ld	a,_counter
+ 972  0115 97            	ld	xl,a
+ 973  0116 e61a          	ld	a,(_buffer,x)
+ 974  0118 a10d          	cp	a,#13
+ 975  011a 2604          	jrne	L753
+ 978  011c 35010000      	mov	_STATUS_BIT,#1
+ 979  0120               L753:
+ 980                     ; 458 	if (buffer[counter] == 0x0A && STATUS_BIT == 1)
+ 982  0120 b605          	ld	a,_counter
+ 983  0122 5f            	clrw	x
+ 984  0123 97            	ld	xl,a
+ 985  0124 e61a          	ld	a,(_buffer,x)
+ 986  0126 a10a          	cp	a,#10
+ 987  0128 264b          	jrne	L163
+ 989  012a b600          	ld	a,_STATUS_BIT
+ 990  012c 4a            	dec	a
+ 991  012d 2646          	jrne	L163
+ 992                     ; 464 	temp[0] = buffer[1];
+ 994  012f b61b          	ld	a,_buffer+1
+ 995  0131 6b02          	ld	(OFST-2,sp),a
+ 996                     ; 465 	temp[1] = buffer[2];
+ 998  0133 b61c          	ld	a,_buffer+2
+ 999  0135 6b03          	ld	(OFST-1,sp),a
+1000                     ; 466 	HexToByte(temp, &Addr);
+1002  0137 96            	ldw	x,sp
+1003  0138 5c            	incw	x
+1004  0139 89            	pushw	x
+1005  013a 5c            	incw	x
+1006  013b cd0000        	call	_HexToByte
+1008  013e 85            	popw	x
+1009                     ; 468 		if(Addr == Address || Addr == 0)
+1011  013f 7b01          	ld	a,(OFST-3,sp)
+1012  0141 b104          	cp	a,_Address
+1013  0143 2704          	jreq	L563
+1015  0145 7b01          	ld	a,(OFST-3,sp)
+1016  0147 2619          	jrne	L363
+1017  0149               L563:
+1018                     ; 471 			for(i = 0; i<20; i++)
+1020  0149 4f            	clr	a
+1021  014a 6b04          	ld	(OFST+0,sp),a
+1022  014c               L763:
+1023                     ; 473 			word[i] = buffer[i];
+1025  014c 5f            	clrw	x
+1026  014d 97            	ld	xl,a
+1027  014e e61a          	ld	a,(_buffer,x)
+1028  0150 e706          	ld	(_word,x),a
+1029                     ; 474 			buffer[i] = '\0';	
+1031  0152 5f            	clrw	x
+1032  0153 7b04          	ld	a,(OFST+0,sp)
+1033  0155 97            	ld	xl,a
+1034  0156 6f1a          	clr	(_buffer,x)
+1035                     ; 471 			for(i = 0; i<20; i++)
+1037  0158 0c04          	inc	(OFST+0,sp)
+1040  015a 7b04          	ld	a,(OFST+0,sp)
+1041  015c a114          	cp	a,#20
+1042  015e 25ec          	jrult	L763
+1043                     ; 476 			counter = 0;
+1045  0160 200f          	jpf	LC001
+1046  0162               L363:
+1047                     ; 481 			for(i = 0; i<20; i++)
+1049  0162 4f            	clr	a
+1050  0163 6b04          	ld	(OFST+0,sp),a
+1051  0165               L773:
+1052                     ; 483 			buffer[i] = '\0';	
+1054  0165 5f            	clrw	x
+1055  0166 97            	ld	xl,a
+1056  0167 6f1a          	clr	(_buffer,x)
+1057                     ; 481 			for(i = 0; i<20; i++)
+1059  0169 0c04          	inc	(OFST+0,sp)
+1062  016b 7b04          	ld	a,(OFST+0,sp)
+1063  016d a114          	cp	a,#20
+1064  016f 25f4          	jrult	L773
+1065                     ; 485 			counter = 0;
+1067  0171               LC001:
+1069  0171 3f05          	clr	_counter
+1070  0173 2002          	jra	L504
+1071  0175               L163:
+1072                     ; 491 	counter++;
+1074  0175 3c05          	inc	_counter
+1075  0177               L504:
+1076                     ; 494 	UART2_ClearITPendingBit(UART2_IT_RXNE);
+1078  0177 ae0255        	ldw	x,#597
+1079  017a cd0000        	call	_UART2_ClearITPendingBit
+1081                     ; 495 }
+1084  017d 5b04          	addw	sp,#4
+1085  017f 85            	popw	x
+1086  0180 bf00          	ldw	c_y,x
+1087  0182 320002        	pop	c_y+2
+1088  0185 85            	popw	x
+1089  0186 bf00          	ldw	c_x,x
+1090  0188 320002        	pop	c_x+2
+1091  018b 80            	iret	
+1113                     ; 543  INTERRUPT_HANDLER(ADC1_IRQHandler, 22)
+1113                     ; 544 {
+1114                     	switch	.text
+1115  018c               f_ADC1_IRQHandler:
+1119                     ; 549 }
+1122  018c 80            	iret	
+1145                     ; 570  INTERRUPT_HANDLER(TIM4_UPD_OVF_IRQHandler, 23)
+1145                     ; 571 {
+1146                     	switch	.text
+1147  018d               f_TIM4_UPD_OVF_IRQHandler:
+1151                     ; 575 }
+1154  018d 80            	iret	
+1177                     ; 583 INTERRUPT_HANDLER(EEPROM_EEC_IRQHandler, 24)
+1177                     ; 584 {
+1178                     	switch	.text
+1179  018e               f_EEPROM_EEC_IRQHandler:
+1183                     ; 588 }
+1186  018e 80            	iret	
+1256                     	switch	.ubsct
+1257  0000               _TimmingDelay:
+1258  0000 00000000      	ds.b	4
+1259                     	xdef	_TimmingDelay
+1260  0004               _Address:
+1261  0004 00            	ds.b	1
+1262                     	xdef	_Address
+1263                     	xdef	_STATUS_BIT
+1264  0005               _counter:
+1265  0005 00            	ds.b	1
+1266                     	xdef	_counter
+1267  0006               _word:
+1268  0006 000000000000  	ds.b	20
+1269                     	xdef	_word
+1270  001a               _buffer:
+1271  001a 000000000000  	ds.b	20
+1272                     	xdef	_buffer
+1273                     	xref	_PresetSingleRegister
+1274                     	xref	_ForceSingleCoil
+1275                     	xref	_ReadInputRegisters
+1276                     	xref	_ReadHoldingRegisters
+1277                     	xref	_ReadInputStatus
+1278                     	xref	_ReadCoilStatus
+1279                     	xref	___checkFunc
+1280                     	xref	_UART_SendStr
+1281                     	xref	_HexToByte
+1282                     	xdef	f_EEPROM_EEC_IRQHandler
+1283                     	xdef	f_TIM4_UPD_OVF_IRQHandler
+1284                     	xdef	f_ADC1_IRQHandler
+1285                     	xdef	f_UART2_TX_IRQHandler
+1286                     	xdef	f_UART2_RX_IRQHandler
+1287                     	xdef	f_I2C_IRQHandler
+1288                     	xdef	f_TIM3_CAP_COM_IRQHandler
+1289                     	xdef	f_TIM3_UPD_OVF_BRK_IRQHandler
+1290                     	xdef	f_TIM2_CAP_COM_IRQHandler
+1291                     	xdef	f_TIM2_UPD_OVF_BRK_IRQHandler
+1292                     	xdef	f_TIM1_UPD_OVF_TRG_BRK_IRQHandler
+1293                     	xdef	f_TIM1_CAP_COM_IRQHandler
+1294                     	xdef	f_SPI_IRQHandler
+1295                     	xdef	f_EXTI_PORTE_IRQHandler
+1296                     	xdef	f_EXTI_PORTD_IRQHandler
+1297                     	xdef	f_EXTI_PORTC_IRQHandler
+1298                     	xdef	f_EXTI_PORTB_IRQHandler
+1299                     	xdef	f_EXTI_PORTA_IRQHandler
+1300                     	xdef	f_CLK_IRQHandler
+1301                     	xdef	f_AWU_IRQHandler
+1302                     	xdef	f_TLI_IRQHandler
+1303                     	xdef	f_TRAP_IRQHandler
+1304                     	xdef	f_NonHandledInterrupt
+1305                     	xref	_UART2_ClearITPendingBit
+1306                     	xref	_UART2_ReceiveData8
+1307                     	xref	_TIM3_ClearITPendingBit
+1308                     	xref	_TIM2_ClearITPendingBit
+1309                     .const:	section	.text
+1310  0000               L742:
+1311  0000 46756e637469  	dc.b	"Function 16 Handle"
+1312  0012 6400          	dc.b	"d",0
+1313  0014               L542:
+1314  0014 46756e637469  	dc.b	"Function 6 Handled",0
+1315  0027               L342:
+1316  0027 46756e637469  	dc.b	"Function 5 Handled",0
+1317  003a               L142:
+1318  003a 46756e637469  	dc.b	"Function 4 Handled",0
+1319  004d               L732:
+1320  004d 46756e637469  	dc.b	"Function 3 Handled",0
+1321                     	xref.b	c_x
+1322                     	xref.b	c_y
+1342                     	xref	c_lgsbc
+1343                     	xref	c_lzmp
+1344                     	end

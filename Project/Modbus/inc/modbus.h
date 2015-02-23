@@ -26,7 +26,7 @@ void ReadInputRegisters(void);
 void ForceSingleCoil(void);
 void PresetSingleRegister(void);
 
-
+void RewritingChars(char *destination, uint8_t from, uint8_t to);
 
 /* Private variables -----------------------------------------------------------*/
 extern uint32_t TimmingDelay;

@@ -156,30 +156,113 @@ void SetDevAddr(uint8_t Addr)
 	}
 }
 
+void RewritingChars(char *destination, uint8_t from, uint8_t to)
+{
+for(from; from<=to; ++from)
+	{
+	destination[from] = word[from];	
+	}	
+	
+}
 
 
 void ReadCoilStatus(void)
 {
-uint8_t begin;
-char newbuffor[12];
+/////////////////////////////////////////////////////   zmienne
+char OutputFrame[9];   // output frame
 uint8_t counter = 0;
-uint8_t data[60];
+uint8_t TempSum=0;
+uint8_t FirstCoil;
+uint8_t NumberOfCoils;
+uint8_t g;
+uint8_t NumberOfDataBytes;
+char temp[2];
+uint8_t n = 0;
 
+// coils
+bool data[60];
 
+data[4] = 1;
+data[5] = 1;
+data[6] = 1;
+data[7] = 1;
+data[8] = 1;
+data[4] = 1;
+data[9] = 1;
+data[10] = 1;
+data[11] = 1;
+/////////////////////////////////////////////////////
 
+// rewriting slave's address & number of function
+RewritingChars(OutputFrame,0,4);
+	
+//getting number of first coil	
+temp[0] = word[7];
+temp[1] = word[8];
+HexToByte(temp, &FirstCoil);
 
-for(counter; counter<5; ++counter)
-	{
-	newbuffor[counter] = word[counter];	
-	}
+//getting quantity of coils
+temp[0] = word[11];
+temp[1] = word[12];
+HexToByte(temp, &NumberOfCoils);
 
+// calculating the number of data bytes
+if((NumberOfCoils%8)!=0)
+{
+	NumberOfDataBytes = ( NumberOfCoils/8)+1;
+}
+else
+{
+	NumberOfDataBytes = NumberOfCoils/8;
+}
 
+//Writing the number of data bytes
+ByteToHex(temp,NumberOfDataBytes);
+OutputFrame[5] = temp[0];
+OutputFrame[6] = temp[1];
 
-//begin =  ((uint8_t)(word[0]) << 8) + (uint8_t)(word[1]);
+// calculating data bits to HEX and writing to frame
+counter = 7; 
+g = FirstCoil + 1;
 
-UART_SendStr(newbuffor); 
+while(n <	NumberOfCoils)
+{
+		if(NumberOfCoils>=8)                   //    zamiana oktetu na HEX
+				{
+						uint8_t pwr = 0;
+						for(pwr =0; pwr<8; pwr++,g++)
+							{
+								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
+								n++;
+							}			
+						
+						ByteToHex(temp,TempSum);
+						TempSum = 0;
+						OutputFrame[counter] = temp[0];
+						OutputFrame[counter+1] = temp[1];
+						counter++;
+				}
+				
+		else                                       //        zamiana niepe³nego oktetu na HEX
+				{
+						uint8_t pwr = 0;
+						for(pwr =0; pwr<NumberOfCoils; pwr++,g++)
+							{
+								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
+								n++;
+							}
+						ByteToHex(temp,TempSum);
+						TempSum = 0;
+						OutputFrame[counter] = temp[0];
+						OutputFrame[counter+1] = temp[1];
+						counter++;
+				}
+}
 
-UART_SendStr("\n\nfun1 handled."); 
+//   calculating CRC
+
+UART_SendStr(OutputFrame); 
+//UART_SendStr("\nFunction 1 handled."); 
 }
 
 
