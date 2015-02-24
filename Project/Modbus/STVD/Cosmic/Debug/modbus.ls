@@ -325,346 +325,401 @@
  932                     ; 166 }
  935  0179 85            	popw	x
  936  017a 81            	ret	
-1099                     ; 169 void ReadCoilStatus(void)
-1099                     ; 170 {
-1100                     	switch	.text
-1101  017b               _ReadCoilStatus:
-1103  017b 524e          	subw	sp,#78
-1104       0000004e      OFST:	set	78
-1107                     ; 173 uint8_t counter = 0;
-1109                     ; 174 uint8_t TempSum=0;
-1111  017d 0f4b          	clr	(OFST-3,sp)
-1112                     ; 180 uint8_t n = 0;
-1114  017f 0f02          	clr	(OFST-76,sp)
-1115                     ; 185 data[4] = 1;
-1117                     ; 186 data[5] = 1;
-1119  0181 a601          	ld	a,#1
-1120  0183 6b13          	ld	(OFST-59,sp),a
-1121                     ; 187 data[6] = 1;
-1123  0185 6b14          	ld	(OFST-58,sp),a
-1124                     ; 188 data[7] = 1;
-1126  0187 6b15          	ld	(OFST-57,sp),a
-1127                     ; 189 data[8] = 1;
-1129  0189 6b16          	ld	(OFST-56,sp),a
-1130                     ; 190 data[4] = 1;
-1132  018b 6b12          	ld	(OFST-60,sp),a
-1133                     ; 191 data[9] = 1;
-1135  018d 6b17          	ld	(OFST-55,sp),a
-1136                     ; 192 data[10] = 1;
-1138  018f 6b18          	ld	(OFST-54,sp),a
-1139                     ; 193 data[11] = 1;
-1141  0191 6b19          	ld	(OFST-53,sp),a
-1142                     ; 197 RewritingChars(OutputFrame,0,4);
-1144  0193 4b04          	push	#4
-1145  0195 4b00          	push	#0
-1146  0197 96            	ldw	x,sp
-1147  0198 1c0006        	addw	x,#OFST-72
-1148  019b adbc          	call	_RewritingChars
-1150  019d b607          	ld	a,_word+7
-1151  019f 85            	popw	x
-1152                     ; 200 temp[0] = word[7];
-1154  01a0 6b4c          	ld	(OFST-2,sp),a
-1155                     ; 201 temp[1] = word[8];
-1157  01a2 b608          	ld	a,_word+8
-1158  01a4 6b4d          	ld	(OFST-1,sp),a
-1159                     ; 202 HexToByte(temp, &FirstCoil);
-1161  01a6 96            	ldw	x,sp
-1162  01a7 5c            	incw	x
-1163  01a8 89            	pushw	x
-1164  01a9 1c004b        	addw	x,#75
-1165  01ac cd00df        	call	_HexToByte
-1167  01af b60b          	ld	a,_word+11
-1168  01b1 85            	popw	x
-1169                     ; 205 temp[0] = word[11];
-1171  01b2 6b4c          	ld	(OFST-2,sp),a
-1172                     ; 206 temp[1] = word[12];
-1174  01b4 b60c          	ld	a,_word+12
-1175  01b6 6b4d          	ld	(OFST-1,sp),a
-1176                     ; 207 HexToByte(temp, &NumberOfCoils);
-1178  01b8 96            	ldw	x,sp
-1179  01b9 1c0003        	addw	x,#OFST-75
-1180  01bc 89            	pushw	x
-1181  01bd 1c0049        	addw	x,#73
-1182  01c0 cd00df        	call	_HexToByte
-1184  01c3 85            	popw	x
-1185                     ; 210 if((NumberOfCoils%8)!=0)
-1187  01c4 7b03          	ld	a,(OFST-75,sp)
-1188  01c6 a507          	bcp	a,#7
-1189  01c8 2709          	jreq	L574
-1190                     ; 212 	NumberOfDataBytes = ( NumberOfCoils/8)+1;
-1192  01ca 5f            	clrw	x
-1193  01cb 97            	ld	xl,a
-1194  01cc 57            	sraw	x
-1195  01cd 57            	sraw	x
-1196  01ce 57            	sraw	x
-1197  01cf 01            	rrwa	x,a
-1198  01d0 4c            	inc	a
-1200  01d1 2006          	jra	L774
-1201  01d3               L574:
-1202                     ; 216 	NumberOfDataBytes = NumberOfCoils/8;
-1204  01d3 5f            	clrw	x
-1205  01d4 97            	ld	xl,a
-1206  01d5 57            	sraw	x
-1207  01d6 57            	sraw	x
-1208  01d7 57            	sraw	x
-1209  01d8 01            	rrwa	x,a
-1210  01d9               L774:
-1211  01d9 6b4e          	ld	(OFST+0,sp),a
-1212                     ; 220 ByteToHex(temp,NumberOfDataBytes);
-1214  01db 88            	push	a
-1215  01dc 96            	ldw	x,sp
-1216  01dd 1c004d        	addw	x,#OFST-1
-1217  01e0 cd00a7        	call	_ByteToHex
-1219  01e3 84            	pop	a
-1220                     ; 221 OutputFrame[5] = temp[0];
-1222  01e4 7b4c          	ld	a,(OFST-2,sp)
-1223  01e6 6b09          	ld	(OFST-69,sp),a
-1224                     ; 222 OutputFrame[6] = temp[1];
-1226  01e8 7b4d          	ld	a,(OFST-1,sp)
-1227  01ea 6b0a          	ld	(OFST-68,sp),a
-1228                     ; 225 counter = 7; 
-1230  01ec a607          	ld	a,#7
-1231  01ee 6b0d          	ld	(OFST-65,sp),a
-1232                     ; 226 g = FirstCoil + 1;
-1234  01f0 7b01          	ld	a,(OFST-77,sp)
-1235  01f2 4c            	inc	a
-1236  01f3 6b4a          	ld	(OFST-4,sp),a
-1238  01f5 cc02bf        	jra	L505
-1239  01f8               L105:
-1240                     ; 230 		if(NumberOfCoils>=8)                   //    zamiana oktetu na HEX
-1242  01f8 7b03          	ld	a,(OFST-75,sp)
-1243  01fa a108          	cp	a,#8
-1244  01fc 255d          	jrult	L115
-1245                     ; 232 						uint8_t pwr = 0;
-1247                     ; 233 						for(pwr =0; pwr<8; pwr++,g++)
-1249  01fe 0f4e          	clr	(OFST+0,sp)
-1250  0200               L315:
-1251                     ; 235 								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
-1253  0200 96            	ldw	x,sp
-1254  0201 1c000e        	addw	x,#OFST-64
-1255  0204 9f            	ld	a,xl
-1256  0205 5e            	swapw	x
-1257  0206 1b4a          	add	a,(OFST-4,sp)
-1258  0208 2401          	jrnc	L211
-1259  020a 5c            	incw	x
-1260  020b               L211:
-1261  020b 02            	rlwa	x,a
-1262  020c 7b4e          	ld	a,(OFST+0,sp)
-1263  020e 905f          	clrw	y
-1264  0210 9097          	ld	yl,a
-1265  0212 a601          	ld	a,#1
-1266  0214 905d          	tnzw	y
-1267  0216 2705          	jreq	L411
-1268  0218               L611:
-1269  0218 48            	sll	a
-1270  0219 905a          	decw	y
-1271  021b 26fb          	jrne	L611
-1272  021d               L411:
-1273  021d 88            	push	a
-1274  021e f6            	ld	a,(x)
-1275  021f 97            	ld	xl,a
-1276  0220 84            	pop	a
-1277  0221 42            	mul	x,a
-1278  0222 9f            	ld	a,xl
-1279  0223 1b4b          	add	a,(OFST-3,sp)
-1280  0225 6b4b          	ld	(OFST-3,sp),a
-1281                     ; 236 								n++;
-1283  0227 0c02          	inc	(OFST-76,sp)
-1284                     ; 233 						for(pwr =0; pwr<8; pwr++,g++)
-1286  0229 0c4e          	inc	(OFST+0,sp)
-1287  022b 0c4a          	inc	(OFST-4,sp)
-1290  022d 7b4e          	ld	a,(OFST+0,sp)
-1291  022f a108          	cp	a,#8
-1292  0231 25cd          	jrult	L315
-1293                     ; 239 						ByteToHex(temp,TempSum);
-1295  0233 7b4b          	ld	a,(OFST-3,sp)
-1296  0235 88            	push	a
-1297  0236 96            	ldw	x,sp
-1298  0237 1c004d        	addw	x,#OFST-1
-1299  023a cd00a7        	call	_ByteToHex
-1301  023d 84            	pop	a
-1302                     ; 240 						TempSum = 0;
-1304  023e 0f4b          	clr	(OFST-3,sp)
-1305                     ; 241 						OutputFrame[counter] = temp[0];
-1307  0240 96            	ldw	x,sp
-1308  0241 1c0004        	addw	x,#OFST-74
-1309  0244 9f            	ld	a,xl
-1310  0245 5e            	swapw	x
-1311  0246 1b0d          	add	a,(OFST-65,sp)
-1312  0248 2401          	jrnc	L221
-1313  024a 5c            	incw	x
-1314  024b               L221:
-1315  024b 02            	rlwa	x,a
-1316  024c 7b4c          	ld	a,(OFST-2,sp)
-1317  024e f7            	ld	(x),a
-1318                     ; 242 						OutputFrame[counter+1] = temp[1];
-1320  024f 96            	ldw	x,sp
-1321  0250 1c0005        	addw	x,#OFST-73
-1322  0253 9f            	ld	a,xl
-1323  0254 5e            	swapw	x
-1324  0255 1b0d          	add	a,(OFST-65,sp)
-1325  0257 2460          	jrnc	L041
-1326                     ; 243 						counter++;
-1328  0259 205d          	jp	LC002
-1329  025b               L115:
-1330                     ; 248 						uint8_t pwr = 0;
-1332                     ; 249 						for(pwr =0; pwr<NumberOfCoils; pwr++,g++)
-1334  025b 0f4e          	clr	(OFST+0,sp)
-1336  025d 202d          	jra	L725
-1337  025f               L325:
-1338                     ; 251 								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
-1340  025f 96            	ldw	x,sp
-1341  0260 1c000e        	addw	x,#OFST-64
-1342  0263 9f            	ld	a,xl
-1343  0264 5e            	swapw	x
-1344  0265 1b4a          	add	a,(OFST-4,sp)
-1345  0267 2401          	jrnc	L621
-1346  0269 5c            	incw	x
-1347  026a               L621:
-1348  026a 02            	rlwa	x,a
-1349  026b 7b4e          	ld	a,(OFST+0,sp)
-1350  026d 905f          	clrw	y
-1351  026f 9097          	ld	yl,a
-1352  0271 a601          	ld	a,#1
-1353  0273 905d          	tnzw	y
-1354  0275 2705          	jreq	L031
-1355  0277               L231:
-1356  0277 48            	sll	a
-1357  0278 905a          	decw	y
-1358  027a 26fb          	jrne	L231
-1359  027c               L031:
-1360  027c 88            	push	a
-1361  027d f6            	ld	a,(x)
-1362  027e 97            	ld	xl,a
-1363  027f 84            	pop	a
-1364  0280 42            	mul	x,a
-1365  0281 9f            	ld	a,xl
-1366  0282 1b4b          	add	a,(OFST-3,sp)
-1367  0284 6b4b          	ld	(OFST-3,sp),a
-1368                     ; 252 								n++;
-1370  0286 0c02          	inc	(OFST-76,sp)
-1371                     ; 249 						for(pwr =0; pwr<NumberOfCoils; pwr++,g++)
-1373  0288 0c4e          	inc	(OFST+0,sp)
-1374  028a 0c4a          	inc	(OFST-4,sp)
-1375  028c               L725:
-1378  028c 7b4e          	ld	a,(OFST+0,sp)
-1379  028e 1103          	cp	a,(OFST-75,sp)
-1380  0290 25cd          	jrult	L325
-1381                     ; 254 						ByteToHex(temp,TempSum);
-1383  0292 7b4b          	ld	a,(OFST-3,sp)
-1384  0294 88            	push	a
-1385  0295 96            	ldw	x,sp
-1386  0296 1c004d        	addw	x,#OFST-1
-1387  0299 cd00a7        	call	_ByteToHex
-1389  029c 84            	pop	a
-1390                     ; 255 						TempSum = 0;
-1392  029d 0f4b          	clr	(OFST-3,sp)
-1393                     ; 256 						OutputFrame[counter] = temp[0];
-1395  029f 96            	ldw	x,sp
-1396  02a0 1c0004        	addw	x,#OFST-74
-1397  02a3 9f            	ld	a,xl
-1398  02a4 5e            	swapw	x
-1399  02a5 1b0d          	add	a,(OFST-65,sp)
-1400  02a7 2401          	jrnc	L631
-1401  02a9 5c            	incw	x
-1402  02aa               L631:
-1403  02aa 02            	rlwa	x,a
-1404  02ab 7b4c          	ld	a,(OFST-2,sp)
-1405  02ad f7            	ld	(x),a
-1406                     ; 257 						OutputFrame[counter+1] = temp[1];
-1408  02ae 96            	ldw	x,sp
-1409  02af 1c0005        	addw	x,#OFST-73
-1410  02b2 9f            	ld	a,xl
-1411  02b3 5e            	swapw	x
-1412  02b4 1b0d          	add	a,(OFST-65,sp)
-1413  02b6 2401          	jrnc	L041
-1414  02b8               LC002:
-1415  02b8 5c            	incw	x
-1416  02b9               L041:
-1417                     ; 258 						counter++;
-1419  02b9 02            	rlwa	x,a
-1420  02ba 7b4d          	ld	a,(OFST-1,sp)
-1421  02bc f7            	ld	(x),a
-1423  02bd 0c0d          	inc	(OFST-65,sp)
-1424  02bf               L505:
-1425                     ; 228 while(n <	NumberOfCoils)
-1427  02bf 7b02          	ld	a,(OFST-76,sp)
-1428  02c1 1103          	cp	a,(OFST-75,sp)
-1429  02c3 2403cc01f8    	jrult	L105
-1430                     ; 264 UART_SendStr(OutputFrame); 
-1432  02c8 96            	ldw	x,sp
-1433  02c9 1c0004        	addw	x,#OFST-74
-1434  02cc cd0000        	call	_UART_SendStr
-1436                     ; 266 }
-1439  02cf 5b4e          	addw	sp,#78
-1440  02d1 81            	ret	
-1464                     ; 270 void ReadInputStatus(void)
-1464                     ; 271 {
-1465                     	switch	.text
-1466  02d2               _ReadInputStatus:
-1470                     ; 272 UART_SendStr("Function 2 Handled");
-1472  02d2 ae0000        	ldw	x,#L345
-1474                     ; 273 }
-1477  02d5 cc0000        	jp	_UART_SendStr
-1501                     ; 274 void ReadHoldingRegisters(void)
-1501                     ; 275 {}
-1502                     	switch	.text
-1503  02d8               _ReadHoldingRegisters:
-1510  02d8 81            	ret	
-1533                     ; 276 void ReadInputRegisters(void)
-1533                     ; 277 {}
-1534                     	switch	.text
-1535  02d9               _ReadInputRegisters:
-1542  02d9 81            	ret	
-1565                     ; 278 void ForceSingleCoil(void)
-1565                     ; 279 {}
-1566                     	switch	.text
-1567  02da               _ForceSingleCoil:
-1574  02da 81            	ret	
-1598                     ; 280 void PresetSingleRegister(void)
-1598                     ; 281 {}
-1599                     	switch	.text
-1600  02db               _PresetSingleRegister:
-1607  02db 81            	ret	
-1620                     	xref.b	_word
-1621                     	xref.b	_Address
-1622                     	xref.b	_TimmingDelay
-1623                     	xdef	_RewritingChars
-1624                     	xdef	_PresetSingleRegister
-1625                     	xdef	_ForceSingleCoil
-1626                     	xdef	_ReadInputRegisters
-1627                     	xdef	_ReadHoldingRegisters
-1628                     	xdef	_ReadInputStatus
-1629                     	xdef	_ReadCoilStatus
-1630                     	xdef	___checkFunc
-1631                     	xdef	___checkAddr
-1632                     	xdef	_SetDevAddr
-1633                     	xdef	_HexToByte
-1634                     	xdef	_ByteToHex
-1635                     	xdef	_UART_SendStr
-1636                     	xdef	_Modbus_Init
-1637                     	xdef	_Delay
-1638                     	xdef	_Delay_Init
-1639                     	xref	_UART2_SendData8
-1640                     	xref	_UART2_ITConfig
-1641                     	xref	_UART2_Cmd
-1642                     	xref	_UART2_Init
-1643                     	xref	_UART2_DeInit
-1644                     	xref	_TIM3_ITConfig
-1645                     	xref	_TIM3_Cmd
-1646                     	xref	_TIM3_TimeBaseInit
-1647                     	xref	_TIM3_DeInit
-1648                     	xref	_TIM2_ITConfig
-1649                     	xref	_TIM2_Cmd
-1650                     	xref	_TIM2_TimeBaseInit
-1651                     	xref	_TIM2_DeInit
-1652                     	xref	_GPIO_WriteLow
-1653                     	xref	_GPIO_WriteHigh
-1654                     	xref	_GPIO_Init
-1655                     	xref	_GPIO_DeInit
-1656                     	xref	_CLK_HSIPrescalerConfig
-1657                     .const:	section	.text
-1658  0000               L345:
-1659  0000 46756e637469  	dc.b	"Function 2 Handled",0
-1679                     	xref	c_lzmp
-1680                     	end
+1108                     ; 169 void ReadCoilStatus(void)
+1108                     ; 170 {
+1109                     	switch	.text
+1110  017b               _ReadCoilStatus:
+1112  017b 5255          	subw	sp,#85
+1113       00000055      OFST:	set	85
+1116                     ; 173 uint8_t counter = 0;
+1118                     ; 174 uint8_t TempSum=0;
+1120  017d 0f16          	clr	(OFST-63,sp)
+1121                     ; 180 uint8_t n = 0;
+1123                     ; 185 data[4] = 1;
+1125                     ; 186 data[5] = 1;
+1127  017f a601          	ld	a,#1
+1128  0181 6b1f          	ld	(OFST-54,sp),a
+1129                     ; 187 data[6] = 1;
+1131  0183 6b20          	ld	(OFST-53,sp),a
+1132                     ; 188 data[7] = 1;
+1134  0185 6b21          	ld	(OFST-52,sp),a
+1135                     ; 189 data[8] = 1;
+1137  0187 6b22          	ld	(OFST-51,sp),a
+1138                     ; 190 data[4] = 1;
+1140  0189 6b1e          	ld	(OFST-55,sp),a
+1141                     ; 191 data[9] = 1;
+1143  018b 6b23          	ld	(OFST-50,sp),a
+1144                     ; 192 data[10] = 1;
+1146  018d 6b24          	ld	(OFST-49,sp),a
+1147                     ; 193 data[11] = 1;
+1149  018f 6b25          	ld	(OFST-48,sp),a
+1150                     ; 194 data[12] = 1;
+1152  0191 6b26          	ld	(OFST-47,sp),a
+1153                     ; 195 data[13] = 1;
+1155  0193 6b27          	ld	(OFST-46,sp),a
+1156                     ; 196 data[14] = 1;
+1158  0195 6b28          	ld	(OFST-45,sp),a
+1159                     ; 197 data[15] = 1;
+1161  0197 6b29          	ld	(OFST-44,sp),a
+1162                     ; 198 data[16] = 1;
+1164  0199 6b2a          	ld	(OFST-43,sp),a
+1165                     ; 199 data[17] = 1;
+1167  019b 6b2b          	ld	(OFST-42,sp),a
+1168                     ; 200 data[18] = 1;
+1170  019d 6b2c          	ld	(OFST-41,sp),a
+1171                     ; 201 data[19] = 1;
+1173  019f 6b2d          	ld	(OFST-40,sp),a
+1174                     ; 202 data[20] = 1;
+1176  01a1 6b2e          	ld	(OFST-39,sp),a
+1177                     ; 203 data[21] = 0;
+1179  01a3 0f2f          	clr	(OFST-38,sp)
+1180                     ; 204 data[22] = 0;
+1182  01a5 0f30          	clr	(OFST-37,sp)
+1183                     ; 205 data[23] = 0;
+1185  01a7 0f31          	clr	(OFST-36,sp)
+1186                     ; 206 data[24] = 0;
+1188  01a9 0f32          	clr	(OFST-35,sp)
+1189                     ; 207 data[25] = 0;
+1191  01ab 0f33          	clr	(OFST-34,sp)
+1192                     ; 208 data[26] = 0;
+1194  01ad 0f34          	clr	(OFST-33,sp)
+1195                     ; 209 data[27] = 0;
+1197  01af 0f35          	clr	(OFST-32,sp)
+1198                     ; 210 data[28] = 0;
+1200  01b1 0f36          	clr	(OFST-31,sp)
+1201                     ; 214 RewritingChars(OutputFrame,0,4);
+1203  01b3 4b04          	push	#4
+1204  01b5 4b00          	push	#0
+1205  01b7 96            	ldw	x,sp
+1206  01b8 1c0007        	addw	x,#OFST-78
+1207  01bb ad9c          	call	_RewritingChars
+1209  01bd b607          	ld	a,_word+7
+1210  01bf 85            	popw	x
+1211                     ; 217 temp[0] = word[7];
+1213  01c0 6b17          	ld	(OFST-62,sp),a
+1214                     ; 218 temp[1] = word[8];
+1216  01c2 b608          	ld	a,_word+8
+1217  01c4 6b18          	ld	(OFST-61,sp),a
+1218                     ; 219 HexToByte(temp, &FirstCoil);
+1220  01c6 96            	ldw	x,sp
+1221  01c7 1c0002        	addw	x,#OFST-83
+1222  01ca 89            	pushw	x
+1223  01cb 1c0015        	addw	x,#21
+1224  01ce cd00df        	call	_HexToByte
+1226  01d1 b60b          	ld	a,_word+11
+1227  01d3 85            	popw	x
+1228                     ; 222 temp[0] = word[11];
+1230  01d4 6b17          	ld	(OFST-62,sp),a
+1231                     ; 223 temp[1] = word[12];
+1233  01d6 b60c          	ld	a,_word+12
+1234  01d8 6b18          	ld	(OFST-61,sp),a
+1235                     ; 224 HexToByte(temp, &NumberOfCoils);
+1237  01da 96            	ldw	x,sp
+1238  01db 1c0003        	addw	x,#OFST-82
+1239  01de 89            	pushw	x
+1240  01df 1c0014        	addw	x,#20
+1241  01e2 cd00df        	call	_HexToByte
+1243  01e5 85            	popw	x
+1244                     ; 227 if((NumberOfCoils%8)!=0)
+1246  01e6 7b03          	ld	a,(OFST-82,sp)
+1247  01e8 a507          	bcp	a,#7
+1248  01ea 2709          	jreq	L105
+1249                     ; 229 	NumberOfDataBytes = ( NumberOfCoils/8)+1;
+1251  01ec 5f            	clrw	x
+1252  01ed 97            	ld	xl,a
+1253  01ee 57            	sraw	x
+1254  01ef 57            	sraw	x
+1255  01f0 57            	sraw	x
+1256  01f1 01            	rrwa	x,a
+1257  01f2 4c            	inc	a
+1259  01f3 2006          	jra	L305
+1260  01f5               L105:
+1261                     ; 233 	NumberOfDataBytes = NumberOfCoils/8;
+1263  01f5 5f            	clrw	x
+1264  01f6 97            	ld	xl,a
+1265  01f7 57            	sraw	x
+1266  01f8 57            	sraw	x
+1267  01f9 57            	sraw	x
+1268  01fa 01            	rrwa	x,a
+1269  01fb               L305:
+1270  01fb 6b04          	ld	(OFST-81,sp),a
+1271                     ; 237 ByteToHex(temp,NumberOfDataBytes);
+1273  01fd 88            	push	a
+1274  01fe 96            	ldw	x,sp
+1275  01ff 1c0018        	addw	x,#OFST-61
+1276  0202 cd00a7        	call	_ByteToHex
+1278  0205 84            	pop	a
+1279                     ; 238 OutputFrame[5] = temp[0];
+1281  0206 7b17          	ld	a,(OFST-62,sp)
+1282  0208 6b0a          	ld	(OFST-75,sp),a
+1283                     ; 239 OutputFrame[6] = temp[1];
+1285  020a 7b18          	ld	a,(OFST-61,sp)
+1286  020c 6b0b          	ld	(OFST-74,sp),a
+1287                     ; 242 counter = 7; 
+1289  020e a607          	ld	a,#7
+1290  0210 6b19          	ld	(OFST-60,sp),a
+1291                     ; 243 g = FirstCoil + 1;
+1293  0212 7b02          	ld	a,(OFST-83,sp)
+1294  0214 4c            	inc	a
+1295  0215 6b15          	ld	(OFST-64,sp),a
+1296                     ; 244 n = NumberOfCoils;
+1298  0217 7b03          	ld	a,(OFST-82,sp)
+1299  0219 6b14          	ld	(OFST-65,sp),a
+1301  021b cc02df        	jra	L115
+1302  021e               L505:
+1303                     ; 247 		if(n>=8)                   //    zamiana oktetu na HEX
+1305  021e a108          	cp	a,#8
+1306  0220 255b          	jrult	L515
+1307                     ; 249 						uint8_t pwr = 0;
+1309                     ; 250 						for(pwr =0; pwr<8; pwr++,g++)
+1311  0222 0f01          	clr	(OFST-84,sp)
+1312  0224               L715:
+1313                     ; 252 								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
+1315  0224 96            	ldw	x,sp
+1316  0225 1c001a        	addw	x,#OFST-59
+1317  0228 9f            	ld	a,xl
+1318  0229 5e            	swapw	x
+1319  022a 1b15          	add	a,(OFST-64,sp)
+1320  022c 2401          	jrnc	L211
+1321  022e 5c            	incw	x
+1322  022f               L211:
+1323  022f 02            	rlwa	x,a
+1324  0230 7b01          	ld	a,(OFST-84,sp)
+1325  0232 905f          	clrw	y
+1326  0234 9097          	ld	yl,a
+1327  0236 a601          	ld	a,#1
+1328  0238 905d          	tnzw	y
+1329  023a 2705          	jreq	L411
+1330  023c               L611:
+1331  023c 48            	sll	a
+1332  023d 905a          	decw	y
+1333  023f 26fb          	jrne	L611
+1334  0241               L411:
+1335  0241 88            	push	a
+1336  0242 f6            	ld	a,(x)
+1337  0243 97            	ld	xl,a
+1338  0244 84            	pop	a
+1339  0245 42            	mul	x,a
+1340  0246 9f            	ld	a,xl
+1341  0247 1b16          	add	a,(OFST-63,sp)
+1342  0249 6b16          	ld	(OFST-63,sp),a
+1343                     ; 253 								n--;
+1345  024b 0a14          	dec	(OFST-65,sp)
+1346                     ; 250 						for(pwr =0; pwr<8; pwr++,g++)
+1348  024d 0c01          	inc	(OFST-84,sp)
+1349  024f 0c15          	inc	(OFST-64,sp)
+1352  0251 7b01          	ld	a,(OFST-84,sp)
+1353  0253 a108          	cp	a,#8
+1354  0255 25cd          	jrult	L715
+1355                     ; 256 						ByteToHex(temp,TempSum);
+1357  0257 7b16          	ld	a,(OFST-63,sp)
+1358  0259 88            	push	a
+1359  025a 96            	ldw	x,sp
+1360  025b 1c0018        	addw	x,#OFST-61
+1361  025e cd00a7        	call	_ByteToHex
+1363  0261 84            	pop	a
+1364                     ; 257 						TempSum = 0;
+1366  0262 0f16          	clr	(OFST-63,sp)
+1367                     ; 258 						OutputFrame[counter] = temp[0];
+1369  0264 96            	ldw	x,sp
+1370  0265 cd0305        	call	LC003
+1371  0268 1b19          	add	a,(OFST-60,sp)
+1372  026a 2401          	jrnc	L221
+1373  026c 5c            	incw	x
+1374  026d               L221:
+1375  026d 02            	rlwa	x,a
+1376  026e 7b17          	ld	a,(OFST-62,sp)
+1377  0270 f7            	ld	(x),a
+1378                     ; 259 						counter++;
+1380                     ; 260 						OutputFrame[counter] = temp[1];
+1382  0271 96            	ldw	x,sp
+1383  0272 0c19          	inc	(OFST-60,sp)
+1384  0274 cd0305        	call	LC003
+1385  0277 1b19          	add	a,(OFST-60,sp)
+1386  0279 245e          	jrnc	L041
+1387                     ; 261 						counter++;
+1389  027b 205b          	jp	LC002
+1390  027d               L515:
+1391                     ; 266 						uint8_t pwr = 0;
+1393                     ; 267 						uint8_t zm = n;
+1395  027d 6b04          	ld	(OFST-81,sp),a
+1396                     ; 268 						for(pwr =0; pwr<zm; pwr++,g++)
+1398  027f 0f01          	clr	(OFST-84,sp)
+1400  0281 202d          	jra	L335
+1401  0283               L725:
+1402                     ; 270 								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
+1404  0283 96            	ldw	x,sp
+1405  0284 1c001a        	addw	x,#OFST-59
+1406  0287 9f            	ld	a,xl
+1407  0288 5e            	swapw	x
+1408  0289 1b15          	add	a,(OFST-64,sp)
+1409  028b 2401          	jrnc	L621
+1410  028d 5c            	incw	x
+1411  028e               L621:
+1412  028e 02            	rlwa	x,a
+1413  028f 7b01          	ld	a,(OFST-84,sp)
+1414  0291 905f          	clrw	y
+1415  0293 9097          	ld	yl,a
+1416  0295 a601          	ld	a,#1
+1417  0297 905d          	tnzw	y
+1418  0299 2705          	jreq	L031
+1419  029b               L231:
+1420  029b 48            	sll	a
+1421  029c 905a          	decw	y
+1422  029e 26fb          	jrne	L231
+1423  02a0               L031:
+1424  02a0 88            	push	a
+1425  02a1 f6            	ld	a,(x)
+1426  02a2 97            	ld	xl,a
+1427  02a3 84            	pop	a
+1428  02a4 42            	mul	x,a
+1429  02a5 9f            	ld	a,xl
+1430  02a6 1b16          	add	a,(OFST-63,sp)
+1431  02a8 6b16          	ld	(OFST-63,sp),a
+1432                     ; 271 								n--;
+1434  02aa 0a14          	dec	(OFST-65,sp)
+1435                     ; 268 						for(pwr =0; pwr<zm; pwr++,g++)
+1437  02ac 0c01          	inc	(OFST-84,sp)
+1438  02ae 0c15          	inc	(OFST-64,sp)
+1439  02b0               L335:
+1442  02b0 7b01          	ld	a,(OFST-84,sp)
+1443  02b2 1104          	cp	a,(OFST-81,sp)
+1444  02b4 25cd          	jrult	L725
+1445                     ; 273 						ByteToHex(temp,TempSum);
+1447  02b6 7b16          	ld	a,(OFST-63,sp)
+1448  02b8 88            	push	a
+1449  02b9 96            	ldw	x,sp
+1450  02ba 1c0018        	addw	x,#OFST-61
+1451  02bd cd00a7        	call	_ByteToHex
+1453  02c0 84            	pop	a
+1454                     ; 274 						TempSum = 0;
+1456  02c1 0f16          	clr	(OFST-63,sp)
+1457                     ; 275 						OutputFrame[counter] = temp[0];
+1459  02c3 96            	ldw	x,sp
+1460  02c4 ad3f          	call	LC003
+1461  02c6 1b19          	add	a,(OFST-60,sp)
+1462  02c8 2401          	jrnc	L631
+1463  02ca 5c            	incw	x
+1464  02cb               L631:
+1465  02cb 02            	rlwa	x,a
+1466  02cc 7b17          	ld	a,(OFST-62,sp)
+1467  02ce f7            	ld	(x),a
+1468                     ; 276 						counter++;
+1470                     ; 277 						OutputFrame[counter] = temp[1];
+1472  02cf 96            	ldw	x,sp
+1473  02d0 0c19          	inc	(OFST-60,sp)
+1474  02d2 ad31          	call	LC003
+1475  02d4 1b19          	add	a,(OFST-60,sp)
+1476  02d6 2401          	jrnc	L041
+1477  02d8               LC002:
+1478  02d8 5c            	incw	x
+1479  02d9               L041:
+1480                     ; 278 						counter++;
+1482  02d9 02            	rlwa	x,a
+1483  02da 7b18          	ld	a,(OFST-61,sp)
+1484  02dc f7            	ld	(x),a
+1486  02dd 0c19          	inc	(OFST-60,sp)
+1487  02df               L115:
+1488                     ; 245 while(n>0)
+1490  02df 7b14          	ld	a,(OFST-65,sp)
+1491  02e1 2703cc021e    	jrne	L505
+1492                     ; 283 for(counter; counter<=15; counter++)
+1495  02e6 200d          	jra	L345
+1496  02e8               L735:
+1497                     ; 285 			OutputFrame[counter] = '*';
+1499  02e8 ad1b          	call	LC003
+1500  02ea 1b19          	add	a,(OFST-60,sp)
+1501  02ec 2401          	jrnc	L241
+1502  02ee 5c            	incw	x
+1503  02ef               L241:
+1504  02ef 02            	rlwa	x,a
+1505  02f0 a62a          	ld	a,#42
+1506  02f2 f7            	ld	(x),a
+1507                     ; 283 for(counter; counter<=15; counter++)
+1509  02f3 0c19          	inc	(OFST-60,sp)
+1510  02f5               L345:
+1513  02f5 7b19          	ld	a,(OFST-60,sp)
+1514  02f7 a110          	cp	a,#16
+1515  02f9 96            	ldw	x,sp
+1516  02fa 25ec          	jrult	L735
+1517                     ; 287 UART_SendStr(OutputFrame); 
+1519  02fc 1c0005        	addw	x,#OFST-80
+1520  02ff cd0000        	call	_UART_SendStr
+1522                     ; 289 }
+1525  0302 5b55          	addw	sp,#85
+1526  0304 81            	ret	
+1527  0305               LC003:
+1528  0305 1c0005        	addw	x,#OFST-80
+1529  0308 9f            	ld	a,xl
+1530  0309 5e            	swapw	x
+1531  030a 81            	ret	
+1555                     ; 293 void ReadInputStatus(void)
+1555                     ; 294 {
+1556                     	switch	.text
+1557  030b               _ReadInputStatus:
+1561                     ; 295 UART_SendStr("Function 2 Handled");
+1563  030b ae0000        	ldw	x,#L755
+1565                     ; 296 }
+1568  030e cc0000        	jp	_UART_SendStr
+1592                     ; 297 void ReadHoldingRegisters(void)
+1592                     ; 298 {}
+1593                     	switch	.text
+1594  0311               _ReadHoldingRegisters:
+1601  0311 81            	ret	
+1624                     ; 299 void ReadInputRegisters(void)
+1624                     ; 300 {}
+1625                     	switch	.text
+1626  0312               _ReadInputRegisters:
+1633  0312 81            	ret	
+1656                     ; 301 void ForceSingleCoil(void)
+1656                     ; 302 {}
+1657                     	switch	.text
+1658  0313               _ForceSingleCoil:
+1665  0313 81            	ret	
+1689                     ; 303 void PresetSingleRegister(void)
+1689                     ; 304 {}
+1690                     	switch	.text
+1691  0314               _PresetSingleRegister:
+1698  0314 81            	ret	
+1711                     	xref.b	_word
+1712                     	xref.b	_Address
+1713                     	xref.b	_TimmingDelay
+1714                     	xdef	_RewritingChars
+1715                     	xdef	_PresetSingleRegister
+1716                     	xdef	_ForceSingleCoil
+1717                     	xdef	_ReadInputRegisters
+1718                     	xdef	_ReadHoldingRegisters
+1719                     	xdef	_ReadInputStatus
+1720                     	xdef	_ReadCoilStatus
+1721                     	xdef	___checkFunc
+1722                     	xdef	___checkAddr
+1723                     	xdef	_SetDevAddr
+1724                     	xdef	_HexToByte
+1725                     	xdef	_ByteToHex
+1726                     	xdef	_UART_SendStr
+1727                     	xdef	_Modbus_Init
+1728                     	xdef	_Delay
+1729                     	xdef	_Delay_Init
+1730                     	xref	_UART2_SendData8
+1731                     	xref	_UART2_ITConfig
+1732                     	xref	_UART2_Cmd
+1733                     	xref	_UART2_Init
+1734                     	xref	_UART2_DeInit
+1735                     	xref	_TIM3_ITConfig
+1736                     	xref	_TIM3_Cmd
+1737                     	xref	_TIM3_TimeBaseInit
+1738                     	xref	_TIM3_DeInit
+1739                     	xref	_TIM2_ITConfig
+1740                     	xref	_TIM2_Cmd
+1741                     	xref	_TIM2_TimeBaseInit
+1742                     	xref	_TIM2_DeInit
+1743                     	xref	_GPIO_WriteLow
+1744                     	xref	_GPIO_WriteHigh
+1745                     	xref	_GPIO_Init
+1746                     	xref	_GPIO_DeInit
+1747                     	xref	_CLK_HSIPrescalerConfig
+1748                     .const:	section	.text
+1749  0000               L755:
+1750  0000 46756e637469  	dc.b	"Function 2 Handled",0
+1770                     	xref	c_lzmp
+1771                     	end

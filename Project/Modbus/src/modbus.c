@@ -169,7 +169,7 @@ for(from; from<=to; ++from)
 void ReadCoilStatus(void)
 {
 /////////////////////////////////////////////////////   zmienne
-char OutputFrame[9];   // output frame
+char OutputFrame[15];   // output frame
 uint8_t counter = 0;
 uint8_t TempSum=0;
 uint8_t FirstCoil;
@@ -191,6 +191,23 @@ data[4] = 1;
 data[9] = 1;
 data[10] = 1;
 data[11] = 1;
+data[12] = 1;
+data[13] = 1;
+data[14] = 1;
+data[15] = 1;
+data[16] = 1;
+data[17] = 1;
+data[18] = 1;
+data[19] = 1;
+data[20] = 1;
+data[21] = 0;
+data[22] = 0;
+data[23] = 0;
+data[24] = 0;
+data[25] = 0;
+data[26] = 0;
+data[27] = 0;
+data[28] = 0;
 /////////////////////////////////////////////////////
 
 // rewriting slave's address & number of function
@@ -224,43 +241,49 @@ OutputFrame[6] = temp[1];
 // calculating data bits to HEX and writing to frame
 counter = 7; 
 g = FirstCoil + 1;
-
-while(n <	NumberOfCoils)
+n = NumberOfCoils;
+while(n>0)
 {
-		if(NumberOfCoils>=8)                   //    zamiana oktetu na HEX
+		if(n>=8)                   //    zamiana oktetu na HEX
 				{
 						uint8_t pwr = 0;
 						for(pwr =0; pwr<8; pwr++,g++)
 							{
 								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
-								n++;
+								n--;
 							}			
 						
 						ByteToHex(temp,TempSum);
 						TempSum = 0;
 						OutputFrame[counter] = temp[0];
-						OutputFrame[counter+1] = temp[1];
+						counter++;
+						OutputFrame[counter] = temp[1];
 						counter++;
 				}
 				
 		else                                       //        zamiana niepe³nego oktetu na HEX
 				{
 						uint8_t pwr = 0;
-						for(pwr =0; pwr<NumberOfCoils; pwr++,g++)
+						uint8_t zm = n;
+						for(pwr =0; pwr<zm; pwr++,g++)
 							{
 								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
-								n++;
+								n--;
 							}
 						ByteToHex(temp,TempSum);
 						TempSum = 0;
 						OutputFrame[counter] = temp[0];
-						OutputFrame[counter+1] = temp[1];
+						counter++;
+						OutputFrame[counter] = temp[1];
 						counter++;
 				}
 }
 
 //   calculating CRC
-
+for(counter; counter<=15; counter++)
+	{
+			OutputFrame[counter] = '*';
+	}
 UART_SendStr(OutputFrame); 
 //UART_SendStr("\nFunction 1 handled."); 
 }
