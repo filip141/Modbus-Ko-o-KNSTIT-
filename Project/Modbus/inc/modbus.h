@@ -6,6 +6,12 @@
 
 /* Private defines -----------------------------------------------------------*/
 #define BAUDRATE 19200
+#define TOTAL_REG_SIZE 10
+
+//uint16_t Output_Registers[10];
+
+
+
 /* Private function prototypes -----------------------------------------------*/
 void Delay_Init(void);
 void Delay(uint32_t time);
@@ -18,6 +24,8 @@ uint8_t __checkAddr(uint8_t address);
 uint8_t __checkFunc(uint8_t Function_Number); 
 
 
+
+
 /* Modbus handler function prototypes ------------------------------------------*/
 void ReadCoilStatus(void);
 void ReadInputStatus(void);
@@ -27,12 +35,18 @@ void ForceSingleCoil(void);
 void PresetSingleRegister(void);
 
 void RewritingChars(char *destination, uint8_t from, uint8_t to);
+bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[]);
 
 /* Private variables -----------------------------------------------------------*/
 extern uint32_t TimmingDelay;
 extern uint8_t Address;
 extern uint8_t buffer[20];
 extern uint8_t word[20];
+
+extern uint16_t Input_Registers[10];
+extern uint16_t Output_Registers[10];
+
+/////////////////////////////
 
 
 

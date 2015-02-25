@@ -54,6 +54,8 @@ uint8_t word[20];
 uint8_t counter;
 uint8_t STATUS_BIT = 0;
 uint8_t Address;
+uint16_t Input_Registers[10];
+uint16_t Output_Registers[10];
 
 /* Public functions ----------------------------------------------------------*/
 #ifdef _COSMIC_

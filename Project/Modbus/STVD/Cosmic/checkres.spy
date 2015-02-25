@@ -2,8 +2,8 @@
 ; **        Welcome to ST Visual Debug SPY System               **
 ; ** Copyright STMicroelectronics (c) 1999, all rights reserved **
 ;  Level 1
-;  Date  02/17/15
-;  Time  17:16:27
+;  Date  02/25/15
+;  Time  22:56:10
 ;
-<.\confmenu.cpp:170-17:16:27> 
-Error: resource handle has not been restored in .\confmenu.cpp:462
+<.\confmenu.cpp:170-22:56:10> 
+Error: resource handle has not been restored in .\confmenu.cpp:766

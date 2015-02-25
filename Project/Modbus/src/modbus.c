@@ -166,48 +166,42 @@ for(from; from<=to; ++from)
 }
 
 
+///** Return the value of single bit(coil) **///
+
+bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[])
+{
+		// gettng value of current byte
+	uint16_t Value = registers[NumberOfCoil/16];   
+	
+	// calculating the comparing value to find if coil is 1 or 0
+	uint16_t Compare = 1<<(NumberOfCoil%16);			
+	
+	if ((Value & Compare) == Compare  )
+		{
+				return 1;
+		}
+		
+	else
+		{
+				return 0;
+		} 
+}
+
 void ReadCoilStatus(void)
 {
-/////////////////////////////////////////////////////   zmienne
+/////////////////////////////////////////////////////   Variables
 char OutputFrame[15];   // output frame
 uint8_t counter = 0;
 uint8_t TempSum=0;
 uint8_t FirstCoil;
 uint8_t NumberOfCoils;
-uint8_t g;
+uint8_t Coil;
 uint8_t NumberOfDataBytes;
-char temp[2];
+ char temp[2];
 uint8_t n = 0;
 
 // coils
-bool data[60];
-
-data[4] = 1;
-data[5] = 1;
-data[6] = 1;
-data[7] = 1;
-data[8] = 1;
-data[4] = 1;
-data[9] = 1;
-data[10] = 1;
-data[11] = 1;
-data[12] = 1;
-data[13] = 1;
-data[14] = 1;
-data[15] = 1;
-data[16] = 1;
-data[17] = 1;
-data[18] = 1;
-data[19] = 1;
-data[20] = 1;
-data[21] = 0;
-data[22] = 0;
-data[23] = 0;
-data[24] = 0;
-data[25] = 0;
-data[26] = 0;
-data[27] = 0;
-data[28] = 0;
+Input_Registers[0] = 255;
 /////////////////////////////////////////////////////
 
 // rewriting slave's address & number of function
@@ -240,16 +234,16 @@ OutputFrame[6] = temp[1];
 
 // calculating data bits to HEX and writing to frame
 counter = 7; 
-g = FirstCoil + 1;
+Coil = FirstCoil + 1;
 n = NumberOfCoils;
 while(n>0)
 {
 		if(n>=8)                   //    zamiana oktetu na HEX
 				{
 						uint8_t pwr = 0;
-						for(pwr =0; pwr<8; pwr++,g++)
+						for(pwr =0; pwr<8; pwr++,Coil++)
 							{
-								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
+								TempSum += (1<<pwr)*StateOfCoil(Coil, Input_Registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
 								n--;
 							}			
 						
@@ -265,9 +259,9 @@ while(n>0)
 				{
 						uint8_t pwr = 0;
 						uint8_t zm = n;
-						for(pwr =0; pwr<zm; pwr++,g++)
+						for(pwr =0; pwr<zm; pwr++,Coil++)
 							{
-								TempSum += (1<<pwr)*data[g];   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
+								TempSum += (1<<pwr)*StateOfCoil(Coil, Input_Registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
 								n--;
 							}
 						ByteToHex(temp,TempSum);
