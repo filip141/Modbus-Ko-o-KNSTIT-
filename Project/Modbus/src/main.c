@@ -36,7 +36,7 @@ void main(void)
 	GPIO_Init(GPIOD, GPIO_PIN_0, GPIO_MODE_OUT_PP_LOW_FAST);
 	Delay_Init();
 	Modbus_Init();
-	SetDevAddr(13);
+	SetDevAddr(17);
 //Endless loop
   while (1)
   {

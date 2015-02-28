@@ -19,8 +19,8 @@
   76  0011 cd0000        	call	_Delay_Init
   78                     ; 38 	Modbus_Init();
   80  0014 cd0000        	call	_Modbus_Init
-  82                     ; 39 	SetDevAddr(13);
-  84  0017 a60d          	ld	a,#13
+  82                     ; 39 	SetDevAddr(17);
+  84  0017 a611          	ld	a,#17
   85  0019 cd0000        	call	_SetDevAddr
   87  001c               L12:
   88                     ; 43 		Delay(1000);

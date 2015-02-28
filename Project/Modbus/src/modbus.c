@@ -296,3 +296,42 @@ void ForceSingleCoil(void)
 {}
 void PresetSingleRegister(void)
 {}
+
+// if CRC in frame[] is correct return 1, else 0 
+bool CheckCRC(char *frame)
+{
+	uint8_t a = 0;
+	char tempLRC_hex[2];
+	uint8_t Sum;
+	char tempByte[2];
+	uint8_t tempSum = 0;
+	
+	uint8_t tempLRC_dec1 = 0;
+	uint8_t tempLRC_dec2 = 0;
+	uint16_t tempLRC_dec1_16 = 0;
+	uint16_t tempLRC_dec2_16 = 0;
+	uint32_t LRC_dec = 0;	
+	
+// counting how many chars is in frame
+	while(word[a] != '\r')
+			{
+				a++;
+			}
+	
+// getting CRC from HEX to DEC
+	tempLRC_hex[1] = frame[a-1];
+	tempLRC_hex[0] = frame[a-2];
+HexToByte(tempLRC_hex, &tempLRC_dec1); // 126
+
+	tempLRC_hex[1] = frame[a-3];
+	tempLRC_hex[0] = frame[a-4];
+HexToByte(tempLRC_hex, &tempLRC_dec2); // 3
+
+tempLRC_dec1_16 = tempLRC_dec1_16  | tempLRC_dec1;      
+tempLRC_dec2_16 = tempLRC_dec2_16  | tempLRC_dec2; 
+LRC_dec = 0;
+LRC_dec =(3<<8);
+LRC_dec = 894; 
+	
+	
+}

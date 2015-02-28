@@ -668,47 +668,135 @@
 1716                     	switch	.text
 1717  030d               _PresetSingleRegister:
 1724  030d 81            	ret	
-1737                     	xref.b	_Input_Registers
-1738                     	xref.b	_word
-1739                     	xref.b	_Address
-1740                     	xref.b	_TimmingDelay
-1741                     	xdef	_StateOfCoil
-1742                     	xdef	_RewritingChars
-1743                     	xdef	_PresetSingleRegister
-1744                     	xdef	_ForceSingleCoil
-1745                     	xdef	_ReadInputRegisters
-1746                     	xdef	_ReadHoldingRegisters
-1747                     	xdef	_ReadInputStatus
-1748                     	xdef	_ReadCoilStatus
-1749                     	xdef	___checkFunc
-1750                     	xdef	___checkAddr
-1751                     	xdef	_SetDevAddr
-1752                     	xdef	_HexToByte
-1753                     	xdef	_ByteToHex
-1754                     	xdef	_UART_SendStr
-1755                     	xdef	_Modbus_Init
-1756                     	xdef	_Delay
-1757                     	xdef	_Delay_Init
-1758                     	xref	_UART2_SendData8
-1759                     	xref	_UART2_ITConfig
-1760                     	xref	_UART2_Cmd
-1761                     	xref	_UART2_Init
-1762                     	xref	_UART2_DeInit
-1763                     	xref	_TIM3_ITConfig
-1764                     	xref	_TIM3_Cmd
-1765                     	xref	_TIM3_TimeBaseInit
-1766                     	xref	_TIM3_DeInit
-1767                     	xref	_TIM2_ITConfig
-1768                     	xref	_TIM2_Cmd
-1769                     	xref	_TIM2_TimeBaseInit
-1770                     	xref	_TIM2_DeInit
-1771                     	xref	_GPIO_WriteLow
-1772                     	xref	_GPIO_WriteHigh
-1773                     	xref	_GPIO_Init
-1774                     	xref	_GPIO_DeInit
-1775                     	xref	_CLK_HSIPrescalerConfig
-1776                     .const:	section	.text
-1777  0000               L706:
-1778  0000 46756e637469  	dc.b	"Function 2 Handled",0
-1798                     	xref	c_lzmp
-1799                     	end
+1835                     ; 301 bool CheckCRC(char *frame)
+1835                     ; 302 {
+1836                     	switch	.text
+1837  030e               _CheckCRC:
+1839  030e 89            	pushw	x
+1840  030f 520e          	subw	sp,#14
+1841       0000000e      OFST:	set	14
+1844                     ; 303 	uint8_t a = 0;
+1846  0311 0f0e          	clr	(OFST+0,sp)
+1847                     ; 307 	uint8_t tempSum = 0;
+1849  0313 0f01          	clr	(OFST-13,sp)
+1850                     ; 309 	uint8_t tempLRC_dec1 = 0;
+1852  0315 0f02          	clr	(OFST-12,sp)
+1853                     ; 310 	uint8_t tempLRC_dec2 = 0;
+1855  0317 0f03          	clr	(OFST-11,sp)
+1856                     ; 311 	uint16_t tempLRC_dec1_16 = 0;
+1858  0319 5f            	clrw	x
+1859  031a 1f04          	ldw	(OFST-10,sp),x
+1860                     ; 312 	uint16_t tempLRC_dec2_16 = 0;
+1862  031c 1f06          	ldw	(OFST-8,sp),x
+1863                     ; 313 	uint32_t LRC_dec = 0;	
+1866  031e 2002          	jra	L137
+1867  0320               L727:
+1868                     ; 318 				a++;
+1870  0320 0c0e          	inc	(OFST+0,sp)
+1871  0322               L137:
+1872                     ; 316 	while(word[a] != '\r')
+1874  0322 7b0e          	ld	a,(OFST+0,sp)
+1875  0324 5f            	clrw	x
+1876  0325 97            	ld	xl,a
+1877  0326 e600          	ld	a,(_word,x)
+1878  0328 a10d          	cp	a,#13
+1879  032a 26f4          	jrne	L727
+1880                     ; 322 	tempLRC_hex[1] = frame[a-1];
+1882  032c 7b0e          	ld	a,(OFST+0,sp)
+1883  032e 5f            	clrw	x
+1884  032f 97            	ld	xl,a
+1885  0330 5a            	decw	x
+1886  0331 72fb0f        	addw	x,(OFST+1,sp)
+1887  0334 f6            	ld	a,(x)
+1888  0335 6b0d          	ld	(OFST-1,sp),a
+1889                     ; 323 	tempLRC_hex[0] = frame[a-2];
+1891  0337 5f            	clrw	x
+1892  0338 7b0e          	ld	a,(OFST+0,sp)
+1893  033a 97            	ld	xl,a
+1894  033b 1d0002        	subw	x,#2
+1895  033e 72fb0f        	addw	x,(OFST+1,sp)
+1896  0341 f6            	ld	a,(x)
+1897  0342 6b0c          	ld	(OFST-2,sp),a
+1898                     ; 324 HexToByte(tempLRC_hex, &tempLRC_dec1); // 126
+1900  0344 96            	ldw	x,sp
+1901  0345 1c0002        	addw	x,#OFST-12
+1902  0348 89            	pushw	x
+1903  0349 1c000a        	addw	x,#10
+1904  034c cd00df        	call	_HexToByte
+1906  034f 85            	popw	x
+1907                     ; 326 	tempLRC_hex[1] = frame[a-3];
+1909  0350 7b0e          	ld	a,(OFST+0,sp)
+1910  0352 5f            	clrw	x
+1911  0353 97            	ld	xl,a
+1912  0354 1d0003        	subw	x,#3
+1913  0357 72fb0f        	addw	x,(OFST+1,sp)
+1914  035a f6            	ld	a,(x)
+1915  035b 6b0d          	ld	(OFST-1,sp),a
+1916                     ; 327 	tempLRC_hex[0] = frame[a-4];
+1918  035d 5f            	clrw	x
+1919  035e 7b0e          	ld	a,(OFST+0,sp)
+1920  0360 97            	ld	xl,a
+1921  0361 1d0004        	subw	x,#4
+1922  0364 72fb0f        	addw	x,(OFST+1,sp)
+1923  0367 f6            	ld	a,(x)
+1924  0368 6b0c          	ld	(OFST-2,sp),a
+1925                     ; 328 HexToByte(tempLRC_hex, &tempLRC_dec2); // 3
+1927  036a 96            	ldw	x,sp
+1928  036b 1c0003        	addw	x,#OFST-11
+1929  036e 89            	pushw	x
+1930  036f 1c0009        	addw	x,#9
+1931  0372 cd00df        	call	_HexToByte
+1933  0375 85            	popw	x
+1934                     ; 330 tempLRC_dec1_16 = tempLRC_dec1_16  | tempLRC_dec1;      
+1936                     ; 331 tempLRC_dec2_16 = tempLRC_dec2_16  | tempLRC_dec2; 
+1938                     ; 332 LRC_dec = 0;
+1940                     ; 333 LRC_dec =(3<<8);
+1942                     ; 334 LRC_dec = 894; 
+1944                     ; 337 }
+1947  0376 5b10          	addw	sp,#16
+1948  0378 81            	ret	
+1961                     	xref.b	_Input_Registers
+1962                     	xref.b	_word
+1963                     	xref.b	_Address
+1964                     	xref.b	_TimmingDelay
+1965                     	xdef	_StateOfCoil
+1966                     	xdef	_RewritingChars
+1967                     	xdef	_PresetSingleRegister
+1968                     	xdef	_ForceSingleCoil
+1969                     	xdef	_ReadInputRegisters
+1970                     	xdef	_ReadHoldingRegisters
+1971                     	xdef	_ReadInputStatus
+1972                     	xdef	_ReadCoilStatus
+1973                     	xdef	___checkFunc
+1974                     	xdef	___checkAddr
+1975                     	xdef	_CheckCRC
+1976                     	xdef	_SetDevAddr
+1977                     	xdef	_HexToByte
+1978                     	xdef	_ByteToHex
+1979                     	xdef	_UART_SendStr
+1980                     	xdef	_Modbus_Init
+1981                     	xdef	_Delay
+1982                     	xdef	_Delay_Init
+1983                     	xref	_UART2_SendData8
+1984                     	xref	_UART2_ITConfig
+1985                     	xref	_UART2_Cmd
+1986                     	xref	_UART2_Init
+1987                     	xref	_UART2_DeInit
+1988                     	xref	_TIM3_ITConfig
+1989                     	xref	_TIM3_Cmd
+1990                     	xref	_TIM3_TimeBaseInit
+1991                     	xref	_TIM3_DeInit
+1992                     	xref	_TIM2_ITConfig
+1993                     	xref	_TIM2_Cmd
+1994                     	xref	_TIM2_TimeBaseInit
+1995                     	xref	_TIM2_DeInit
+1996                     	xref	_GPIO_WriteLow
+1997                     	xref	_GPIO_WriteHigh
+1998                     	xref	_GPIO_Init
+1999                     	xref	_GPIO_DeInit
+2000                     	xref	_CLK_HSIPrescalerConfig
+2001                     .const:	section	.text
+2002  0000               L706:
+2003  0000 46756e637469  	dc.b	"Function 2 Handled",0
+2023                     	xref	c_lzmp
+2024                     	end
