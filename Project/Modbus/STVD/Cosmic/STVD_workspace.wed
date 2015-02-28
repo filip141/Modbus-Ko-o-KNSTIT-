@@ -1,5 +1,5 @@
 [WorkState_v1-Edit.Breakpoints]
-Break0=TypeFile, ..\..\src\modbus.c, 337, 0, 1, 1,
+Break0=TypeFile, ..\..\src\modbus.c, 335, 0, 1, 1,
 
 [WorkState_v1_2]
 ptn_Child1=DockState
@@ -734,7 +734,7 @@ MRUDockID=0
 MRUDockLeftPos=1
 MRUDockTopPos=-2
 MRUDockRightPos=231
-MRUDockBottomPos=471
+MRUDockBottomPos=1
 MRUFloatStyle=4
 MRUFloatXPos=-1
 MRUFloatYPos=0
@@ -767,7 +767,7 @@ Docking=True
 MRUDockID=59422
 MRUDockLeftPos=1
 MRUDockTopPos=5
-MRUDockRightPos=1366
+MRUDockRightPos=1
 MRUDockBottomPos=163
 MRUFloatStyle=4
 MRUFloatXPos=-1
@@ -1510,7 +1510,7 @@ ptn_Child1=MainFrame
 ptn_Child2=ChildFrames
 
 [WorkState_v1_2.Frames.MainFrame]
-WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPALBAAAAAHBAAAAAANFFAAAAAGLCAAAAA
+WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAAADIPPPPAADIPPPPPPPPPPPPPPPPPPPPIPPPPPPPAAAAAAAAFKDAAAAAPJCAAAAA
 Title=ST Visual Develop - STVD_workspace.stw - [modbus.c]
 
 [WorkState_v1_2.Frames.ChildFrames]

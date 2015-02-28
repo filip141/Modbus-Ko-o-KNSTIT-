@@ -35,7 +35,8 @@
 void Delay(uint32_t time);
 void HexToByte(char *hexstring, uint8_t *byte);
 void UART_SendStr(const char *s);
-bool CheckCRC(char *frame);
+bool CheckLRC(char *frame);
+uint8_t GetLRC(char *frame);
 uint8_t __checkFunc(uint8_t Function_Number); 
 
 /* Modbus handler function prototypes ------------------------------------------*/
@@ -295,9 +296,12 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 	//Buffer not empty
 	if(word[0] != '\0')
 	{
-		CheckCRC(word);
+				if (!CheckLRC(word))
+				{
+						UART_SendStr("Error, LRC is not right.");
+				}
 		
-		//IF CRC == Correct
+		
 		//Function Code to Byte
 		tmp[0] = word[3];
 		tmp[1] = word[4];

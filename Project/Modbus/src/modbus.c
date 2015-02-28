@@ -238,7 +238,7 @@ Coil = FirstCoil + 1;
 n = NumberOfCoils;
 while(n>0)
 {
-		if(n>=8)                   //    zamiana oktetu na HEX
+		if(n>=8)                   //    changing 8bits to hex
 				{
 						uint8_t pwr = 0;
 						for(pwr =0; pwr<8; pwr++,Coil++)
@@ -255,7 +255,7 @@ while(n>0)
 						counter++;
 				}
 				
-		else                                       //        zamiana niepe³nego oktetu na HEX
+		else                                       //        changing incomplete octet to hex
 				{
 						uint8_t pwr = 0;
 						uint8_t zm = n;
@@ -297,8 +297,8 @@ void ForceSingleCoil(void)
 void PresetSingleRegister(void)
 {}
 
-// if CRC in frame[] is correct return 1, else 0 
-bool CheckCRC(char *frame)
+// if LRC in frame[] is correct return 1, else 0 
+bool CheckLRC(char *frame)
 {
 	uint8_t a = 0;
 	char tempLRC_hex[2];
@@ -310,15 +310,17 @@ bool CheckCRC(char *frame)
 	uint8_t tempLRC_dec2 = 0;
 	uint16_t tempLRC_dec1_16 = 0;
 	uint16_t tempLRC_dec2_16 = 0;
-	uint32_t LRC_dec = 0;	
+	uint32_t LRC_dec_from_frame = 0;	
+	uint8_t LRC_calculated = 0;
+	uint16_t g;
 	
-// counting how many chars is in frame
+// counting chars  in frame
 	while(word[a] != '\r')
 			{
 				a++;
 			}
 	
-// getting CRC from HEX to DEC
+// getting LRC from HEX to DEC
 	tempLRC_hex[1] = frame[a-1];
 	tempLRC_hex[0] = frame[a-2];
 HexToByte(tempLRC_hex, &tempLRC_dec1); // 126
@@ -329,9 +331,43 @@ HexToByte(tempLRC_hex, &tempLRC_dec2); // 3
 
 tempLRC_dec1_16 = tempLRC_dec1_16  | tempLRC_dec1;      
 tempLRC_dec2_16 = tempLRC_dec2_16  | tempLRC_dec2; 
-LRC_dec = 0;
-LRC_dec =(3<<8);
-LRC_dec = 894; 
-	
-	
+LRC_dec_from_frame = (tempLRC_dec2_16<<8) | tempLRC_dec1_16;              //  nie dzia³a, wartosci z kosmosu
+ 
+
+// calculating LRC
+LRC_calculated = GetLRC(frame);
+
+if (LRC_calculated == LRC_dec_from_frame)
+	{
+		return 1;
+	}
+else
+	{
+		return 0;
+	}
 }
+
+uint8_t GetLRC(char *frame)
+{
+uint8_t a=1;   // 1, because the first char is ':'
+char temp[2];
+uint8_t temp_sum=0;
+uint8_t sum = 0;
+
+// * this algorithm works only if size of frame is even   // 
+while((word[a] != '\r'))
+{
+temp[0] = word[a];
+temp[1] = word[a+1];
+HexToByte(temp, &temp_sum);
+sum += temp_sum;
+a = a + 2;
+}
+
+// making negative
+sum = !sum;
+
+return sum;
+
+}
+

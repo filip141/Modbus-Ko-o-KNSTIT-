@@ -20,7 +20,8 @@ void UART_SendStr(const char *s);
 void ByteToHex(char *hexstring, uint8_t byte);
 void HexToByte(char *hexstring, uint8_t *byte);
 void SetDevAddr(uint8_t Addr);
-bool CheckCRC(char *frame);
+bool CheckLRC(char *frame);
+uint8_t GetLRC(char *frame);
 
 uint8_t __checkAddr(uint8_t address); 
 uint8_t __checkFunc(uint8_t Function_Number); 
