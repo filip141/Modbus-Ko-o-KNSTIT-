@@ -206,7 +206,7 @@ uint16_t n = 0;
 //Clear table
 for(n = 0; n<25; n++){OutputFrame[n] = '\0';}
 // coils
-Input_Registers[0] = 0b111111000101;
+Input_Registers[0] = 0b0000000011111111;
 
 /////////////////////////////////////////////////////
 
@@ -301,8 +301,11 @@ OutputFrame[counter] = 0x0D;
 counter++;
 OutputFrame[counter] = 0x0A;
 counter++;
+OutputFrame[counter] = 0x0A;
+counter++;
+
 //sending frame 
-UART_SendStr(OutputFrame); 
+	UART_SendStr(OutputFrame); 
 }
 
 
@@ -327,6 +330,10 @@ uint8_t ct = 0;
 uint8_t k = 0;
 uint8_t counter = 0;
 uint16_t Content_dec = 0;
+
+
+//Clear table
+for(k = 0; k<25; k++){OutputFrame[k] = '\0';}
 
 // rewriting slave's address & number of function
 RewritingChars(OutputFrame,0,4);
@@ -385,6 +392,10 @@ OutputFrame[counter] = 0x0D;
 counter++;
 OutputFrame[counter] = 0x0A;
 counter++;
+OutputFrame[counter] = 0x0A;
+counter++;
+
+
 //sending frame 
 UART_SendStr(OutputFrame); 
 
