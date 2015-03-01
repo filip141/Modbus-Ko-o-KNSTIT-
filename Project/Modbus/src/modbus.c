@@ -186,8 +186,10 @@ bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[])
 				return 0;
 		} 
 }
-///FC01  *This command is requesting the ON/OFF status of discrete coils ///
-void ReadCoilStatus(void)
+
+
+///FC01  *This command is requesting the ON/OFF status of discrete output coils ///
+void ReadCoilStatus(uint16_t *registers)
 {
 /////////////////////////////////////////////////////   Variables
 char OutputFrame[25];   // output frame
@@ -253,7 +255,7 @@ while(n>0)
 						uint8_t pwr = 0;
 						for(pwr =0; pwr<8; pwr++,Coil++)
 							{
-								TempSum += (1<<pwr)*StateOfCoil(Coil, Input_Registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
+								TempSum += (1<<pwr)*StateOfCoil(Coil, registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
 								n--;
 							}			
 						
@@ -312,7 +314,7 @@ counter++;
 ///FC02  *This command is requesting the ON/OFF status of discrete inputs///
 void ReadInputStatus(void)
 {
-ReadCoilStatus();
+ReadCoilStatus(Input_Registers);
 }
 
 ///FC03  *This command is requesting the content of analog output holding registers///
@@ -409,9 +411,11 @@ ReadHoldingRegisters(Input_Registers);
 }
 
 
-
+///FC05 *This command is writing the contents of discrete coil ///
 void ForceSingleCoil(void)
 {}
+
+///FC06 *This command is writing the contents of analog output holding register///
 void PresetSingleRegister(void)
 {}
 

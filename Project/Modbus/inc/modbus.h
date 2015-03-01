@@ -32,7 +32,7 @@ uint8_t __checkFunc(uint8_t Function_Number);
 
 
 /* Modbus handler function prototypes ------------------------------------------*/
-void ReadCoilStatus(void);
+void ReadCoilStatus(uint16_t *registers);
 void ReadInputStatus(void);
 void ReadHoldingRegisters(uint16_t *registers);
 void ReadInputRegisters(void);

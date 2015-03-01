@@ -40,7 +40,7 @@ uint8_t GetLRC(char *frame);
 uint8_t __checkFunc(uint8_t Function_Number); 
 
 /* Modbus handler function prototypes ------------------------------------------*/
-void ReadCoilStatus(void);
+void ReadCoilStatus(uint16_t *registers);
 void ReadInputStatus(void);
 void ReadHoldingRegisters(uint16_t *registers);
 void ReadInputRegisters(void);
@@ -310,12 +310,14 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 			{
 			case 1:
 				//Function 1
-				ReadCoilStatus();
+				ReadCoilStatus(Output_Registers);
 				break;
+				
 			case 2:
 				//Function 2
 				ReadInputStatus();
 				break;
+				
 			case 3: 
 				//Function 3
 				ReadHoldingRegisters(Output_Registers);
@@ -323,18 +325,16 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 				
 			case 4: 
 				//Function 4
-				ReadInputRegisters();
-
+				ReadInputRegisters();				
 				break;
+				
 			case 5: 
 				//Function 5
-				UART_SendStr("Function 5 Handled");
 				ForceSingleCoil();
 				break;
 			
 			case 6:
 				//Function 6
-				UART_SendStr("Function 6 Handled");
 				PresetSingleRegister();
 				break;
 				
