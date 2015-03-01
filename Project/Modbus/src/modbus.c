@@ -190,7 +190,7 @@ bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[])
 void ReadCoilStatus(void)
 {
 /////////////////////////////////////////////////////   Variables
-char OutputFrame[15];   // output frame
+char OutputFrame[25];   // output frame
 uint8_t counter = 0;
 uint8_t counter2 = 0 ;
 uint8_t TempSum=0;
@@ -218,10 +218,10 @@ temp4[3] = word[8];
 HexToByte_4(temp4, &FirstCoil);
 
 //getting quantity of coils
-temp4[0] = word[5];
-temp4[1] = word[6];
-temp4[2] = word[7];
-temp4[3] = word[8];
+temp4[0] = word[9];
+temp4[1] = word[10];
+temp4[2] = word[11];
+temp4[3] = word[12];
 HexToByte_4(temp4, &NumberOfCoils);
 
 // calculating the number of data bytes
@@ -313,13 +313,15 @@ void ReadInputStatus(void)
 ///FC03  *This command is requesting the content of analog output holding registers///
 void ReadHoldingRegisters(void)
 {
-char OutputFrame[15];   // output frame
+char OutputFrame[25];   // output frame
 char temp[4];
+char temp2[2];
 
 uint16_t FirstReg = 0;
 uint16_t NumberOfRegs = 0;
 uint8_t NumberOfBytes = 0 ;
 uint8_t ct = 0;
+uint8_t k = 0;
 uint8_t counter = 0;
 uint16_t Content_dec = 0;
 
@@ -334,10 +336,10 @@ temp[3] = word[8];
 HexToByte_4(temp, &FirstReg);
 
 //getting quantity of registers
-temp[0] = word[5];
-temp[1] = word[6];
-temp[2] = word[7];
-temp[3] = word[8];
+temp[0] = word[9];
+temp[1] = word[10];
+temp[2] = word[11];
+temp[3] = word[12];
 HexToByte_4(temp, &NumberOfRegs);
 
 // calculating the number of data bytes to follow ( n registers * 2 bytes each)
@@ -349,11 +351,14 @@ OutputFrame[5] = temp[0];
 OutputFrame[6] = temp[1];
 
 counter = 7;
+k = FirstReg;
 
+Output_Registers[1] = 65535;
+Output_Registers[2] = 65535;
 //Reading the contents from Output_Registers
-for(ct=FirstReg;ct<NumberOfRegs;ct++)
+for(ct=0;ct<NumberOfRegs;ct++)
 	{
-		Content_dec = Output_Registers[ct];
+		Content_dec = Output_Registers[k];
 		ByteToHex_4(temp,Content_dec);
 		OutputFrame[counter] = temp[0];
 		counter++;
@@ -363,14 +368,15 @@ for(ct=FirstReg;ct<NumberOfRegs;ct++)
 		counter++;
 		OutputFrame[counter] = temp[3];
 		counter++;
+		k++;
 	}
 	
 	
 // finally writing LRC
-ByteToHex(temp,GetLRC(OutputFrame));
-OutputFrame[counter] = temp[0];
+ByteToHex(temp2,GetLRC(OutputFrame));
+OutputFrame[counter] = temp2[0];
 counter++;
-OutputFrame[counter] = temp[1];
+OutputFrame[counter] = temp2[1];
 counter++;
 OutputFrame[counter] = 0x0D;
 counter++;
