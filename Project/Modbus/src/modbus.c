@@ -202,7 +202,8 @@ uint8_t NumberOfDataBytes;
 uint8_t n = 0;
 
 // coils
-Input_Registers[0] = 255;
+Input_Registers[0] = 0b111111000101;
+
 /////////////////////////////////////////////////////
 
 // rewriting slave's address & number of function
@@ -235,7 +236,7 @@ OutputFrame[6] = temp[1];
 
 // calculating data bits to HEX and writing to frame
 counter = 7; 
-Coil = FirstCoil + 1;
+Coil = FirstCoil;
 n = NumberOfCoils;
 while(n>0)
 {
@@ -273,13 +274,14 @@ while(n>0)
 						counter++;
 				}
 }
-
-// setting * instead of free space to avoid CRUFT//optionaly
+/* 
+ //setting * instead of free space to avoid CRUFT,optionaly
 counter2 = counter;
 for(counter2; counter2<=15; counter2++)
 	{
 			OutputFrame[counter2] = '*';
 	}
+*/
 
 // finally writing LRC
 ByteToHex(temp,GetLRC(OutputFrame));
@@ -287,7 +289,10 @@ OutputFrame[counter] = temp[0];
 counter++;
 OutputFrame[counter] = temp[1];
 counter++;
-
+OutputFrame[counter] = 0x0D;
+counter++;
+OutputFrame[counter] = 0x0A;
+counter++;
 //sending frame 
 UART_SendStr(OutputFrame); 
 }

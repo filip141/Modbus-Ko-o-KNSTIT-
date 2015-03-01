@@ -9,7 +9,7 @@
 ..\..\src\stm8s_it.c
 ..\..\inc\modbus.h
 ..\..\inc\stm8s_it.h
-..\..\..\..\..\..\..\..\..\program files (x86)\cosmic\cxstm8_eval\hstm8\mods0.h
+..\..\..\..\..\..\..\..\..\..\program files (x86)\cosmic\cxstm8_32k\hstm8\mods0.h
 ..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h
 ..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_adc1.h
 ..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_awu.h

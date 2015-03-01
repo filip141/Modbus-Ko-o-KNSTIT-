@@ -202,7 +202,7 @@ AWU_TIMEBASE_NO_IT	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_awu.h	
 AWU_Timebase_TypeDef	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_awu.h	58;"	typedef	typeref:enum:__anon22
 AWU_TypeDef	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	420;"	typedef	typeref:struct:AWU_struct
 AWU_struct	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	414;"	struct
-Address	..\..\src\stm8s_it.c	377;"	variable
+Address	..\..\src\stm8s_it.c	58;"	variable
 AffBit	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2661;"	macro
 BAUDRATE	..\..\inc\modbus.h	8;"	macro
 BEEP	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2490;"	macro
@@ -240,8 +240,8 @@ BitClr	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2689;"	macro
 BitSet	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2690;"	macro
 BitStatus	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	212;"	typedef	typeref:enum:__anon2
 BitVal	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2691;"	macro
-ByteToHex	..\..\inc\modbus.h	14;"	prototype	signature:(char *hexstring, uint8_t byte)
-ByteToHex	..\..\src\modbus.c	67;"	function	signature:(char *hexstring, uint8_t byte)
+ByteToHex	..\..\inc\modbus.h	20;"	prototype	signature:(char *hexstring, uint8_t byte)
+ByteToHex	..\..\src\modbus.c	69;"	function	signature:(char *hexstring, uint8_t byte)
 CAN	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2493;"	macro
 CAN_BTR1_RESET_VALUE	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2380;"	macro
 CAN_BTR2_RESET_VALUE	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2381;"	macro
@@ -684,6 +684,9 @@ CSR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	366;"	member	struct
 CSR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	416;"	member	struct:AWU_struct
 CSR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	456;"	member	struct:BEEP_struct
 CSSR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	492;"	member	struct:CLK_struct
+CheckLRC	..\..\inc\modbus.h	24;"	prototype	signature:(char *frame)
+CheckLRC	..\..\src\modbus.c	316;"	function	signature:(char *frame)
+CheckLRC	..\..\src\stm8s_it.c	38;"	prototype	file:	signature:(char *frame)
 ChgBit	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2660;"	macro
 ClrBit	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2658;"	macro
 Config	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2179;"	member	union:__anon5::__anon6	typeref:struct:__anon5::__anon6::__anon12
@@ -723,11 +726,11 @@ DRL	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	300;"	member	struct
 DRL	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	371;"	member	struct:ADC2_struct
 DTR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	618;"	member	struct:TIM1_struct
 DUKR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1500;"	member	struct:FLASH_struct
-Delay	..\..\inc\modbus.h	11;"	prototype	signature:(uint32_t time)
-Delay	..\..\src\modbus.c	60;"	function	signature:(uint32_t time)
+Delay	..\..\inc\modbus.h	17;"	prototype	signature:(uint32_t time)
+Delay	..\..\src\modbus.c	62;"	function	signature:(uint32_t time)
 Delay	..\..\src\stm8s_it.c	35;"	prototype	file:	signature:(uint32_t time)
-Delay_Init	..\..\inc\modbus.h	10;"	prototype	signature:(void)
-Delay_Init	..\..\src\modbus.c	43;"	function	signature:(void)
+Delay_Init	..\..\inc\modbus.h	16;"	prototype	signature:(void)
+Delay_Init	..\..\src\modbus.c	45;"	function	signature:(void)
 ECKR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	485;"	member	struct:CLK_struct
 EEPROM	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	108;"	macro
 EEPROM	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	114;"	macro
@@ -958,6 +961,9 @@ Filter01	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2117;"	member	
 Filter23	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2139;"	member	union:__anon5::__anon6	typeref:struct:__anon5::__anon6::__anon10
 Filter45	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2161;"	member	union:__anon5::__anon6	typeref:struct:__anon5::__anon6::__anon11
 FlagStatus	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	212;"	typedef	typeref:enum:__anon2
+ForceSingleCoil	..\..\inc\modbus.h	38;"	prototype	signature:(void)
+ForceSingleCoil	..\..\src\modbus.c	310;"	function	signature:(void)
+ForceSingleCoil	..\..\src\stm8s_it.c	47;"	prototype	file:	signature:(void)
 FunctionalState	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	214;"	typedef	typeref:enum:__anon3
 GCR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2400;"	member	struct:CFG_struct
 GPIOA	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2504;"	macro
@@ -1031,6 +1037,9 @@ GPIO_WriteReverse	..\..\..\..\libraries\stm8s_stdperiph_driver\src\stm8s_gpio.c	
 GPIO_struct	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	244;"	struct
 GTR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1752;"	member	struct:UART1_struct
 GTR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1851;"	member	struct:UART2_struct
+GetLRC	..\..\inc\modbus.h	25;"	prototype	signature:(char *frame)
+GetLRC	..\..\src\modbus.c	353;"	function	signature:(char *frame)
+GetLRC	..\..\src\stm8s_it.c	39;"	prototype	file:	signature:(char *frame)
 HSE_VALUE	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	92;"	macro
 HSE_VALUE	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	94;"	macro
 HSIDivFactor	..\..\..\..\libraries\stm8s_stdperiph_driver\src\stm8s_clk.c	42;"	variable
@@ -1038,9 +1047,11 @@ HSITRIMR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	496;"	member	s
 HSI_VALUE	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	101;"	macro
 HTRH	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	303;"	member	struct:ADC1_struct
 HTRL	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	304;"	member	struct:ADC1_struct
-HexToByte	..\..\inc\modbus.h	15;"	prototype	signature:(char *hexstring, uint8_t *byte)
-HexToByte	..\..\src\modbus.c	94;"	function	signature:(char *hexstring, uint8_t *byte)
+HexToByte	..\..\inc\modbus.h	21;"	prototype	signature:(char *hexstring, uint8_t *byte)
+HexToByte	..\..\src\modbus.c	96;"	function	signature:(char *hexstring, uint8_t *byte)
 HexToByte	..\..\src\stm8s_it.c	36;"	prototype	file:	signature:(char *hexstring, uint8_t *byte)
+HextoByte_4	..\..\inc\modbus.h	22;"	prototype	signature:(char *hexstring_4, uint16_t *byte)
+HextoByte_4	..\..\src\modbus.c	381;"	function	signature:(char *hexstring_4, uint16_t *byte)
 I2C	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2531;"	macro
 I2C_ACK_CURR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_i2c.h	50;"	enumerator	enum:__anon47
 I2C_ACK_NEXT	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_i2c.h	51;"	enumerator	enum:__anon47
@@ -1204,7 +1215,7 @@ INTERRUPT_HANDLER	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2628;
 INTERRUPT_HANDLER_TRAP	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2617;"	macro
 INTERRUPT_HANDLER_TRAP	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2622;"	macro
 INTERRUPT_HANDLER_TRAP	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2631;"	macro
-INTERRUPT_HANDLER_TRAP	..\..\src\stm8s_it.c	58;"	function
+INTERRUPT_HANDLER_TRAP	..\..\src\stm8s_it.c	82;"	function
 IN_RAM	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	150;"	macro
 IN_RAM	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	152;"	macro
 IN_RAM	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	154;"	macro
@@ -1476,6 +1487,7 @@ IWDG_WriteAccess_Disable	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_
 IWDG_WriteAccess_Enable	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_iwdg.h	84;"	enumerator	enum:__anon56
 IWDG_WriteAccess_TypeDef	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_iwdg.h	86;"	typedef	typeref:enum:__anon56
 IWDG_struct	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1583;"	struct
+Input_Registers	..\..\src\stm8s_it.c	59;"	variable
 KR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1585;"	member	struct:IWDG_struct
 LSI_FREQUENCY_MAX	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_awu.h	71;"	macro
 LSI_FREQUENCY_MAX	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_beep.h	58;"	macro
@@ -1520,7 +1532,7 @@ MTSRH	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2070;"	member	str
 MTSRH	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2198;"	member	struct:__anon5::__anon6::__anon13
 MTSRL	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2069;"	member	struct:__anon5::__anon6::__anon7
 MTSRL	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2197;"	member	struct:__anon5::__anon6::__anon13
-Modbus_Init	..\..\inc\modbus.h	12;"	prototype	signature:(void)
+Modbus_Init	..\..\inc\modbus.h	18;"	prototype	signature:(void)
 Modbus_Init	..\..\src\modbus.c	20;"	function	signature:(void)
 MskBit	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2664;"	macro
 NCR2	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1492;"	member	struct:FLASH_struct
@@ -1552,6 +1564,7 @@ OPTION_BYTE_START_PHYSICAL_ADDRESS	..\..\..\..\libraries\stm8s_stdperiph_driver\
 OPT_BaseAddress	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2436;"	macro
 OPT_TypeDef	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1576;"	typedef	typeref:struct:OPT_struct
 OPT_struct	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1558;"	struct
+Output_Registers	..\..\src\stm8s_it.c	60;"	variable
 PCKENR1	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	491;"	member	struct:CLK_struct
 PCKENR2	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	494;"	member	struct:CLK_struct
 PR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1586;"	member	struct:IWDG_struct
@@ -1569,6 +1582,9 @@ PUKR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1498;"	member	stru
 Page	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2201;"	member	struct:__anon5	typeref:union:__anon5::__anon6
 PointerAttr	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	137;"	macro
 PointerAttr	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	140;"	macro
+PresetSingleRegister	..\..\inc\modbus.h	39;"	prototype	signature:(void)
+PresetSingleRegister	..\..\src\modbus.c	312;"	function	signature:(void)
+PresetSingleRegister	..\..\src\stm8s_it.c	48;"	prototype	file:	signature:(void)
 RCR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	608;"	member	struct:TIM1_struct
 RECR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2168;"	member	struct:__anon5::__anon6::__anon12
 RESERVED	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1957;"	member	struct:UART3_struct
@@ -1608,8 +1624,22 @@ RST_SR_WWDGF	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1659;"	mac
 RST_TypeDef	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1649;"	typedef	typeref:struct:RST_struct
 RST_struct	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1645;"	struct
 RXCRCR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1678;"	member	struct:SPI_struct
+ReadCoilStatus	..\..\inc\modbus.h	34;"	prototype	signature:(void)
+ReadCoilStatus	..\..\src\modbus.c	190;"	function	signature:(void)
+ReadCoilStatus	..\..\src\stm8s_it.c	43;"	prototype	file:	signature:(void)
+ReadHoldingRegisters	..\..\inc\modbus.h	36;"	prototype	signature:(void)
+ReadHoldingRegisters	..\..\src\modbus.c	306;"	function	signature:(void)
+ReadHoldingRegisters	..\..\src\stm8s_it.c	45;"	prototype	file:	signature:(void)
+ReadInputRegisters	..\..\inc\modbus.h	37;"	prototype	signature:(void)
+ReadInputRegisters	..\..\src\modbus.c	308;"	function	signature:(void)
+ReadInputRegisters	..\..\src\stm8s_it.c	46;"	prototype	file:	signature:(void)
+ReadInputStatus	..\..\inc\modbus.h	35;"	prototype	signature:(void)
+ReadInputStatus	..\..\src\modbus.c	302;"	function	signature:(void)
+ReadInputStatus	..\..\src\stm8s_it.c	44;"	prototype	file:	signature:(void)
 Reserved1	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2171;"	member	struct:__anon5::__anon6::__anon12
 Reserved2	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2177;"	member	struct:__anon5::__anon6::__anon12
+RewritingChars	..\..\inc\modbus.h	41;"	prototype	signature:(char *destination, uint8_t from, uint8_t to)
+RewritingChars	..\..\src\modbus.c	159;"	function	signature:(char *destination, uint8_t from, uint8_t to)
 RxFIFO	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2200;"	member	union:__anon5::__anon6	typeref:struct:__anon5::__anon6::__anon13
 S16_MAX	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	223;"	macro
 S16_MIN	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	224;"	macro
@@ -1744,7 +1774,7 @@ SR2	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	594;"	member	struct
 SR2	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	807;"	member	struct:TIM2_struct
 SR2	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	931;"	member	struct:TIM3_struct
 SR3	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1313;"	member	struct:I2C_struct
-STATUS_BIT	..\..\src\stm8s_it.c	376;"	variable
+STATUS_BIT	..\..\src\stm8s_it.c	57;"	variable
 STM8S105	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	37;"	macro
 STRINGVECTOR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2626;"	macro
 SUCCESS	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	217;"	enumerator	enum:__anon4
@@ -1752,8 +1782,10 @@ SWCR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	489;"	member	struc
 SWIMCCR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	497;"	member	struct:CLK_struct
 SWR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	488;"	member	struct:CLK_struct
 SetBit	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2657;"	macro
-SetDevAddr	..\..\inc\modbus.h	16;"	prototype	signature:(uint8_t Addr)
-SetDevAddr	..\..\src\modbus.c	149;"	function	signature:(uint8_t Addr)
+SetDevAddr	..\..\inc\modbus.h	23;"	prototype	signature:(uint8_t Addr)
+SetDevAddr	..\..\src\modbus.c	151;"	function	signature:(uint8_t Addr)
+StateOfCoil	..\..\inc\modbus.h	42;"	prototype	signature:(uint8_t NumberOfCoil, uint16_t registers[])
+StateOfCoil	..\..\src\modbus.c	171;"	function	signature:(uint8_t NumberOfCoil, uint16_t registers[])
 TBR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	418;"	member	struct:AWU_struct
 TDRH	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	301;"	member	struct:ADC1_struct
 TDRH	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	372;"	member	struct:ADC2_struct
@@ -2738,13 +2770,14 @@ TINY	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	107;"	macro
 TINY	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	113;"	macro
 TINY	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	126;"	macro
 TLI_IRQHandler	..\..\inc\stm8s_it.h	40;"	prototype	signature:(void)
+TOTAL_REG_SIZE	..\..\inc\modbus.h	9;"	macro
 TPR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2045;"	member	struct:__anon5
 TRAP_IRQHandler	..\..\inc\stm8s_it.h	39;"	prototype	signature:(void)
 TRISER	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1317;"	member	struct:I2C_struct
 TRUE	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	210;"	enumerator	enum:__anon1
 TSR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2044;"	member	struct:__anon5
 TXCRCR	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1679;"	member	struct:SPI_struct
-TimmingDelay	..\..\src\stm8s_it.c	291;"	variable
+TimmingDelay	..\..\src\stm8s_it.c	379;"	variable
 TxMailbox	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2072;"	member	union:__anon5::__anon6	typeref:struct:__anon5::__anon6::__anon7
 U16_MAX	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	222;"	macro
 U32_MAX	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	225;"	macro
@@ -3045,8 +3078,9 @@ UART3_SR_TXE	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1983;"	mac
 UART3_TX_IRQHandler	..\..\inc\stm8s_it.h	91;"	prototype	signature:(void)
 UART3_TypeDef	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1960;"	typedef	typeref:struct:UART3_struct
 UART3_struct	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1947;"	struct
-UART_SendStr	..\..\inc\modbus.h	13;"	prototype	signature:(const char *s)
+UART_SendStr	..\..\inc\modbus.h	19;"	prototype	signature:(const char *s)
 UART_SendStr	..\..\src\modbus.c	5;"	function	signature:(const char *s)
+UART_SendStr	..\..\src\stm8s_it.c	37;"	prototype	file:	signature:(const char *s)
 USE_FULL_ASSERT	..\..\inc\stm8s_conf.h	81;"	macro
 USE_STDPERIPH_DRIVER	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	80;"	macro
 VECTOR_ID	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2627;"	macro
@@ -3071,12 +3105,12 @@ WWDG_struct	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	1607;"	stru
 _COSMIC_	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	67;"	macro
 _IAR_	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	71;"	macro
 _RAISONANCE_	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	69;"	macro
-__DELAY_EN	..\..\src\modbus.c	54;"	macro	file:
+__DELAY_EN	..\..\src\modbus.c	56;"	macro	file:
 __I	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	185;"	macro
 __IO	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	187;"	macro
-__MODBUS_EN	..\..\src\modbus.c	37;"	macro	file:
+__MODBUS_EN	..\..\src\modbus.c	39;"	macro	file:
 __MODBUS_HEADER_H	..\..\inc\modbus.h	2;"	macro
-__MODS0__	..\..\..\..\..\..\..\..\..\program files (x86)\cosmic\cxstm8_eval\hstm8\mods0.h	11;"	macro
+__MODS0__	..\..\..\..\..\..\..\..\..\..\program files (x86)\cosmic\cxstm8_32k\hstm8\mods0.h	11;"	macro
 __O	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	186;"	macro
 __STM8S_ADC1_H	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_adc1.h	23;"	macro
 __STM8S_AWU_H	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_awu.h	24;"	macro
@@ -3104,19 +3138,21 @@ __STM8S_TIM3_H	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_tim3.h	24;
 __STM8S_TIM4_H	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_tim4.h	24;"	macro
 __STM8S_UART2_H	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_uart2.h	24;"	macro
 __STM8S_WWDG_H	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s_wwdg.h	24;"	macro
-__checkAddr	..\..\inc\modbus.h	17;"	prototype	signature:(uint8_t address)
-__checkAddr	..\..\src\modbus.c	125;"	function	signature:(uint8_t address)
-__checkFunc	..\..\inc\modbus.h	18;"	prototype	signature:(uint8_t Function_Number)
-__checkFunc	..\..\src\modbus.c	137;"	function	signature:(uint8_t Function_Number)
+__checkAddr	..\..\inc\modbus.h	27;"	prototype	signature:(uint8_t address)
+__checkAddr	..\..\src\modbus.c	127;"	function	signature:(uint8_t address)
+__checkFunc	..\..\inc\modbus.h	28;"	prototype	signature:(uint8_t Function_Number)
+__checkFunc	..\..\src\modbus.c	139;"	function	signature:(uint8_t Function_Number)
+__checkFunc	..\..\src\stm8s_it.c	40;"	prototype	file:	signature:(uint8_t Function_Number)
 _stext	..\..\inc\stm8s_it.h	34;"	prototype	signature:(void)
 _vectab	..\..\src\stm8_interrupt_vector.c	14;"	variable
 assert_failed	..\..\inc\stm8s_conf.h	96;"	prototype	signature:(uint8_t* file, uint32_t line)
-assert_failed	..\..\src\main.c	62;"	function	signature:(u8* file, u32 line)
+assert_failed	..\..\src\main.c	58;"	function	signature:(u8* file, u32 line)
 assert_param	..\..\inc\stm8s_conf.h	94;"	macro
 assert_param	..\..\inc\stm8s_conf.h	98;"	macro
 bool	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	210;"	typedef	typeref:enum:__anon1
-buffer	..\..\src\stm8s_it.c	373;"	variable
-counter	..\..\src\stm8s_it.c	375;"	variable
+buffer	..\..\src\stm8s_it.c	54;"	variable
+counter	..\..\src\stm8s_it.c	56;"	variable
+device_number	..\..\src\main.c	22;"	macro	file:
 disableInterrupts	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2585;"	macro
 disableInterrupts	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2594;"	macro
 disableInterrupts	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2604;"	macro
@@ -3133,7 +3169,7 @@ interrupt_handler	..\..\src\stm8_interrupt_vector.c	11;"	member	struct:interrupt
 interrupt_handler_t	..\..\src\stm8_interrupt_vector.c	7;"	typedef	file:
 interrupt_instruction	..\..\src\stm8_interrupt_vector.c	10;"	member	struct:interrupt_vector	file:
 interrupt_vector	..\..\src\stm8_interrupt_vector.c	9;"	struct	file:
-main	..\..\src\main.c	31;"	function	signature:(void)
+main	..\..\src\main.c	33;"	function	signature:(void)
 nop	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2588;"	macro
 nop	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2597;"	macro
 nop	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2607;"	macro
@@ -3158,4 +3194,4 @@ uint8_t	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	195;"	typedef
 wfi	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2590;"	macro
 wfi	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2599;"	macro
 wfi	..\..\..\..\libraries\stm8s_stdperiph_driver\inc\stm8s.h	2609;"	macro
-word	..\..\src\stm8s_it.c	374;"	variable
+word	..\..\src\stm8s_it.c	55;"	variable
