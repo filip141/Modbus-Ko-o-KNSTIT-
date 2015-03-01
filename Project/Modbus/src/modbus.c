@@ -273,7 +273,7 @@ while(n>0)
 						uint8_t zm = n;
 						for(pwr =0; pwr<zm; pwr++,Coil++)
 							{
-								TempSum += (1<<pwr)*StateOfCoil(Coil, Input_Registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
+								TempSum += (1<<pwr)*StateOfCoil(Coil, registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
 								n--;
 							}
 						ByteToHex(temp,TempSum);
