@@ -192,6 +192,7 @@ void ReadCoilStatus(void)
 /////////////////////////////////////////////////////   Variables
 char OutputFrame[15];   // output frame
 uint8_t counter = 0;
+uint8_t counter2 = 0 ;
 uint8_t TempSum=0;
 uint8_t FirstCoil;
 uint8_t NumberOfCoils;
@@ -273,13 +274,22 @@ while(n>0)
 				}
 }
 
-//   calculating CRC
-for(counter; counter<=15; counter++)
+// setting * instead of free space to avoid CRUFT//optionaly
+counter2 = counter;
+for(counter2; counter2<=15; counter2++)
 	{
-			OutputFrame[counter] = '*';
+			OutputFrame[counter2] = '*';
 	}
+
+// finally writing LRC
+ByteToHex(temp,GetLRC(OutputFrame));
+OutputFrame[counter] = temp[0];
+counter++;
+OutputFrame[counter] = temp[1];
+counter++;
+
+//sending frame 
 UART_SendStr(OutputFrame); 
-//UART_SendStr("\nFunction 1 handled."); 
 }
 
 
@@ -301,46 +311,34 @@ void PresetSingleRegister(void)
 bool CheckLRC(char *frame)
 {
 	uint8_t a = 0;
-	char tempLRC_hex[2];
 	uint8_t Sum;
 	char tempByte[2];
 	uint8_t tempSum = 0;
-	
-	uint8_t tempLRC_dec1 = 0;
-	uint8_t tempLRC_dec2 = 0;
-	uint16_t tempLRC_dec1_16 = 0;
-	uint16_t tempLRC_dec2_16 = 0;
-	uint32_t LRC_dec_from_frame = 0;	
+	char temp[4];
 	uint8_t LRC_calculated = 0;
-	uint16_t g;
+
+	uint8_t LRC_dec_from_frame = 0;	
 	
 // counting chars  in frame
 	while(word[a] != '\r')
 			{
 				a++;
 			}
-	
-// getting LRC from HEX to DEC
-	tempLRC_hex[1] = frame[a-1];
-	tempLRC_hex[0] = frame[a-2];
-HexToByte(tempLRC_hex, &tempLRC_dec1); // 126
 
-	tempLRC_hex[1] = frame[a-3];
-	tempLRC_hex[0] = frame[a-4];
-HexToByte(tempLRC_hex, &tempLRC_dec2); // 3
+temp[1] = frame[a-1];
+temp[0] = frame[a-2];
 
-tempLRC_dec1_16 = tempLRC_dec1_16  | tempLRC_dec1;      
-tempLRC_dec2_16 = tempLRC_dec2_16  | tempLRC_dec2; 
-LRC_dec_from_frame = (tempLRC_dec2_16<<8) | tempLRC_dec1_16;              //  nie dzia³a, wartosci z kosmosu
- 
+HexToByte(temp,&LRC_dec_from_frame);
+
 
 // calculating LRC
 LRC_calculated = GetLRC(frame);
 
 if (LRC_calculated == LRC_dec_from_frame)
 	{
+//		UART_SendStr("LRC IS OK"); 
 		return 1;
-	}
+}
 else
 	{
 		return 0;
@@ -350,24 +348,49 @@ else
 uint8_t GetLRC(char *frame)
 {
 uint8_t a=1;   // 1, because the first char is ':'
+uint8_t k=2;
 char temp[2];
 uint8_t temp_sum=0;
 uint8_t sum = 0;
 
-// * this algorithm works only if size of frame is even   // 
-while((word[a] != '\r'))
+// * this algorithm works only if size of frame is even , i guess  // 
+while((word[a] != '\r')&(word[a] != '*'))
 {
-temp[0] = word[a];
-temp[1] = word[a+1];
+a++;
+}
+a = a - 2; 
+
+for( k; k<a; k+=2)
+{
+temp[0] = word[k-1];
+temp[1] = word[k];
 HexToByte(temp, &temp_sum);
 sum += temp_sum;
-a = a + 2;
+
 }
-
-// making negative
-sum = !sum;
-
+sum = (~sum) + 1;
 return sum;
-
 }
 
+
+void HextoByte_4(char *hexstring_4, uint16_t *byte)
+{
+char tempp[2];
+uint8_t right_dec = 0;
+uint8_t left_dec = 0;
+uint16_t right_dec16 = 0;
+uint16_t left_dec16 = 0;
+
+tempp[0] = hexstring_4[0];
+tempp[1] = hexstring_4[1];
+HexToByte(tempp,&left_dec);
+
+tempp[0] = hexstring_4[2];
+tempp[1] = hexstring_4[3];
+HexToByte(tempp,&right_dec);
+
+left_dec16 = left_dec16 | left_dec;
+right_dec16 = right_dec16 | right_dec;
+
+*byte = (left_dec16 << 8) | right_dec16;
+}
