@@ -198,7 +198,7 @@ uint8_t FirstCoil;
 uint8_t NumberOfCoils;
 uint8_t Coil;
 uint8_t NumberOfDataBytes;
- char temp[2];
+char temp[2];
 uint8_t n = 0;
 
 // coils
@@ -301,12 +301,85 @@ UART_SendStr(OutputFrame);
  
 void ReadInputStatus(void)
 {
-UART_SendStr("Function 2 Handled");
+//UART_SendStr("Function 2 Handled");
+/// fun1
 }
+
+///FC03  *This command is requesting the content of analog output holding registers///
 void ReadHoldingRegisters(void)
-{}
+{
+char OutputFrame[15];   // output frame
+char temp[4];
+
+uint16_t FirstReg = 0;
+uint16_t NumberOfRegs = 0;
+uint8_t NumberOfBytes = 0 ;
+uint8_t ct = 0;
+uint8_t counter = 0;
+uint16_t Content_dec = 0;
+
+// rewriting slave's address & number of function
+RewritingChars(OutputFrame,0,4);
+
+//getting number of first register
+temp[0] = word[5];
+temp[1] = word[6];
+temp[2] = word[7];
+temp[3] = word[8];
+HexToByte_4(temp, &FirstReg);
+
+//getting quantity of registers
+temp[0] = word[5];
+temp[1] = word[6];
+temp[2] = word[7];
+temp[3] = word[8];
+HexToByte_4(temp, &NumberOfRegs);
+
+// calculating the number of data bytes to follow ( n registers * 2 bytes each)
+NumberOfBytes = NumberOfRegs*2;
+
+//Writing the number of data bytes
+ByteToHex(temp,NumberOfBytes);
+OutputFrame[5] = temp[0];
+OutputFrame[6] = temp[1];
+
+counter = 7;
+
+//Reading the contents from Output_Registers
+for(ct=FirstReg;ct<NumberOfRegs;ct++)
+	{
+		Content_dec = Output_Registers[ct];
+		ByteToHex_4(temp,Content_dec);
+		OutputFrame[counter] = temp[0];
+		counter++;
+		OutputFrame[counter] = temp[1];
+		counter++;
+		OutputFrame[counter] = temp[2];
+		counter++;
+		OutputFrame[counter] = temp[3];
+		counter++;
+	}
+	
+	
+// finally writing LRC
+ByteToHex(temp,GetLRC(OutputFrame));
+OutputFrame[counter] = temp[0];
+counter++;
+OutputFrame[counter] = temp[1];
+counter++;
+OutputFrame[counter] = 0x0D;
+counter++;
+OutputFrame[counter] = 0x0A;
+counter++;
+//sending frame 
+UART_SendStr(OutputFrame); 
+
+}
 void ReadInputRegisters(void)
-{}
+{
+//UART_SendStr("Function 4 Handled");
+/// fun1
+}
 void ForceSingleCoil(void)
 {}
 void PresetSingleRegister(void)
@@ -378,7 +451,7 @@ return sum;
 }
 
 
-void HextoByte_4(char *hexstring_4, uint16_t *byte)
+void HexToByte_4(char *hexstring_4, uint16_t *byte)
 {
 char tempp[2];
 uint8_t right_dec = 0;
@@ -398,4 +471,29 @@ left_dec16 = left_dec16 | left_dec;
 right_dec16 = right_dec16 | right_dec;
 
 *byte = (left_dec16 << 8) | right_dec16;
+}
+
+
+//** function change uint16_t to hex char[4]
+void ByteToHex_4(char *hexstring, uint16_t byte)
+{
+	char temp1[2];
+	char temp2[2];
+	uint16_t D1 = byte >> 8;
+  uint16_t D2 = byte & 255;
+	uint8_t D1_8 = 0;
+	uint8_t D2_8 = 0;
+	uint8_t ct = 0;
+	
+	D1_8 |= D1;
+	D2_8 |= D2;
+	
+	ByteToHex(temp1, D1_8);
+	ByteToHex(temp2, D2_8);
+	
+	hexstring[0] = temp1[0];
+	hexstring[1] = temp1[1];
+	hexstring[2] = temp2[0];
+	hexstring[3] = temp2[1];
+		
 }

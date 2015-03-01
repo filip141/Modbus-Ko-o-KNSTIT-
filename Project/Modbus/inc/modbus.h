@@ -19,10 +19,11 @@ void Modbus_Init(void);
 void UART_SendStr(const char *s);
 void ByteToHex(char *hexstring, uint8_t byte);
 void HexToByte(char *hexstring, uint8_t *byte);
-void HextoByte_4(char *hexstring_4, uint16_t *byte);
+void HexToByte_4(char *hexstring_4, uint16_t *byte);
 void SetDevAddr(uint8_t Addr);
 bool CheckLRC(char *frame);
 uint8_t GetLRC(char *frame);
+void ByteToHex_4(char *hexstring, uint16_t byte);
 
 uint8_t __checkAddr(uint8_t address); 
 uint8_t __checkFunc(uint8_t Function_Number); 
