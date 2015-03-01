@@ -192,7 +192,7 @@ void ReadCoilStatus(void)
 /////////////////////////////////////////////////////   Variables
 char OutputFrame[25];   // output frame
 uint8_t counter = 0;
-uint8_t counter2 = 0 ;
+//uint8_t counter2 = 0 ;
 uint8_t TempSum=0;
 uint16_t FirstCoil;
 uint16_t NumberOfCoils;
@@ -202,6 +202,9 @@ char temp[2];
 char temp4[4];
 uint16_t n = 0;
 
+
+//Clear table
+for(n = 0; n<25; n++){OutputFrame[n] = '\0';}
 // coils
 Input_Registers[0] = 0b111111000101;
 
@@ -419,6 +422,8 @@ temp[0] = frame[a-2];
 
 HexToByte(temp,&LRC_dec_from_frame);
 
+frame[a-1] = '\0';
+frame[a-2] = '\0';
 
 // calculating LRC
 LRC_calculated = GetLRC(frame);
@@ -436,31 +441,21 @@ else
 
 uint8_t GetLRC(char *frame)
 {
-uint8_t a=1;   // 1, because the first char is ':'
-uint8_t k=2;
+uint8_t LRCsum = 0;
 char temp[2];
-uint8_t temp_sum=0;
-uint8_t sum = 0;
+uint8_t TempSum;
+frame++;
 
-// * this algorithm works only if size of frame is even , i guess  // 
-while((word[a] != '\r')&(word[a] != '*'))
+while(*frame)
 {
-a++;
+temp[0] = *frame++;
+temp[1] = *frame++;
+HexToByte(temp, &TempSum);
+LRCsum += TempSum;
 }
-a = a - 2; 
-
-for( k; k<a; k+=2)
-{
-temp[0] = word[k-1];
-temp[1] = word[k];
-HexToByte(temp, &temp_sum);
-sum += temp_sum;
-
+LRCsum = (~(LRCsum)+1);
+return LRCsum;
 }
-sum = (~sum) + 1;
-return sum;
-}
-
 
 void HexToByte_4(char *hexstring_4, uint16_t *byte)
 {

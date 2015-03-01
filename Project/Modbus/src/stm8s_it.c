@@ -296,12 +296,8 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 	//Buffer not empty
 	if(word[0] != '\0')
 	{
-				if (!CheckLRC(word))
-				{
-						UART_SendStr("Error, LRC is not right.");
-				}
-		
-		
+		if (CheckLRC(word))
+		{		
 		//Function Code to Byte
 		tmp[0] = word[3];
 		tmp[1] = word[4];
@@ -322,7 +318,6 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 				break;
 			case 3: 
 				//Function 3
-				UART_SendStr("Function 3 Handled");
 				ReadHoldingRegisters();
 				break;
 				
@@ -351,6 +346,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 			default: 
 				break;
 			}
+		}
 		}
 		for(i = 0; i<20; i++){word[i] = '\0';}
 	}
