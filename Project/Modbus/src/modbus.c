@@ -138,7 +138,7 @@ uint8_t __checkAddr(uint8_t address)
 //Function to make sure that your Function code is correct
 uint8_t __checkFunc(uint8_t Function_Number)
 {
-	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
+	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 4 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
 	{
 		return 1;
 	}
@@ -309,15 +309,15 @@ counter++;
 }
 
 
- 
+///FC02  *This command is requesting the ON/OFF status of discrete inputs///
 void ReadInputStatus(void)
 {
-//UART_SendStr("Function 2 Handled");
-/// fun1
+ReadCoilStatus();
 }
 
 ///FC03  *This command is requesting the content of analog output holding registers///
-void ReadHoldingRegisters(void)
+/// 			*registers => output or input
+void ReadHoldingRegisters(uint16_t *registers)
 {
 char OutputFrame[25];   // output frame
 char temp[4];
@@ -368,7 +368,7 @@ Output_Registers[2] = 65535;
 //Reading the contents from Output_Registers
 for(ct=0;ct<NumberOfRegs;ct++)
 	{
-		Content_dec = Output_Registers[k];
+		Content_dec = registers[k];
 		ByteToHex_4(temp,Content_dec);
 		OutputFrame[counter] = temp[0];
 		counter++;
@@ -400,11 +400,16 @@ counter++;
 UART_SendStr(OutputFrame); 
 
 }
+
+///FC04 *This command is requesting the content of analog input register///
 void ReadInputRegisters(void)
 {
-//UART_SendStr("Function 4 Handled");
-/// fun1
+	// use FC03 because only difference is input or output
+ReadHoldingRegisters(Input_Registers);
 }
+
+
+
 void ForceSingleCoil(void)
 {}
 void PresetSingleRegister(void)
@@ -468,6 +473,7 @@ LRCsum = (~(LRCsum)+1);
 return LRCsum;
 }
 
+//** function change hex char[4] to uint16_t
 void HexToByte_4(char *hexstring_4, uint16_t *byte)
 {
 char tempp[2];

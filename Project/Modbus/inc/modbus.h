@@ -34,7 +34,7 @@ uint8_t __checkFunc(uint8_t Function_Number);
 /* Modbus handler function prototypes ------------------------------------------*/
 void ReadCoilStatus(void);
 void ReadInputStatus(void);
-void ReadHoldingRegisters(void);
+void ReadHoldingRegisters(uint16_t *registers);
 void ReadInputRegisters(void);
 void ForceSingleCoil(void);
 void PresetSingleRegister(void);

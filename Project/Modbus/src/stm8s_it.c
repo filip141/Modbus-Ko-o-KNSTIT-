@@ -42,7 +42,7 @@ uint8_t __checkFunc(uint8_t Function_Number);
 /* Modbus handler function prototypes ------------------------------------------*/
 void ReadCoilStatus(void);
 void ReadInputStatus(void);
-void ReadHoldingRegisters(void);
+void ReadHoldingRegisters(uint16_t *registers);
 void ReadInputRegisters(void);
 void ForceSingleCoil(void);
 void PresetSingleRegister(void);
@@ -318,12 +318,11 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 				break;
 			case 3: 
 				//Function 3
-				ReadHoldingRegisters();
+				ReadHoldingRegisters(Output_Registers);
 				break;
 				
 			case 4: 
 				//Function 4
-				UART_SendStr("Function 4 Handled");
 				ReadInputRegisters();
 
 				break;
