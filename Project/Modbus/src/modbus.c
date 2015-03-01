@@ -186,7 +186,7 @@ bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[])
 				return 0;
 		} 
 }
-
+///FC01  *This command is requesting the ON/OFF status of discrete coils ///
 void ReadCoilStatus(void)
 {
 /////////////////////////////////////////////////////   Variables
@@ -194,12 +194,13 @@ char OutputFrame[15];   // output frame
 uint8_t counter = 0;
 uint8_t counter2 = 0 ;
 uint8_t TempSum=0;
-uint8_t FirstCoil;
-uint8_t NumberOfCoils;
-uint8_t Coil;
+uint16_t FirstCoil;
+uint16_t NumberOfCoils;
+uint16_t Coil;
 uint8_t NumberOfDataBytes;
 char temp[2];
-uint8_t n = 0;
+char temp4[4];
+uint16_t n = 0;
 
 // coils
 Input_Registers[0] = 0b111111000101;
@@ -209,15 +210,19 @@ Input_Registers[0] = 0b111111000101;
 // rewriting slave's address & number of function
 RewritingChars(OutputFrame,0,4);
 	
-//getting number of first coil	
-temp[0] = word[7];
-temp[1] = word[8];
-HexToByte(temp, &FirstCoil);
+//getting number of first coil
+temp4[0] = word[5];
+temp4[1] = word[6];
+temp4[2] = word[7];
+temp4[3] = word[8];
+HexToByte_4(temp4, &FirstCoil);
 
 //getting quantity of coils
-temp[0] = word[11];
-temp[1] = word[12];
-HexToByte(temp, &NumberOfCoils);
+temp4[0] = word[5];
+temp4[1] = word[6];
+temp4[2] = word[7];
+temp4[3] = word[8];
+HexToByte_4(temp4, &NumberOfCoils);
 
 // calculating the number of data bytes
 if((NumberOfCoils%8)!=0)
