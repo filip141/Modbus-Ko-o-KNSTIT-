@@ -46,7 +46,8 @@ void ReadHoldingRegisters(uint16_t *registers);
 void ReadInputRegisters(void);
 void ForceSingleCoil(void);
 void PresetSingleRegister(void);
-
+void ForceMultipleCoils(void);
+void ForceMultipleRegisters(void);
 
 
 
@@ -338,10 +339,17 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 				PresetSingleRegister();
 				break;
 				
+				case 15:
+				//Function 15
+				ForceMultipleCoils();
+				break;	
+				
 			case 16:
 				//Function 16
-				UART_SendStr("Function 16 Handled");
+				ForceMultipleRegisters();
 				break;
+				
+				
 			default: 
 				break;
 			}

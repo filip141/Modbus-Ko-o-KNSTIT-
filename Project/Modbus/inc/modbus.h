@@ -36,6 +36,8 @@ void ReadHoldingRegisters(uint16_t *registers);
 void ReadInputRegisters(void);
 void ForceSingleCoil(void);
 void PresetSingleRegister(void);
+void ForceMultipleCoils(void);
+void ForceMultipleRegisters(void);
 
 void RewritingChars(char *destination, uint8_t from, uint8_t to);
 bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[]);
