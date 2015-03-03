@@ -460,6 +460,7 @@ HexToByte_4(temp4, &StatusToWrite);
 SetSingleCoil( &Coil,  &StatusToWrite, Output_Registers);
 
 //* Writes LRC.
+k = 13;
 ByteToHex(temp2,GetLRC(OutputFrame));
 OutputFrame[k] = temp2[0];
 k++;
@@ -471,6 +472,9 @@ OutputFrame[k] = 0x0A;
 k++;
 OutputFrame[k] = 0x0A;
 k++;
+
+//sending frame 
+UART_SendStr(OutputFrame); 
 }
 
 
@@ -512,6 +516,7 @@ HexToByte_4(temp4, &ValueToWrite);
 Output_Registers[Register] = ValueToWrite;
 
 //* Writes LRC.
+k = 13;
 ByteToHex(temp2,GetLRC(OutputFrame));
 OutputFrame[k] = temp2[0];
 k++;
@@ -523,6 +528,9 @@ OutputFrame[k] = 0x0A;
 k++;
 OutputFrame[k] = 0x0A;
 k++;
+
+//sending frame 
+UART_SendStr(OutputFrame); 
 }
 
 //* If LRC in frame[] is correct returns 1, else 0. 
