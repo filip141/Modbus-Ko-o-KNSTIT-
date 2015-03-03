@@ -165,18 +165,38 @@ for(from; from<=to; ++from)
 	
 }
 
+//* This function sets indicated coil ON or OFF. 
+//* Registers: Output_registers, Input_Registers.
+void SetSingleCoil(uint16_t *Coil, uint16_t *StatusToWrite, uint16_t *registers)
+{ 
+ 
+//* Set ON
+if(*StatusToWrite == 0xFF00)
+	{
+		registers[*Coil/16 ] |= (1<<(*Coil%16));		
+	}
 
-///** Return the value of single bit(coil) **///
+//* Set OFF
+else if(*StatusToWrite == 0x0000)
+	{
+		registers[*Coil/16 ] &= (!(1<<(*Coil%16)));
+	}
+else
+	{
+		// ERORR
+	}
+}
 
+//* Returns the value of single bit(coil).
 bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[])
 {
-		// gettng value of current byte
+//* Gets the value of current byte.
 	uint16_t Value = registers[NumberOfCoil/16];   
 	
-	// calculating the comparing value to find if coil is 1 or 0
+//* Calculates the comparing value to find if coil is 1 or 0.
 	uint16_t Compare = 1<<(NumberOfCoil%16);			
 	
-	if ((Value & Compare) == Compare  )
+	if ((Value & Compare) == Compare )
 		{
 				return 1;
 		}
@@ -188,11 +208,11 @@ bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[])
 }
 
 
-///FC01  *This command is requesting the ON/OFF status of discrete output coils ///
+//* FC01 This command requests the ON/OFF status of discrete output coils.
 void ReadCoilStatus(uint16_t *registers)
 {
 /////////////////////////////////////////////////////   Variables
-char OutputFrame[25];   // output frame
+char OutputFrame[OFS];   // output frame
 uint8_t counter = 0;
 //uint8_t counter2 = 0 ;
 uint8_t TempSum=0;
@@ -206,7 +226,7 @@ uint16_t n = 0;
 
 
 //Clear table
-for(n = 0; n<25; n++){OutputFrame[n] = '\0';}
+for(n = 0; n<OFS; n++){OutputFrame[n] = '\0';}
 // coils
 Input_Registers[0] = 0b0000000011111111;
 
@@ -284,14 +304,6 @@ while(n>0)
 						counter++;
 				}
 }
-/* 
- //setting * instead of free space to avoid CRUFT,optionaly
-counter2 = counter;
-for(counter2; counter2<=15; counter2++)
-	{
-			OutputFrame[counter2] = '*';
-	}
-*/
 
 // finally writing LRC
 ByteToHex(temp,GetLRC(OutputFrame));
@@ -311,7 +323,7 @@ counter++;
 }
 
 
-///FC02  *This command is requesting the ON/OFF status of discrete inputs///
+//* FC02 This command requests the ON/OFF status of discrete inputs///
 void ReadInputStatus(void)
 {
 ReadCoilStatus(Input_Registers);
@@ -321,7 +333,7 @@ ReadCoilStatus(Input_Registers);
 /// 			*registers => output or input
 void ReadHoldingRegisters(uint16_t *registers)
 {
-char OutputFrame[25];   // output frame
+char OutputFrame[OFS];   // output frame
 char temp[4];
 char temp2[2];
 
@@ -335,7 +347,7 @@ uint16_t Content_dec = 0;
 
 
 //Clear table
-for(k = 0; k<25; k++){OutputFrame[k] = '\0';}
+for(k = 0; k<OFS; k++){OutputFrame[k] = '\0';}
 
 // rewriting slave's address & number of function
 RewritingChars(OutputFrame,0,4);
@@ -367,6 +379,7 @@ k = FirstReg;
 
 Output_Registers[1] = 65535;
 Output_Registers[2] = 65535;
+
 //Reading the contents from Output_Registers
 for(ct=0;ct<NumberOfRegs;ct++)
 	{
@@ -384,7 +397,7 @@ for(ct=0;ct<NumberOfRegs;ct++)
 	}
 	
 	
-// finally writing LRC
+// LRC
 ByteToHex(temp2,GetLRC(OutputFrame));
 OutputFrame[counter] = temp2[0];
 counter++;
@@ -406,20 +419,113 @@ UART_SendStr(OutputFrame);
 ///FC04 *This command is requesting the content of analog input register///
 void ReadInputRegisters(void)
 {
-	// use FC03 because only difference is input or output
+	// FC03 used  because only difference is input or output
 ReadHoldingRegisters(Input_Registers);
 }
 
 
 ///FC05 *This command is writing the contents of discrete coil ///
 void ForceSingleCoil(void)
-{}
+{
+char OutputFrame[OFS];   // output frame
+char temp4[4];
+char temp2[2];
 
-///FC06 *This command is writing the contents of analog output holding register///
+uint16_t Coil = 0;
+uint16_t StatusToWrite = 0;
+uint8_t k = 0;
+
+//Clear table
+for(k = 0; k<OFS; k++){OutputFrame[k] = '\0';}
+
+// rewriting slave's address & number of function
+RewritingChars(OutputFrame,0,12);
+
+
+//* Gets data addres of the coil.
+temp4[0] = word[5];
+temp4[1] = word[6];
+temp4[2] = word[7];
+temp4[3] = word[8];
+HexToByte_4(temp4, &Coil);
+
+//* The status to write( FF00 = ON,  0000 = OFF ).
+temp4[0] = word[9];
+temp4[1] = word[10];
+temp4[2] = word[11];
+temp4[3] = word[12];
+HexToByte_4(temp4, &StatusToWrite);
+
+//* Sets the status.
+SetSingleCoil( &Coil,  &StatusToWrite, Output_Registers);
+
+//* Writes LRC.
+ByteToHex(temp2,GetLRC(OutputFrame));
+OutputFrame[k] = temp2[0];
+k++;
+OutputFrame[k] = temp2[1];
+k++;
+OutputFrame[k] = 0x0D;
+k++;
+OutputFrame[k] = 0x0A;
+k++;
+OutputFrame[k] = 0x0A;
+k++;
+}
+
+
+
+
+//* FC06 This command writes the contents of analog output holding register.
 void PresetSingleRegister(void)
-{}
+{
+char OutputFrame[OFS];   
+char temp4[4];
+char temp2[2];
 
-// if LRC in frame[] is correct return 1, else 0 
+uint16_t Register = 0;
+uint16_t ValueToWrite = 0;
+uint8_t k = 0;
+
+//Clear table
+for(k = 0; k<OFS; k++){OutputFrame[k] = '\0';}
+
+// rewriting slave's address & number of function
+RewritingChars(OutputFrame,0,12);
+
+
+//* Gets data addres of the register.
+temp4[0] = word[5];
+temp4[1] = word[6];
+temp4[2] = word[7];
+temp4[3] = word[8];
+HexToByte_4(temp4, &Register);
+
+//* The value to write( FF00 = ON,  0000 = OFF ).
+temp4[0] = word[9];
+temp4[1] = word[10];
+temp4[2] = word[11];
+temp4[3] = word[12];
+HexToByte_4(temp4, &ValueToWrite);
+
+//* Sets the value.
+Output_Registers[Register] = ValueToWrite;
+
+//* Writes LRC.
+ByteToHex(temp2,GetLRC(OutputFrame));
+OutputFrame[k] = temp2[0];
+k++;
+OutputFrame[k] = temp2[1];
+k++;
+OutputFrame[k] = 0x0D;
+k++;
+OutputFrame[k] = 0x0A;
+k++;
+OutputFrame[k] = 0x0A;
+k++;
+}
+
+//* If LRC in frame[] is correct returns 1, else 0. 
 bool CheckLRC(char *frame)
 {
 	uint8_t a = 0;
@@ -431,7 +537,7 @@ bool CheckLRC(char *frame)
 
 	uint8_t LRC_dec_from_frame = 0;	
 	
-// counting chars  in frame
+//* counting chars  in frame
 	while(word[a] != '\r')
 			{
 				a++;
@@ -445,18 +551,17 @@ HexToByte(temp,&LRC_dec_from_frame);
 frame[a-1] = '\0';
 frame[a-2] = '\0';
 
-// calculating LRC
+//* calculating LRC
 LRC_calculated = GetLRC(frame);
 
 if (LRC_calculated == LRC_dec_from_frame)
-	{
-//		UART_SendStr("LRC IS OK"); 
-		return 1;
+{
+	return 1;
 }
 else
-	{
-		return 0;
-	}
+{
+	return 0;
+}
 }
 
 uint8_t GetLRC(char *frame)
@@ -477,7 +582,7 @@ LRCsum = (~(LRCsum)+1);
 return LRCsum;
 }
 
-//** function change hex char[4] to uint16_t
+//* This function changes hex char[4] to uint16_t.
 void HexToByte_4(char *hexstring_4, uint16_t *byte)
 {
 char tempp[2];
@@ -501,7 +606,7 @@ right_dec16 = right_dec16 | right_dec;
 }
 
 
-//** function change uint16_t to hex char[4]
+//* This function changes uint16_t to hex char[4].
 void ByteToHex_4(char *hexstring, uint16_t byte)
 {
 	char temp1[2];

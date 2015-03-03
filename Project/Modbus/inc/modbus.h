@@ -7,6 +7,7 @@
 /* Private defines -----------------------------------------------------------*/
 #define BAUDRATE 19200
 #define TOTAL_REG_SIZE 10
+#define OFS 25   					// Output_Frame SIZE
 
 //uint16_t Output_Registers[10];
 
@@ -28,9 +29,6 @@ void ByteToHex_4(char *hexstring, uint16_t byte);
 uint8_t __checkAddr(uint8_t address); 
 uint8_t __checkFunc(uint8_t Function_Number); 
 
-
-
-
 /* Modbus handler function prototypes ------------------------------------------*/
 void ReadCoilStatus(uint16_t *registers);
 void ReadInputStatus(void);
@@ -41,6 +39,7 @@ void PresetSingleRegister(void);
 
 void RewritingChars(char *destination, uint8_t from, uint8_t to);
 bool StateOfCoil(uint8_t NumberOfCoil, uint16_t registers[]);
+void SetSingleCoil(uint16_t *Coil, uint16_t *StatusToWrite, uint16_t *registers);
 
 /* Private variables -----------------------------------------------------------*/
 extern uint32_t TimmingDelay;
