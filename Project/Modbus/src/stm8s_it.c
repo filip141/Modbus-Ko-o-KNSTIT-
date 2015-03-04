@@ -338,12 +338,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 				//Function 6
 				PresetSingleRegister();
 				break;
-				
-				case 15:
-				//Function 15
-				ForceMultipleCoils();
-				break;	
-				
+	
 			case 16:
 				//Function 16
 				ForceMultipleRegisters();

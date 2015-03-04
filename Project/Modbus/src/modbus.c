@@ -138,7 +138,7 @@ uint8_t __checkAddr(uint8_t address)
 //Function to make sure that your Function code is correct
 uint8_t __checkFunc(uint8_t Function_Number)
 {
-	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 4 || Function_Number == 5 || Function_Number == 6 || Function_Number == 15 || Function_Number == 16)
+	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 4 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
 	{
 		return 1;
 	}
@@ -220,7 +220,7 @@ bool CheckLRC(char *frame)
 
 	uint8_t LRC_dec_from_frame = 0;	
 	
-//* counting chars  in frame
+//* counts chars  in frame
 	while(word[a] != '\r')
 			{
 				a++;
@@ -234,7 +234,7 @@ HexToByte(temp,&LRC_dec_from_frame);
 frame[a-1] = '\0';
 frame[a-2] = '\0';
 
-//* calculating LRC
+//* calculates LRC
 LRC_calculated = GetLRC(frame);
 
 if (LRC_calculated == LRC_dec_from_frame)
@@ -315,7 +315,7 @@ void ByteToHex_4(char *hexstring, uint16_t byte)
 //* ###########################################
 //* ###########################################
 //*																				 ####
-//*  Implementations of funcs below.			 ####
+//* @Implementations of funcs below.			 ####
 //*																				 ####
 //* ###########################################
 //* ###########################################
@@ -334,27 +334,27 @@ char temp[2];
 char temp4[4];
 uint16_t n = 0;
 
-//Clear table
+//Clears table
 for(n = 0; n<OFS; n++){OutputFrame[n] = '\0';}
 
-// rewriting slave's address & number of function
+// rewrites slave's address & number of function
 RewritingChars(OutputFrame,0,4);
 	
-//getting number of first coil
+//gets number of first coil
 temp4[0] = word[5];
 temp4[1] = word[6];
 temp4[2] = word[7];
 temp4[3] = word[8];
 HexToByte_4(temp4, &FirstCoil);
 
-//getting quantity of coils
+//gets quantity of coils
 temp4[0] = word[9];
 temp4[1] = word[10];
 temp4[2] = word[11];
 temp4[3] = word[12];
 HexToByte_4(temp4, &NumberOfCoils);
 
-// calculating the number of data bytes
+// calculates the number of data bytes
 if((NumberOfCoils%8)!=0)
 {
 	NumberOfDataBytes = ( NumberOfCoils/8)+1;
@@ -364,18 +364,18 @@ else
 	NumberOfDataBytes = NumberOfCoils/8;
 }
 
-//Writing the number of data bytes
+//Writes the number of data bytes
 ByteToHex(temp,NumberOfDataBytes);
 OutputFrame[5] = temp[0];
 OutputFrame[6] = temp[1];
 
-// calculating data bits to HEX and writing to frame
+// calculates data bits to HEX and writing to frame
 counter = 7; 
 Coil = FirstCoil;
 n = NumberOfCoils;
 while(n>0)
 {
-		if(n>=8)                   //    changing 8bits to hex
+		if(n>=8)                   //    changes 8bits to hex
 				{
 						uint8_t pwr = 0;
 						for(pwr =0; pwr<8; pwr++,Coil++)
@@ -410,7 +410,7 @@ while(n>0)
 				}
 }
 
-// finally writing LRC
+// writes LRC 
 ByteToHex(temp,GetLRC(OutputFrame));
 OutputFrame[counter] = temp[0];
 counter++;
@@ -423,7 +423,7 @@ counter++;
 OutputFrame[counter] = 0x0A;
 counter++;
 
-//sending frame 
+ // sends frame
 	UART_SendStr(OutputFrame); 
 }
 
@@ -434,11 +434,11 @@ void ReadInputStatus(void)
 ReadCoilStatus(Input_Registers);
 }
 
-///FC03  *This command is requesting the content of analog output holding registers///
+///FC03  *This command is requests the content of analog output holding registers///
 /// 			*registers => output or input
 void ReadHoldingRegisters(uint16_t *registers)
 {
-char OutputFrame[OFS];   // output frame
+char OutputFrame[OFS];    
 char temp[4];
 char temp2[2];
 
@@ -451,30 +451,30 @@ uint8_t counter = 0;
 uint16_t Content_dec = 0;
 
 
-//Clear table
+//Clears table
 for(k = 0; k<OFS; k++){OutputFrame[k] = '\0';}
 
-// rewriting slave's address & number of function
+// rewrites slave's address & number of function
 RewritingChars(OutputFrame,0,4);
 
-//getting number of first register
+//gets number of first register
 temp[0] = word[5];
 temp[1] = word[6];
 temp[2] = word[7];
 temp[3] = word[8];
 HexToByte_4(temp, &FirstReg);
 
-//getting quantity of registers
+//gets quantity of registers
 temp[0] = word[9];
 temp[1] = word[10];
 temp[2] = word[11];
 temp[3] = word[12];
 HexToByte_4(temp, &NumberOfRegs);
 
-// calculating the number of data bytes to follow ( n registers * 2 bytes each)
+// calculates the number of data bytes to follow ( n registers * 2 bytes each)
 NumberOfBytes = NumberOfRegs*2;
 
-//Writing the number of data bytes
+//Writes the number of data bytes
 ByteToHex(temp,NumberOfBytes);
 OutputFrame[5] = temp[0];
 OutputFrame[6] = temp[1];
@@ -485,7 +485,7 @@ k = FirstReg;
 Output_Registers[1] = 65535;
 Output_Registers[2] = 65535;
 
-//Reading the contents from Output_Registers
+//Reads the contents from Output_Registers
 for(ct=0;ct<NumberOfRegs;ct++)
 	{
 		Content_dec = registers[k];
@@ -516,12 +516,12 @@ OutputFrame[counter] = 0x0A;
 counter++;
 
 
-//sending frame 
+//sends frame 
 UART_SendStr(OutputFrame); 
 
 }
 
-///FC04 *This command is requesting the content of analog input register///
+///FC04 *This command is requests the content of analog input register///
 void ReadInputRegisters(void)
 {
 	// FC03 used  because only difference is input or output
@@ -529,7 +529,7 @@ ReadHoldingRegisters(Input_Registers);
 }
 
 
-///FC05 *This command is writing the contents of discrete coil ///
+///FC05 *This command writes the contents of discrete coil ///
 void ForceSingleCoil(void)
 {
 char OutputFrame[OFS];   // output frame
@@ -540,10 +540,10 @@ uint16_t Coil = 0;
 uint16_t StatusToWrite = 0;
 uint8_t k = 0;
 
-//Clear table
+//Clears table
 for(k = 0; k<OFS; k++){OutputFrame[k] = '\0';}
 
-// rewriting slave's address & number of function
+// rewrites slave's address & number of function
 RewritingChars(OutputFrame,0,12);
 
 
@@ -596,10 +596,10 @@ uint16_t Register = 0;
 uint16_t ValueToWrite = 0;
 uint8_t k = 0;
 
-//Clear table
+//Clears table
 for(k = 0; k<OFS; k++){OutputFrame[k] = '\0';}
 
-// rewriting slave's address & number of function
+// rewrites slave's address & number of function
 RewritingChars(OutputFrame,0,12);
 
 
@@ -634,102 +634,12 @@ k++;
 OutputFrame[k] = 0x0A;
 k++;
 
-//sending frame 
+//sends frame 
 UART_SendStr(OutputFrame); 
 }
 
 
-//* FC15 This command is writing the contents of a series of discrete coils.
-void ForceMultipleCoils()
-{
-char OutputFrame[OFS];  
-uint8_t counter = 0;
-uint8_t TempSum=0;
-uint16_t FirstCoil;
-uint16_t NumberOfCoils;
-uint16_t Coil;
-uint8_t NumberOfDataBytes;
-char temp[2];
-char temp4[4];
-uint8_t n = 0;
-uint8_t k = 0;
-uint16_t j = 0;
-uint16_t status = 0;
-uint8_t Value = 0;
-
-//Clear table
-for(n = 0; n<OFS; n++){OutputFrame[n] = '\0';}
-
-// rewriting slave's address & number of function
-RewritingChars(OutputFrame,0,12);
-	
-//getting number of first coil
-temp4[0] = word[5];
-temp4[1] = word[6];
-temp4[2] = word[7];
-temp4[3] = word[8];
-HexToByte_4(temp4, &FirstCoil);
-
-//getting number  of coils to written	
-temp4[0] = word[9];
-temp4[1] = word[10];
-temp4[2] = word[11];
-temp4[3] = word[12];
-HexToByte_4(temp4, &NumberOfCoils);
- 
-//getting the number of data bytes to follow
-temp[0] = word[13];
-temp[1] = word[14];
-HexToByte(temp, &NumberOfDataBytes);
-
-counter=15;
-j = FirstCoil;
-////////// cos nie tak
-for(k=0;k<NumberOfDataBytes;k++)
-{
-	temp[0] = word[counter];
-	counter++;
-	temp[1] = word[counter];
-	counter++;
-	HexToByte(temp, &Value);		
-	
-		for(n=0; n<8,j<(FirstCoil+NumberOfCoils); n++)
-			{
-										
-						if ((1<<n) == (Value & (1<<n)))
-									{
-										status = 0xFF00;
-									}
-						else
-									{
-										status = 0x0000	;
-									}
-				
-				SetSingleCoil(&j, &status, Output_Registers);
-				j++;	
-			}
-
-}
-//* Writes LRC.
-counter = 13;
-ByteToHex(temp,GetLRC(OutputFrame));
-OutputFrame[counter] = temp[0];
-counter++;
-OutputFrame[counter] = temp[1];
-counter++;
-OutputFrame[counter] = 0x0D;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
-
-//sending frame 
-UART_SendStr(OutputFrame); 
- 
-}
-
-//* FC16 This command is writing the contents of  analog output holding registers
+//* FC16 This command    writes the contents of  analog output holding registers
 void ForceMultipleRegisters()
 {
 char OutputFrame[OFS];  
@@ -743,27 +653,27 @@ char temp[2];
 char temp4[4];
 uint16_t n = 0;
 
-//Clear table
+//Clears table
 for(n = 0; n<OFS; n++){OutputFrame[n] = '\0';}
 
-// rewriting slave's address & number of function
+// rewrites slave's address & number of function
 RewritingChars(OutputFrame,0,12);
 	
-//getting number of first coil
+//gets number of first coil
 temp4[0] = word[5];
 temp4[1] = word[6];
 temp4[2] = word[7];
 temp4[3] = word[8];
 HexToByte_4(temp4, &FirstRegister);
 
-//getting number  of coils to written	
+//gets number  of coils to written	
 temp4[0] = word[9];
 temp4[1] = word[10];
 temp4[2] = word[11];
 temp4[3] = word[12];
 HexToByte_4(temp4, &NumberOfRegs);
  
-//getting the number of data bytes to follow
+//gets the number of data bytes to follow
 temp[0] = word[13];
 temp[1] = word[14];
 HexToByte(temp, &NumberOfDataBytes);
