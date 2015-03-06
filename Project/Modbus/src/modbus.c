@@ -135,18 +135,7 @@ uint8_t __checkAddr(uint8_t address)
 		return 0;
 	}
 }
-//Function to make sure that your Function code is correct
-uint8_t __checkFunc(uint8_t Function_Number)
-{
-	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 4 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
-	{
-		return 1;
-	}
-	else 
-	{
-		return 0;
-	}
-}
+
 //Set Device Address
 void SetDevAddr(uint8_t Addr)
 {
@@ -183,7 +172,7 @@ else if(*StatusToWrite == 0x0000)
 	}
 else
 	{
-		// ERORR
+		ErrorMessage(ILLEGAL_DATA_VAL);
 	}
 }
 
@@ -353,36 +342,37 @@ temp4[1] = word[10];
 temp4[2] = word[11];
 temp4[3] = word[12];
 HexToByte_4(temp4, &NumberOfCoils);
-
-// calculates the number of data bytes
-if((NumberOfCoils%8)!=0)
+if(Check_DataAddr_F01_F02(FirstCoil, NumberOfCoils) & Check_DataVal())
 {
-	NumberOfDataBytes = ( NumberOfCoils/8)+1;
-}
-else
-{
-	NumberOfDataBytes = NumberOfCoils/8;
-}
+	// calculates the number of data bytes
+	if((NumberOfCoils%8)!=0)
+	{
+		NumberOfDataBytes = ( NumberOfCoils/8)+1;
+	}
+	else
+	{
+		NumberOfDataBytes = NumberOfCoils/8;
+	}
 
-//Writes the number of data bytes
-ByteToHex(temp,NumberOfDataBytes);
-OutputFrame[5] = temp[0];
-OutputFrame[6] = temp[1];
+	//Writes the number of data bytes
+	ByteToHex(temp,NumberOfDataBytes);
+	OutputFrame[5] = temp[0];
+	OutputFrame[6] = temp[1];
 
-// calculates data bits to HEX and writing to frame
-counter = 7; 
-Coil = FirstCoil;
-n = NumberOfCoils;
-while(n>0)
-{
-		if(n>=8)                   //    changes 8bits to hex
-				{
+	// calculates data bits to HEX and writing to frame
+	counter = 7; 
+	Coil = FirstCoil;
+	n = NumberOfCoils;
+	while(n>0)
+	{
+					if(n>=8)                   //    changes 8bits to hex
+					{
 						uint8_t pwr = 0;
 						for(pwr =0; pwr<8; pwr++,Coil++)
-							{
-								TempSum += (1<<pwr)*StateOfCoil(Coil, registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
-								n--;
-							}			
+						{
+							TempSum += (1<<pwr)*StateOfCoil(Coil, registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^0
+							n--;
+						}			
 						
 						ByteToHex(temp,TempSum);
 						TempSum = 0;
@@ -390,41 +380,42 @@ while(n>0)
 						counter++;
 						OutputFrame[counter] = temp[1];
 						counter++;
-				}
+					}
 				
-		else                                       //        changing incomplete octet to hex
-				{
-						uint8_t pwr = 0;
-						uint8_t zm = n;
-						for(pwr =0; pwr<zm; pwr++,Coil++)
+					else                                       //        changing incomplete octet to hex
+					{
+							uint8_t pwr = 0;
+							uint8_t zm = n;
+							for(pwr =0; pwr<zm; pwr++,Coil++)
 							{
-								TempSum += (1<<pwr)*StateOfCoil(Coil, registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
-								n--;
+									TempSum += (1<<pwr)*StateOfCoil(Coil, registers);   ///////      (9 dec)  1001  =>  1*2^3 + 0*2^2 + 0*2^1 + 1*2^(
+									n--;
 							}
-						ByteToHex(temp,TempSum);
-						TempSum = 0;
-						OutputFrame[counter] = temp[0];
-						counter++;
-						OutputFrame[counter] = temp[1];
-						counter++;
-				}
+							ByteToHex(temp,TempSum);
+							TempSum = 0;
+							OutputFrame[counter] = temp[0];
+							counter++;
+							OutputFrame[counter] = temp[1];
+							counter++;
+					}
+	}
+
+	// writes LRC 
+	ByteToHex(temp,GetLRC(OutputFrame));
+	OutputFrame[counter] = temp[0];
+	counter++;
+	OutputFrame[counter] = temp[1];
+	counter++;
+	OutputFrame[counter] = 0x0D;
+	counter++;
+	OutputFrame[counter] = 0x0A;
+	counter++;
+	OutputFrame[counter] = 0x0A;
+	counter++;
+
+		// sends frame
+		UART_SendStr(OutputFrame); 
 }
-
-// writes LRC 
-ByteToHex(temp,GetLRC(OutputFrame));
-OutputFrame[counter] = temp[0];
-counter++;
-OutputFrame[counter] = temp[1];
-counter++;
-OutputFrame[counter] = 0x0D;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
-
- // sends frame
-	UART_SendStr(OutputFrame); 
 }
 
 
@@ -470,23 +461,22 @@ temp[1] = word[10];
 temp[2] = word[11];
 temp[3] = word[12];
 HexToByte_4(temp, &NumberOfRegs);
+if(Check_DataAddr_F03_F04(FirstReg, NumberOfRegs) & Check_DataVal())
+{
+	// calculates the number of data bytes to follow ( n registers * 2 bytes each)
+	NumberOfBytes = NumberOfRegs*2;
 
-// calculates the number of data bytes to follow ( n registers * 2 bytes each)
-NumberOfBytes = NumberOfRegs*2;
+	//Writes the number of data bytes
+	ByteToHex(temp,NumberOfBytes);
+	OutputFrame[5] = temp[0];
+	OutputFrame[6] = temp[1];
 
-//Writes the number of data bytes
-ByteToHex(temp,NumberOfBytes);
-OutputFrame[5] = temp[0];
-OutputFrame[6] = temp[1];
+	counter = 7;
+	k = FirstReg;
 
-counter = 7;
-k = FirstReg;
 
-Output_Registers[1] = 65535;
-Output_Registers[2] = 65535;
-
-//Reads the contents from Output_Registers
-for(ct=0;ct<NumberOfRegs;ct++)
+	//Reads the contents from Output_Registers
+	for(ct=0;ct<NumberOfRegs;ct++)
 	{
 		Content_dec = registers[k];
 		ByteToHex_4(temp,Content_dec);
@@ -502,23 +492,23 @@ for(ct=0;ct<NumberOfRegs;ct++)
 	}
 	
 	
-// LRC
-ByteToHex(temp2,GetLRC(OutputFrame));
-OutputFrame[counter] = temp2[0];
-counter++;
-OutputFrame[counter] = temp2[1];
-counter++;
-OutputFrame[counter] = 0x0D;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
+	// LRC
+	ByteToHex(temp2,GetLRC(OutputFrame));
+	OutputFrame[counter] = temp2[0];
+	counter++;
+	OutputFrame[counter] = temp2[1];
+	counter++;
+	OutputFrame[counter] = 0x0D;
+	counter++;
+	OutputFrame[counter] = 0x0A;
+	counter++;
+	OutputFrame[counter] = 0x0A;
+	counter++;
 
 
-//sends frame 
-UART_SendStr(OutputFrame); 
-
+	//sends frame 
+	UART_SendStr(OutputFrame); 
+}
 }
 
 ///FC04 *This command is requests the content of analog input register///
@@ -553,36 +543,36 @@ temp4[1] = word[6];
 temp4[2] = word[7];
 temp4[3] = word[8];
 HexToByte_4(temp4, &Coil);
+if(Check_DataAddr_F05(Coil))
+{
+	//* The status to write( FF00 = ON,  0000 = OFF ).
+	temp4[0] = word[9];
+	temp4[1] = word[10];
+	temp4[2] = word[11];
+	temp4[3] = word[12];
+	HexToByte_4(temp4, &StatusToWrite);
 
-//* The status to write( FF00 = ON,  0000 = OFF ).
-temp4[0] = word[9];
-temp4[1] = word[10];
-temp4[2] = word[11];
-temp4[3] = word[12];
-HexToByte_4(temp4, &StatusToWrite);
+	//* Sets the status.
+	SetSingleCoil( &Coil,  &StatusToWrite, Output_Registers);
 
-//* Sets the status.
-SetSingleCoil( &Coil,  &StatusToWrite, Output_Registers);
+	//* Writes LRC.
+	k = 13;
+	ByteToHex(temp2,GetLRC(OutputFrame));
+	OutputFrame[k] = temp2[0];
+	k++;
+	OutputFrame[k] = temp2[1];
+	k++;
+	OutputFrame[k] = 0x0D;
+	k++;
+	OutputFrame[k] = 0x0A;
+	k++;
+	OutputFrame[k] = 0x0A;
+	k++;
 
-//* Writes LRC.
-k = 13;
-ByteToHex(temp2,GetLRC(OutputFrame));
-OutputFrame[k] = temp2[0];
-k++;
-OutputFrame[k] = temp2[1];
-k++;
-OutputFrame[k] = 0x0D;
-k++;
-OutputFrame[k] = 0x0A;
-k++;
-OutputFrame[k] = 0x0A;
-k++;
-
-//sending frame 
-UART_SendStr(OutputFrame); 
+	//sending frame 
+	UART_SendStr(OutputFrame); 
 }
-
-
+}
 
 
 //* FC06 This command writes the contents of analog output holding register.
@@ -609,33 +599,35 @@ temp4[1] = word[6];
 temp4[2] = word[7];
 temp4[3] = word[8];
 HexToByte_4(temp4, &Register);
+if(Check_DataAddr_F06(Register) & Check_DataVal())
+{
+	//* The value to write( FF00 = ON,  0000 = OFF ).
+	temp4[0] = word[9];
+	temp4[1] = word[10];
+	temp4[2] = word[11];
+	temp4[3] = word[12];
+	HexToByte_4(temp4, &ValueToWrite);
 
-//* The value to write( FF00 = ON,  0000 = OFF ).
-temp4[0] = word[9];
-temp4[1] = word[10];
-temp4[2] = word[11];
-temp4[3] = word[12];
-HexToByte_4(temp4, &ValueToWrite);
+	//* Sets the value.
+	Output_Registers[Register] = ValueToWrite;
 
-//* Sets the value.
-Output_Registers[Register] = ValueToWrite;
+	//* Writes LRC.
+	k = 13;
+	ByteToHex(temp2,GetLRC(OutputFrame));
+	OutputFrame[k] = temp2[0];
+	k++;
+	OutputFrame[k] = temp2[1];
+	k++;
+	OutputFrame[k] = 0x0D;
+	k++;
+	OutputFrame[k] = 0x0A;
+	k++;
+	OutputFrame[k] = 0x0A;
+	k++;
 
-//* Writes LRC.
-k = 13;
-ByteToHex(temp2,GetLRC(OutputFrame));
-OutputFrame[k] = temp2[0];
-k++;
-OutputFrame[k] = temp2[1];
-k++;
-OutputFrame[k] = 0x0D;
-k++;
-OutputFrame[k] = 0x0A;
-k++;
-OutputFrame[k] = 0x0A;
-k++;
-
-//sends frame 
-UART_SendStr(OutputFrame); 
+	//sends frame 
+	UART_SendStr(OutputFrame); 
+}
 }
 
 
@@ -672,15 +664,16 @@ temp4[1] = word[10];
 temp4[2] = word[11];
 temp4[3] = word[12];
 HexToByte_4(temp4, &NumberOfRegs);
- 
+
 //gets the number of data bytes to follow
 temp[0] = word[13];
 temp[1] = word[14];
 HexToByte(temp, &NumberOfDataBytes);
+if(Check_DataAddr_F03_F04(FirstRegister, NumberOfRegs) & Check_DataVal_F16(NumberOfDataBytes))
+{
 
-counter=15;
-
-for(n=0; n<(NumberOfDataBytes/2); n++)
+	counter=15;
+	for(n=0; n<(NumberOfDataBytes/2); n++)
 	{
 		temp4[0] = word[counter];
 		counter++;
@@ -695,21 +688,184 @@ for(n=0; n<(NumberOfDataBytes/2); n++)
 		Output_Registers[FirstRegister+n] = Value;
 	}
 	
+	//* Writes LRC.
+	counter = 13;
+	ByteToHex(temp,GetLRC(OutputFrame));
+	OutputFrame[counter] = temp[0];
+	counter++;
+	OutputFrame[counter] = temp[1];
+	counter++;
+	OutputFrame[counter] = 0x0D;
+	counter++;
+	OutputFrame[counter] = 0x0A;
+	counter++;
+	OutputFrame[counter] = 0x0A;
+	counter++;
+
+	//sending frame 
+	UART_SendStr(OutputFrame); 
+}
+}
+//* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//*																				 @@@@
+//* $Function Error Codes 								 @@@@
+//*																				 @@@@
+//* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+//Illegal value in querry frame
+void ErrorMessage(uint8_t ErrorCode)
+{
+char OutputFrame[OFS];   // output frame
+char temp[2];
+uint8_t FunC;
+uint8_t ErrFuncCode;
+uint8_t k;
+
+//Clears table
+for(k = 0; k<OFS; k++){OutputFrame[k] = '\0';}
+
+//Rewrite first chars
+RewritingChars(OutputFrame,0,2);
+
+//Read Function Code from message
+temp[0] = word[3];
+temp[1] = word[4];
+HexToByte(temp, &FunC);
+
+//Calculate Function Code for Message with Error
+ErrFuncCode = FunC + 80;
+ByteToHex(temp,ErrFuncCode);
+OutputFrame[3] = temp[0];
+OutputFrame[4] = temp[1];
+
+//Fill Data field with ILLEGAL FUNCTION CODE
+ByteToHex(temp,ErrorCode);
+OutputFrame[5] = temp[0];
+OutputFrame[6] = temp[1];
+
 //* Writes LRC.
-counter = 13;
 ByteToHex(temp,GetLRC(OutputFrame));
-OutputFrame[counter] = temp[0];
-counter++;
-OutputFrame[counter] = temp[1];
-counter++;
-OutputFrame[counter] = 0x0D;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
-OutputFrame[counter] = 0x0A;
-counter++;
+OutputFrame[7] = temp[0];
+OutputFrame[8] = temp[1];
+OutputFrame[9] = 0x0D;
+OutputFrame[10] = 0x0A;
+OutputFrame[11] = 0x0A;
 
 //sending frame 
 UART_SendStr(OutputFrame); 
+}
+
+
+//Check Data Addresses in Function 1 and 2
+uint8_t Check_DataAddr_F01_F02(uint16_t FirstCoil, uint16_t NumOfCoils)
+{
+	uint32_t MaxCoils;
+	uint32_t LastCoil;
+	
+	//Maximum numbers of bits in 16 bit registers
+	MaxCoils = REGSIZE*16;
+	//Last Coil Address form query
+	LastCoil = FirstCoil + NumOfCoils;
+	
+	if(LastCoil <= MaxCoils)
+	{
+		return 1;
+	}
+	else
+	{
+	ErrorMessage(ILLEGAL_DATA_ADDR);
+	}
+}
+
+//Check Data Value in Function 1, 2 ,3 ,4 
+uint8_t Check_DataVal()
+{
+	//Number of bytes in querry 
+	if(BYTES == 16)
+	{
+		return 1;
+	}
+	else
+	{
+	ErrorMessage(ILLEGAL_DATA_VAL);	
+	}
+}
+
+//Check Data Addresses in Function 3, 4 and 16
+uint8_t Check_DataAddr_F03_F04(uint16_t FirstReg, uint16_t NumofRegs)
+{
+	uint32_t LastRegister = FirstReg + NumofRegs;
+	if(LastRegister <= REGSIZE)
+	{
+		return 1;
+	}
+	else
+	{
+		ErrorMessage(ILLEGAL_DATA_ADDR);
+	}	
+}
+
+//Check Address in Function 5
+uint8_t Check_DataAddr_F05(uint16_t Coil)
+{
+	//Maximum numbers of bits in 16 bit registers
+	uint16_t MaxCoil = REGSIZE*16;
+	if(Coil <= MaxCoil)
+	{
+		return 1;
+	}
+	else
+	{
+		ErrorMessage(ILLEGAL_DATA_ADDR);
+	}
 	
 }
+
+//Check Address in Function 6
+uint8_t Check_DataAddr_F06(uint16_t Register)
+{
+	if(Register <= REGSIZE)
+	{
+		return 1;
+	}
+	else
+	{
+		ErrorMessage(ILLEGAL_DATA_ADDR);
+	}
+}
+
+//Chaeck Data Value in Function 15
+uint8_t Check_DataVal_F16(uint16_t Databytes)
+{
+	uint16_t BytesInQuerry;
+	BytesInQuerry = 18+2*Databytes;
+	//Number of bytes in querry 
+	if(BYTES == BytesInQuerry)
+	{
+		return 1;
+	}
+	else
+	{
+	ErrorMessage(ILLEGAL_DATA_VAL);	
+	}
+}
+
+
+//Function to make sure that your Function code is correct
+uint8_t __checkFunc(uint8_t Function_Number)
+{
+	if(Function_Number == 1 || Function_Number == 2 || Function_Number == 3 || Function_Number == 4 || Function_Number == 5 || Function_Number == 6 || Function_Number == 16)
+	{
+		return 1;
+	}
+	else 
+	{
+		ErrorMessage(ILLEGAL_FUNCTION);
+		return 0;
+	}
+}
+
+
+

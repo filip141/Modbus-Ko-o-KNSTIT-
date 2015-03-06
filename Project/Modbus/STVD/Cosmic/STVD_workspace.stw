@@ -10,5 +10,3 @@ Dependencies=
 ActiveProject=stvd_project
 ActiveConfig=Debug
 AddSortedElements=1
-[.St7McuIcdConf]
-McuName=STM8S105C6

@@ -27,6 +27,10 @@
   */
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+
+#define REGSIZE 10			//Output and Input Register Size
+#define BufforsSize 45 
+
 /* Private macro -------------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
@@ -52,13 +56,15 @@ void ForceMultipleRegisters(void);
 
 
 /* Private variables ---------------------------------------------------------*/
-uint8_t buffer[20];
-uint8_t word[20];
+
+uint8_t buffer[45];
+uint8_t word[45];
+uint8_t BYTES;
 uint8_t counter;
 uint8_t STATUS_BIT = 0;
 uint8_t Address;
-uint16_t Input_Registers[10];
-uint16_t Output_Registers[10];
+uint16_t Input_Registers[REGSIZE];
+uint16_t Output_Registers[REGSIZE];
 
 /* Public functions ----------------------------------------------------------*/
 #ifdef _COSMIC_
@@ -350,7 +356,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
 			}
 		}
 		}
-		for(i = 0; i<20; i++){word[i] = '\0';}
+		for(i = 0; i<BufforsSize; i++){word[i] = '\0';}
 	}
   TIM2_ClearITPendingBit(TIM2_IT_UPDATE);
 }
@@ -475,17 +481,18 @@ INTERRUPT_HANDLER(I2C_IRQHandler, 19)
 		if(Addr == Address || Addr == 0)
 		{
 			//Address correct rewrite to word
-			for(i = 0; i<20; i++)
+			for(i = 0; i<BufforsSize; i++)
 			{
 			word[i] = buffer[i];
 			buffer[i] = '\0';	
 			}
+			BYTES = counter;
 			counter = 0;
 		}
 		else
 		{
 			//Address incorrect clear buffer
-			for(i = 0; i<20; i++)
+			for(i = 0; i<BufforsSize; i++)
 			{
 			buffer[i] = '\0';	
 			}
